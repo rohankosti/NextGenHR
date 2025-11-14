@@ -1,0 +1,195 @@
+🔥 FULL FLOW — JOBPOST FORM → SERVER → RESPONSE----------------
+✅ 1. User ne form fill kiya
+
+HTML form se tum JS me ye data collect kar rahe ho:
+
+const formData = {
+  name: "...",
+  email: "...",
+  position: "...",
+  resume: "...",
+};
+
+
+Ye JavaScript object hai.
+
+✅ 2. fetch() use karke backend ko bheja
+fetch("http://localhost:3000/storeJobVacancy", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify(formData)
+});
+🔥 Why JSON.stringify(formData) is REQUIRED?
+
+✔️ Backend HTTP request body me SIRF string accept karta hai — object nahi.
+
+Example:
+
+Ye galat hai:
+
+body: { name: "Rohan", email: "rohan@gmail.com" }
+
+
+Kyuki HTTP body text format me jaati hai, JavaScript object format me nahi.
+🔥 Final One-Line Answer
+
+➡️ JSON.stringify(formData) is required because
+HTTP body can only send strings, not JavaScript objects.
+
+Important cheez:
+
+fetch POST request bhejega
+
+formData ko string me convert karega using JSON.stringify()
+
+Body me backend ko JSON string milegi
+
+Example body backend ko aise jayegi:
+
+"{\"name\":\"Rohan\",\"email\":\"rohan@gmail.com\",\"position\":\"Developer\",\"resume\":\"text...\"}"
+
+➡️ AB REQUEST SERVER PAR PAHUNCHTI HAI
+✅ 3. server.js me request receive hoti hai
+if (req.method === 'POST' && req.url === '/storeJobVacancy')
+
+
+Server check karta hai:
+
+method POST hai?
+
+url match ho rahi hai?
+
+Agar haan → server request ka data read karega.
+
+✅ 4. req.on('data') → Buffer data chunk me milta hai
+
+Backend ko JSON object nahi milta.
+Backend ko milta hai:
+
+<Buffer 7b 22 6e 61 ... >
+
+
+Isiliye ye code chalega:
+
+let body = '';
+
+req.on('data', chunk => {
+  body += chunk.toString();
+});
+
+
+Iska kaam:
+
+Step	Kya ho raha hai
+chunk	Buffer aata hai
+toString()	Buffer → normal text string
+body +=	string ko final body me add karte jate hain
+✅ 5. req.on("end") → matlab pura data mil gaya
+
+Ab backend ke paas pure JSON string aa gai.
+
+Example:
+
+{"name": "Rohan", "email": "...", "position":"...", "resume":"..."}
+
+
+Yaha tum body ko JSON.parse() karke object bana सकते हो:
+
+const data = JSON.parse(body);
+
+❗ Tumhare code me abhi sirf yahi hota hai:
+res.writeHead(200, { 'Content-Type': 'application/json' });
+res.end(JSON.stringify({ message: 'Job vacancy stored successfully' }));
+
+
+WHAT IT MEANS?
+
+Server bolta hai: "OK bhai, sab sahi mila"
+
+200 status send hota hai
+
+Aur JSON form me response milta hai:
+
+{
+   "message": "Job vacancy stored successfully"
+}
+
+➡️ AB RESPONSE FRONTEND PAR WAPAS JATA HAI
+✅ 6. Frontend fetch() response ko receive karta hai
+const result = await response.json();
+
+
+Ye backend se jo JSON string aayi thi:
+
+"{ \"message\": \"Job vacancy stored successfully\" }"
+
+
+Usko JavaScript object me convert kar deta hai:
+
+result.message   //--->  "Job vacancy stored successfully"
+
+✅ 7. Tum usko HTML mai show karte ho
+responseMsg.innerHTML = `<div class="alert alert-success">${result.message}</div>`;
+
+
+User ko message dikhta hai:
+
+✔️ Job vacancy stored successfully
+
+
+beckend -----------------------------------------------------
+🔥 Q: Ye CORS wali line likhna kyu zaroori hai?
+⭐ Reason 1: FRONTEND & BACKEND different jagah pe chal rahe hote hain
+
+Tumhara frontend → http://localhost:5500 (ya kabhi file://)
+
+Tumhara backend → http://localhost:3000
+
+⚠️ Browser rule:
+A webpage from one origin is NOT allowed to call another origin ka server without permission.
+
+Origin = protocol + domain + port
+
+👉 http://localhost:5500 and http://localhost:3000 → different origins
+
+⭐ Isliye browser request block kar deta hai → CORS error
+
+🔥 Q: CORS error solve kaise hota hai?
+
+Backend ko bolna padta hai:
+
+✔ "Ha bhai, ye frontend allowed hai mere server ko call karne ke liye"
+
+Uske liye tum likhte ho:
+
+res.setHeader('Access-Control-Allow-Origin', '*');
+res.setHeader('Access-Control-Allow-Methods', 'POST, GET, PUT, DELETE, OPTIONS');
+res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+
+🔥 Q: OPTIONS request kya hoti hai? (Preflight)
+
+Browser ye check karta hai:
+
+“Server POST request allow karta hai ki nahi?”
+
+Is check ko bola jata hai:
+
+Preflight request (HTTP OPTIONS request)
+
+Browser automatically bhejta hai → tum nahi bhejte.
+
+Backend ko bolna padta hai:
+
+if (req.method === 'OPTIONS') {
+    res.writeHead(204);
+    res.end();
+    return;
+}
+
+
+⚡ Ye server ko batata:
+
+“Theek hai browser, request allowed hai, ab tum POST kar sakte ho.”
+
+Agar ye part nahi likhoge → browser POST/PUT request bhejega hi nahi.
+-------------------------------------------------- Lec:1 Complate
