@@ -72,24 +72,7 @@
     </div>
   </section>
 
-  <section>
-    <div>
-      <table class="table table-bordered">
-        <thead>
-          <tr>
-            <th>Id</th>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Position</th>
-            <th>Resume</th>
-          </tr>
-        </thead>
-        <tbody id="jobpostdata">
-          <!-- Job post data will be inserted here dynamically -->
-        </tbody>
-      </table>
-    </div>
-  </section>
+  
 
   <!-- Footer -->
   <footer class="footer text-center">
@@ -114,7 +97,6 @@
         position: document.getElementById('position').value,
         resume: document.getElementById('resume').value,
       };
-
       try {
         //API key
         const data_fetch = await fetch("http://localhost:3000/storeJobVacancy",
@@ -123,7 +105,7 @@
             headers: {
               'Content-Type': 'application/json'
             },
-            body: JSON.stringify(formdata)
+            body: JSON.stringify(formdata) //Because HTTP protocol text format use karta hai — binary ya JS object directly send nahi hota.Browser request body ko string me hi bhej sakta hai.
           });
 
           let json = await data_fetch.json()
@@ -143,11 +125,8 @@
       catch (error) {
         console.error(error);
       }
-
     });
-
-
-
+    
   </script>
 </body>
 
