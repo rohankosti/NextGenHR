@@ -63,6 +63,17 @@ const server = http.createServer((req, res) => {
        })();
        }
 
+
+       if (req.method==="GET" && req.url==="/jobvecancysingledata") {
+           
+         (async ()=>{
+          const singaldata = await dbs.collection("jobvecancy").findOne({'_id': new mongodb.ObjectId('6919f2ed9d5ce6dbc149d372')});
+          console.log(singaldata);
+          res.writeHead(200,{"content-type":"application/json"});
+          res.end(JSON.stringify(singaldata));//Bhai res.end() hamesha STRING hi bhejta hai, object nahi.
+       })();
+       }
+
 });
 
 server.listen(3000, () => {

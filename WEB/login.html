@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,29 +14,41 @@
       align-items: center;
       justify-content: center;
     }
+
     .login-box {
       background: #fff;
       border-radius: 16px;
-      box-shadow: 0 4px 32px rgba(0,0,0,0.08);
+      box-shadow: 0 4px 32px rgba(0, 0, 0, 0.08);
       padding: 2.5rem 2rem;
       width: 100%;
       max-width: 400px;
       animation: fadeIn 1s;
     }
+
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(40px); }
-      to { opacity: 1; transform: none; }
+      from {
+        opacity: 0;
+        transform: translateY(40px);
+      }
+
+      to {
+        opacity: 1;
+        transform: none;
+      }
     }
+
     .login-title {
       font-weight: 700;
       color: #007bff;
       margin-bottom: 1.5rem;
       text-align: center;
     }
+
     .form-control:focus {
       border-color: #007bff;
-      box-shadow: 0 0 0 0.2rem rgba(0,123,255,.15);
+      box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, .15);
     }
+
     .btn-primary {
       background: #007bff;
       border: none;
@@ -43,18 +56,20 @@
       font-weight: 600;
       transition: background 0.2s;
     }
+
     .btn-primary:hover {
       background: #0056b3;
     }
   </style>
 </head>
+
 <body>
   <div class="login-box">
     <h2 class="login-title">NextGenHR Login</h2>
     <form>
       <div class="mb-3">
-        <label for="email" class="form-label">Email address</label>
-        <input type="email" class="form-control" id="email" required autofocus>
+        <label for="username" class="form-label">User Name</label>
+        <input type="text" class="form-control" id="username" required autofocus>
       </div>
       <div class="mb-3">
         <label for="password" class="form-label">Password</label>
@@ -63,5 +78,24 @@
       <button type="submit" class="btn btn-primary w-100">Login</button>
     </form>
   </div>
+
+
+  <script>
+    document.querySelector('form').addEventListener('submit', function (e) {
+      e.preventDefault();
+      const username = document.getElementById('username');
+      const password = document.getElementById('password');
+
+
+      if (username.value === 'admin' && password.value === 'admin123') {
+        alert('Login successful!');
+        // Redirect to admin dashboard or another page
+        window.location.href = 'viewJobpostData.html';
+      } else {
+        alert('Invalid username or password. Please try again.');
+      }
+    });
+  </script>
 </body>
+
 </html>
