@@ -6,9 +6,7 @@ const url = "mongodb://admin:admin123@127.0.0.1:27017/?authSource=admin";
 const client = new MongoClient(url);
 const dbs_name = "nextgenHR";
 
-client
-  .connect()
-  .then(() => {
+client.connect ().then(() => {
     console.log("MongoDB connected successfully");
   })
   .catch((err) => {
@@ -134,6 +132,11 @@ const server = http.createServer((req, res) => {
     });
   }
 });
+
+ process.on("SIGINT",async()=>{
+ await client.close()
+  console.log("MongoDB connection closed.");
+  });
 
 server.listen(3000, () => {
   console.log(`server started on 3000 port http://localhost:3000`);
