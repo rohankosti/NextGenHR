@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Apply for Job Vacancy - NextGen HR</title>
+    <script src="https://kit.fontawesome.com/4cdd077a78.js" crossorigin="anonymous"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         .footer {
@@ -27,45 +28,64 @@
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
-            <a class="navbar-brand" href="jobvacancy.html"><span>NextGen</span> HR</a>
+            <a class="navbar-brand " href="#"><span class="text-primary">NextGen</span> HR Admin</a>
+            <!-- Mobile Toggle -->
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
+
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="index.html#services">Services</a></li>
-                    <li class="nav-item"><a class="nav-link" href="index.html#about">About</a></li>
-                    <li class="nav-item"><a class="nav-link" href="index.html#blog">Blog</a></li>
-                    <li class="nav-item"><a class="nav-link" href="index.html#contact">Contact</a></li>
-                    <li class="nav-item"><a class="nav-link active" href="jobpost.html">Job Post</a></li>
+
+                    <li class="nav-item">
+                        <a class="nav-link active" href="viewJobpostData.html">
+                            <i class="bi bi-list-check me-1"></i>Applications
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="jobpost.html">
+                            <i class="bi bi-plus-circle me-1"></i>Add Job Post
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link text-danger fw-semibold" href="index.html">
+                            <i class="bi bi-box-arrow-left me-1"></i>Logout
+                        </a>
+                    </li>
+
                 </ul>
             </div>
         </div>
     </nav>
 
 
-
     <section>
-        <div>
-            <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th>Id</th>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Position</th>
-                        <th>Resume</th>
-                        <th>Edit</th>
-                        <th>Delete</th>
-                    </tr>
-                </thead>
-                <tbody id="jobpostdata">
-                    <!-- Job post data will be inserted here dynamically -->
-                </tbody>
-            </table>
-        </div>
+        <div class="container py-4 flex-grow-1">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h2 class="fw-bold mb-0">Job Applications</h2>
+            </div>
+            <div>
+                <table class="table table-bordered">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Id</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Position</th>
+                            <th>Resume</th>
+                            <!-- <th>Edit</th>
+                        <th>Delete</th> -->
+                            <th colspan="2" scope="col" class="text-center">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="jobpostdata">
+                        <!-- Job post data will be inserted here dynamically -->
+                    </tbody>
+                </table>
+            </div>
     </section>
 
     <!-- Footer -->
@@ -81,34 +101,34 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="showApplicationModalLabel">My Application Details</h5>
+                    <h5 class="modal-title" id="showApplicationModalLabel">Edit Application Details</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label class="form-label fw-bold">Full Name:&nbsp;<small id="showName"
-                                class="fw-medium"></small></label>
-                        <!-- <div id="showName"></div> -->
+                <form id="editApplicationForm">
+                    <div class="modal-body">
+                        <input type="hidden" id="editId" name="id">
                         <div class="mb-3">
-                            <label class="form-label fw-bold">Email address: &nbsp; <small id="showEmail"
-                                    class="fw-medium"></small></label>
-                            <!-- <div id="showEmail"></div> -->
-                            <div class="mb-3">
-                                <label class="form-label fw-bold">Position Applied For: &nbsp; <small id="showPosition"
-                                        class="fw-medium"></small></label>
-                                <!-- <div id="showPosition"></div> -->
-                                <div class="mb-3">
-                                    <label class="form-label fw-bold">Resume: &nbsp;<small id="showResume"
-                                            class="fw-medium"></small></label>
-                                    <!-- <div id="showResume" style="white-space: pre-wrap;"></div> -->
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            </div>
+                            <label class="form-label fw-bold" for="editName">Full Name:</label>
+                            <input type="text" class="form-control" id="editName" name="name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-bold" for="editEmail">Email address:</label>
+                            <input type="email" class="form-control" id="editEmail" name="email" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-bold" for="editPosition">Position Applied For:</label>
+                            <input type="text" class="form-control" id="editPosition" name="position" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-bold" for="editResume">Resume:</label>
+                            <textarea class="form-control" id="editResume" name="resume" rows="4" required></textarea>
                         </div>
                     </div>
-                </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="edit">Close</button>
+                        <button type="submit" class="btn btn-primary">Update</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -118,15 +138,11 @@
     <script>
 
         addEventListener("DOMContentLoaded", async () => {
-
-
             try {
-
+                //Fetch Data from jobvecencylist API and show in table
                 let fetch_data = await fetch("http://localhost:3000/jobvecancylist")
-                // console.log(fetch_data);
-
                 let response = await fetch_data.json();
-                // console.log(response);
+                // console.log(response,"response");
 
                 let tablebody = document.getElementById("jobpostdata");
 
@@ -138,37 +154,114 @@
                         <td>${e.email}</td>
                         <td>${e.position}</td>
                         <td>${e.resume}</td>
-                        <td><button class="btn btn-primary btn-sm showApplicationBtn" data-bs-toggle="modal" data-bs-target="#showApplicationModal">Edit</button></td>
-                        <td><button class="btn btn-danger btn-sm">Delete</button></td>
+                        <td><button class="text-center btn btn-primary btn-sm showApplicationBtn" data-bs-toggle="modal" data-bs-target="#showApplicationModal" id="edit" data-id="${e._id}">Edit</button></td>
+                        <td><button class="text-center btn btn-danger btn-sm delateApplicationBtn" id="delete" data-id="${e._id}">Delete</button></td>
                     </tr>`
                 });
 
                 // Show Application Details in Modal
+                const modeleditbtn = document.querySelectorAll('.showApplicationBtn'); //return all edit btn then use queryselectorall
+                //  console.log(modeleditbtn);
 
-                const modal = document.getElementById('showApplicationModal');
+                modeleditbtn.forEach(btn => {
+                    btn.addEventListener("click", async (e) => {
+                        e.preventDefault();
+                        const btnattribute = btn.getAttribute("data-id");
+                        // console.log(btnattribute);
+                        idobj = { id: btnattribute };
+                        //Fetch Single Data from jobvecancysingledata API
+                        const singlefetch = await fetch("http://localhost:3000/jobvecancysingledata", {
+                            method: "POST",
+                            headers: {
+                                "content-type": "application/json",
+                            },
+                            body: JSON.stringify(idobj)
+                        });
 
-                // modal.addEventListener("click", async (e) => {
+
+                        const singleresponse = await singlefetch.json();
+                        // console.log(singleresponse,"singleresponse");
+
+                        document.getElementById("editId").value = singleresponse._id;
+                        document.getElementById("editName").value = singleresponse.name;
+                        document.getElementById("editEmail").value = singleresponse.email;
+                        document.getElementById("editPosition").value = singleresponse.position;
+                        document.getElementById("editResume").value = singleresponse.resume;
+                    });
+                });
+                // Update Application Details in Modal
+                const updateform = document.getElementById("editApplicationForm")
+                updateform.addEventListener("submit", async (e) => {
+                    e.preventDefault();
+                    const id = document.getElementById("editId").value;
+                    const updateddata = {
+                        name: document.getElementById("editName").value,
+                        email: document.getElementById("editEmail").value,
+                        position: document.getElementById("editPosition").value,
+                        resume: document.getElementById("editResume").value,
+                    }
+                    const update_fetch = await fetch("http://localhost:3000/updatejobapplicationdata",
+                        {
+                            method: "PUT",
+                            headers: {
+                                "content-type": "application/json",
+                            },
+                            body: JSON.stringify({ id, ...updateddata })
+                        }
+                    )
+                    //  console.log(update_fetch);
+
+                    const update_response = await update_fetch.json();
+                    // console.log(update_response);
+
+                    if (update_fetch.ok) {
+                        alert("Application updated successfully!");
+                        location.reload();
+                    }
+                    else {
+                        alert(`failed to update application: ${update_response.message}`);
+                    }
+                })
 
 
-                const singlefetch = await fetch("http://localhost:3000/jobvecancysingledata");
-                //   console.log("fetch",singlefetch);
+                //Delate Application from viewJobpostData table
+                const deletebtn = document.querySelectorAll('.delateApplicationBtn'); //return all delete btn 
+                // console.log(deletebtn);
 
-                const singleresponse = await singlefetch.json();
-                // console.log("res", singleresponse);
+                  deletebtn.forEach(btn => {
+                    // console.log(btn);
+                      btn.addEventListener("click", async(e)=>{
+                          e.preventDefault();
+                          const btnattri= btn.getAttribute("data-id");
+                          console.log(btnattri); 
+                          const deleteobj = {id:btnattri};
 
-                document.getElementById('showName').innerText = singleresponse.name;
-                document.getElementById('showEmail').innerText = singleresponse.email;
-                document.getElementById('showPosition').innerText = singleresponse.position;
-                document.getElementById('showResume').innerText = singleresponse.resume;
+                        const delate_fetch = await fetch("http://localhost:3000/deletejobapplicationdata",{
+                            method:"DELETE",
+                            headers:{
+                                "content-type":"application/json",
+                            },
+                            body:JSON.stringify(deleteobj)
+                        });
+                        // console.log(delate_fetch,"delate fetch");
+                        const delate_response = await delate_fetch.json();
+                        // console.log(delate_response,"delate response");
+                        
+                        if (delate_fetch.ok) {
+                            alert(`Application deleted successfully! ${delate_response.message}`);
+                            location.reload();
 
-                // });
-
+                        }
+                        else{
+                            alert(`failed to delete application: ${delate_response.message}`);
+                        }
+                      })
+                  });
 
 
             }
             catch (error) {
                 console.error(error);
-
             }
 
         });

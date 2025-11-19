@@ -133,7 +133,7 @@
         resume: document.getElementById('resume').value,
       };
       try {
-        //API key
+        //API for storing job vacancy form data in Mongodb database
         const data_fetch = await fetch("http://localhost:3000/storeJobVacancy",
           {
             method: 'POST',

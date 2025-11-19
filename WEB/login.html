@@ -81,7 +81,8 @@
 
 
   <script>
-    document.querySelector('form').addEventListener('submit', function (e) {
+   let form= document.querySelector('form');
+   form.addEventListener('submit',(e) => {
       e.preventDefault();
       const username = document.getElementById('username');
       const password = document.getElementById('password');
@@ -89,7 +90,6 @@
 
       if (username.value === 'admin' && password.value === 'admin123') {
         alert('Login successful!');
-        // Redirect to admin dashboard or another page
         window.location.href = 'viewJobpostData.html';
       } else {
         alert('Invalid username or password. Please try again.');
