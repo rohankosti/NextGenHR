@@ -146,8 +146,8 @@
         let json = await data_fetch.json()
 
         if (data_fetch.ok) {
-          console.log(data_fetch, 'fetch');
-          console.log(json, 'json');
+          // console.log(data_fetch, 'fetch');
+          // console.log(json, 'json');
           let responseMsg = document.getElementById('responseMsg');
           responseMsg.innerHTML = `<div class="alert alert-success">${json.message}</div>`;
           form.reset();

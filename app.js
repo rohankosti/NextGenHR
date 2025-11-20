@@ -131,6 +131,40 @@ const server = http.createServer((req, res) => {
       }
     });
   }
+
+  // Comapany Data Fetch From Comapny.html file
+  if (req.method==="POST" && req.url==="/companydata") {
+    let body="";
+    req.on("data",(chunk)=>{
+        body+= chunk.toString();
+        console.log(body);
+        
+    })
+
+   req.on("end",async()=>{
+    let comapanyparse = JSON.parse(body)
+    const comapany_collection =await dbs.collection("comapny").insertOne(comapanyparse);
+    res.writeHead(200,{"content-type":"application/json"});
+    res.end(JSON.stringify({msg:"Data Saved Sucssesfully"}));
+   })
+  }
+
+  // Branch Data Fetch From Comapny.html file
+  if (req.method==="POST" && req.url==="/branchdata") {
+    let body="";
+    req.on("data",(chunk)=>{
+        body+= chunk.toString();
+        console.log(body);
+        
+    })
+
+   req.on("end",async()=>{
+    let branchyparse = JSON.parse(body)
+    const branch_collection =await dbs.collection("Branch").insertOne(branchyparse);
+    res.writeHead(200,{"content-type":"application/json"});
+    res.end(JSON.stringify({msg:"Data Saved Sucssesfully"}));
+   })
+  }
 });
 
  process.on("SIGINT",async()=>{
