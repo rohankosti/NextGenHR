@@ -1,0 +1,108 @@
+import { ObjectId } from "mongodb";
+const storejobvecancy = (req,res,dbs) => {
+  let body = "";
+  req.on("data", (chunk) => {
+    body += chunk.toString(); // convert Buffer to string
+  });
+
+  req.on("end", async () => {
+    const formdata = JSON.parse(body); //Ab jo data aya hai use parse kar ke JS object me convert kar lo
+    const collection = dbs.collection("jobvecancy"); // jobvecancy naam ka collection use karo agar hai to, nahi to bana do
+    const result = await collection.insertOne(formdata); // formdata ko ab DB me store kar do
+    res.writeHead(200, { "content-type": "application/json" });
+    res.end(JSON.stringify({ message: "Job Veccancy Stored Succsesfully!" })); //res.end() ko OBJECT nahi STRING chahiye
+  });
+};
+
+const jobvecancylist = (req,res,dbs) => {
+  (async () => {
+    const getjobvecancy_collection = await dbs
+      .collection("jobvecancy")
+      .find({})
+      .toArray();
+    res.writeHead(200, { "content-type": "application/json" });
+    res.end(JSON.stringify(getjobvecancy_collection)); //Bhai res.end() hamesha STRING hi bhejta hai, object nahi.
+  })();
+};
+
+const jobvecancysingledata = (req,res,dbs) => {
+  let body = "";
+  req.on("data", (chunk) => {
+    body += chunk.toString();
+  });
+  req.on("end", async () => {
+    let singleparse = JSON.parse(body);
+    const singaldata = await dbs
+      .collection("jobvecancy")
+      .findOne({ _id: new ObjectId(singleparse.id) });
+    res.writeHead(200, { "content-type": "application/json" });
+    res.end(JSON.stringify(singaldata)); //Bhai res.end() hamesha STRING hi bhejta hai, object nahi.
+  });
+};
+
+const updatejobapplicationdata = (req,res,dbs) => {
+  let body = "";
+
+  req.on("data", (chunk) => {
+    body += chunk.toString();
+  });
+  req.on("end", async () => {
+    // console.log(body,"bodyupdated");
+
+    const updateparse = JSON.parse(body);
+    // console.log("updated body in json", updateparse);
+    const updatecollection = await dbs.collection("jobvecancy").updateOne(
+      { _id: new ObjectId(updateparse.id) },
+      {
+        $set: {
+          name: updateparse.name,
+          email: updateparse.email,
+          position: updateparse.position,
+          resume: updateparse.resume,
+        },
+      }
+    );
+    if (updatecollection.modifiedCount === 1) {
+      res.writeHead(200, { "content-type": "application/json" });
+      res.end(JSON.stringify({ message: "Job Vacancy Updated Successfully!" }));
+    } else {
+      res.writeHead(200, { "content-type": "application/json" });
+      res.end(
+        JSON.stringify({ message: "No changes made to the Job Vacancy." })
+      );
+    }
+  });
+};
+
+const deletejobapplicationdata = (req,res,dbs) => {
+  let body = "";
+  req.on("data", (chunk) => {
+    body += chunk.toString();
+  });
+
+  req.on("end", async () => {
+    const delateparse = JSON.parse(body);
+    // console.log(delateparse, "delate data");
+    const delatecollection = await dbs
+      .collection("jobvecancy")
+      .deleteOne({ _id: new ObjectId(delateparse.id) });
+    // console.log(delatecollection, "delate collection");
+    if (delatecollection.deletedCount === 1) {
+      res.writeHead(200, { "content-type": "application/json" });
+      res.end(JSON.stringify({ message: "Job Vacancy Deleted Successfully!" }));
+    } else {
+      res.writeHead(200, { "content-type": "application/json" });
+      res.end(JSON.stringify({ message: "Job Vacancy Not Deleted!" }));
+    }
+  });
+};
+
+const jobApplication = {
+  storejobvecancy,
+  jobvecancylist,
+  jobvecancysingledata,
+  updatejobapplicationdata,
+  deletejobapplicationdata,
+};
+
+export default jobApplication;
