@@ -1,5 +1,10 @@
 import { ObjectId } from "mongodb";
-const storejobvecancy = (req,res,dbs) => {
+import fs from "fs/promises";
+import path from "path";
+import { fileURLToPath } from "url";
+
+
+const storejobvecancy = (req, res, dbs) => {
   let body = "";
   req.on("data", (chunk) => {
     body += chunk.toString(); // convert Buffer to string
@@ -14,7 +19,7 @@ const storejobvecancy = (req,res,dbs) => {
   });
 };
 
-const jobvecancylist = (req,res,dbs) => {
+const jobvecancylist = (req, res, dbs) => {
   (async () => {
     const getjobvecancy_collection = await dbs
       .collection("jobvecancy")
@@ -25,7 +30,7 @@ const jobvecancylist = (req,res,dbs) => {
   })();
 };
 
-const jobvecancysingledata = (req,res,dbs) => {
+const jobvecancysingledata = (req, res, dbs) => {
   let body = "";
   req.on("data", (chunk) => {
     body += chunk.toString();
@@ -40,7 +45,7 @@ const jobvecancysingledata = (req,res,dbs) => {
   });
 };
 
-const updatejobapplicationdata = (req,res,dbs) => {
+const updatejobapplicationdata = (req, res, dbs) => {
   let body = "";
 
   req.on("data", (chunk) => {
@@ -74,7 +79,7 @@ const updatejobapplicationdata = (req,res,dbs) => {
   });
 };
 
-const deletejobapplicationdata = (req,res,dbs) => {
+const deletejobapplicationdata = (req, res, dbs) => {
   let body = "";
   req.on("data", (chunk) => {
     body += chunk.toString();
@@ -97,12 +102,40 @@ const deletejobapplicationdata = (req,res,dbs) => {
   });
 };
 
+const fileserve = async (req, res, fs,path, dirname) => {
+  //server index.html file
+  if (req.url === "/" || req.url === "/index.html") {
+    const data = await fs.readFile(path.join(dirname, "WEB/index.html"));
+    res.writeHead(200, { "Content-Type": "text/html" });
+    res.end(data);
+  }
+  //serve login.html file
+  else if (req.url === "/login.html") {
+    const logindata = await fs.readFile(path.join(dirname, "WEB/login.html"));
+    res.writeHead(200, { "Content-Type": "text/html" });
+    res.end(logindata);
+  }
+  //serve jobpost.html file
+  else if (req.url === "/jobpost.html") {
+    const jobpostData = await fs.readFile(path.join(dirname, "WEB/jobpost.html"));
+    res.writeHead(200, { "Content-Type": "text/html" });
+    res.end(jobpostData);
+  }
+  //serve viewJobpostData.html file
+  else if (req.url === "/viewJobpostData.html") {
+    const viewJobpostData = await fs.readFile(path.join(dirname, "WEB/viewJobpostData.html"));
+    res.writeHead(200, { "Content-Type": "text/html" });
+    res.end(viewJobpostData);
+  }
+};
+
 const jobApplication = {
   storejobvecancy,
   jobvecancylist,
   jobvecancysingledata,
   updatejobapplicationdata,
   deletejobapplicationdata,
+  fileserve,
 };
 
 export default jobApplication;

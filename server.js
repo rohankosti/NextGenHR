@@ -1,21 +1,19 @@
 import http from "http";
 import mongodb, { Collection, MongoClient, ObjectId } from "mongodb";
-import { json } from "stream/consumers";
 import jobApplication from "./API/JobApplication.js";
-import fs from "fs";
+import fs from "fs/promises";
 import path from "path";
+import { fileURLToPath } from "url";
+import dotenv from "dotenv";
+dotenv.config();
 
-const filename = path.join("WEB/index.html");
-console.log(filename);
+const filedir = fileURLToPath(import.meta.url);
+// console.log(filedir);
+const dirname = path.dirname(filedir);
+// console.log(dirname);
 
-const dirname = path.join("WEB/index.html");
-console.log(dirname);
-
-
-
-const url = "mongodb://admin:admin123@127.0.0.1:27017/?authSource=admin";
-const client = new MongoClient(url);
-const dbs_name = "nextgenHR";
+const client = new MongoClient(process.env.MONGO_URL);
+const dbs_name = process.env.MONGO_DB;
 
 client.connect().then(() => 
 {
@@ -28,15 +26,12 @@ console.log("MongoDb Server Not Connected ! Error", err);
 
 const dbs = client.db(dbs_name);
 
-const server = http.createServer((req, res) => 
+const server = http.createServer(async(req, res) => 
   {
         //Frontend localhost:5500 or file:// se backend localhost:3000 ko call kar raha hai → Browser ise allowed nahi karega.
         // Backend se response aayega hi nahi.
         res.setHeader("Access-Control-Allow-Origin", "*");
-        res.setHeader(
-          "Access-Control-Allow-Methods",
-          "POST, GET, PUT, DELETE, OPTIONS"
-        );
+        res.setHeader("Access-Control-Allow-Methods","POST, GET, PUT, DELETE, OPTIONS");
         res.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
         //   Browser POST request bhejne se pehle ek check karta hai:
@@ -47,10 +42,25 @@ const server = http.createServer((req, res) =>
           return;
         }
 
-        //server index.html file
-        if (req.method === "GET" && req.url === "/")
+        //serve index.html file
+        if (req.url === "/" || req.url === "/index.html")
         {
-
+           jobApplication.fileserve(req,res,fs,path,dirname)
+        }
+         //serve login.html file
+        else if (req.url === "/login.html")
+        { 
+           jobApplication.fileserve(req,res,fs,path,dirname)
+        }
+          //serve jobpost.html file
+        else if (req.url === "/jobpost.html")
+        {
+           jobApplication.fileserve(req,res,fs,path,dirname) 
+        }
+         //serve viewJobpostData.html file
+        else if (req.url === "/viewJobpostData.html")
+        {
+           jobApplication.fileserve(req,res,fs,path,dirname) 
         }
 
         //1:API to store jobpost.html form vacancy data and save in Mongodb database
@@ -76,7 +86,7 @@ const server = http.createServer((req, res) =>
                jobApplication.updatejobapplicationdata(req,res,dbs)
           }
 
-        //API to delete job vacancy data from viewJobpostData.html
+        //5:API to delete job vacancy data from viewJobpostData.html
         if (req.method === "DELETE" && req.url === "/deletejobapplicationdata") 
           {
                jobApplication.deletejobapplicationdata(req,res,dbs)

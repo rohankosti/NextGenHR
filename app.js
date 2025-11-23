@@ -108,7 +108,7 @@ const server = http.createServer((req, res) => {
     });
   }
 
-  //API to delete job vacancy data from viewJobpostData.html
+  //5:API to delete job vacancy data from viewJobpostData.html
   if (req.method === "DELETE" && req.url === "/deletejobapplicationdata") {
     let body = "";
     req.on("data", (chunk) => {
@@ -132,7 +132,7 @@ const server = http.createServer((req, res) => {
     });
   }
 
-  // Comapany Data Fetch From Comapny.html file
+  //6: Comapany Data Fetch From Comapny.html file
   if (req.method==="POST" && req.url==="/companydata") {
     let body="";
     req.on("data",(chunk)=>{
@@ -149,7 +149,7 @@ const server = http.createServer((req, res) => {
    })
   }
 
-  // Branch Data Fetch From Comapny.html file
+  //7: Branch Data Fetch From branch.html file
   if (req.method==="POST" && req.url==="/branchdata") {
     let body="";
     req.on("data",(chunk)=>{
@@ -165,6 +165,25 @@ const server = http.createServer((req, res) => {
     res.end(JSON.stringify({msg:"Data Saved Sucssesfully"}));
    })
   }
+
+  //8: Employe Data Fetch From employe.html file
+  if (req.method==="POST" && req.url==="/employedata") {
+    
+      let body="";
+      req.on("data",(chunk)=>{
+      body+= chunk.toString();
+      console.log(body);
+    })
+
+      req.on("end",async()=>{
+      let employeparse = JSON.parse(body);
+      let employe_collection = await dbs.collection("Employe").insertOne(employeparse);
+      res.writeHead(200,{"content-type":"application/json"});
+      res.end(JSON.stringify({msg:"Data Saved Sucssesfully"}));
+      })
+  }
+
+
 });
 
  process.on("SIGINT",async()=>{
