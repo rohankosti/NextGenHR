@@ -1,9 +1,11 @@
 const mongoose = require('mongoose');
 
-const designationschema = new mongoose.Schema({
+const designationSchema = new mongoose.Schema({
+  title: { type: String, required: true },
+  department_id: { type: mongoose.Schema.Types.ObjectId, ref: 'Department' },
+  company_id : { type: mongoose.Schema.Types.ObjectId, ref: 'Company' },
+  branch_id : { type: mongoose.Schema.Types.ObjectId, ref: 'Branch' },
+  description: String
+}, { timestamps: true });
 
-    tittle:{type:String,required:true},
-    department_id:{type:mongoose.Schema.Types.ObjectId,ref:'Department'},
-    description:{type:String},
-} ,{timestamps:true}); 
-module.exports = mongoose.model('Department',designationschema);
+module.exports = mongoose.model('Designation', designationSchema);

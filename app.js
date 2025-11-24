@@ -166,7 +166,7 @@ const server = http.createServer((req, res) => {
    })
   }
 
-  //8: Employe Data Fetch From employe.html file
+  //8: Department Data Fetch From employe.html file
   if (req.method==="POST" && req.url==="/employedata") {
     
       let body="";
