@@ -102,6 +102,8 @@ const deletejobapplicationdata = (req, res, dbs) => {
   });
 };
 
+//
+
 const fileserve = async (req, res, fs,path, dirname) => {
   //server index.html file
   if (req.url === "/" || req.url === "/index.html") {

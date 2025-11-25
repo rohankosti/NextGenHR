@@ -59,33 +59,70 @@ const server = http.createServer((req, res) => {
   if (req.method === "DELETE" && req.url === "/deletejobapplicationdata") {
     jobApplication.deletejobapplicationdata(req, res, dbs);
   }
-  // ------------------------------------------------------MODAL
-  //6: Comapany Data Fetch From Comapny.html file
+
+  //6:API to fetch Register.html form data and save in Mongodb database
+  if (req.method==="POST" && req.url==="/storeEmployee") {
+      let body = '';
+      req.on("data",(chunk)=>{
+        body+=chunk.toString();
+      })
+
+      req.on("end",async()=>{
+        const regData = JSON.parse(body); 
+        const ragisterCollection = dbs.collection("Register").insertOne(regData);
+        res.writeHead(200, { "Content-Type": "application/json" });
+        res.end(JSON.stringify({ message: "Employee Data Stored Successfully" }));
+      });
+  }
+
+
+
+  // ======================***********MODAL**********====================
+  //1: Comapany Data Fetch From Comapny.html file
   if (req.method === "POST" && req.url === "/companydata") {
     ModalAPI.comapnyModalAPI(req, res, dbs);
   }
 
-  //7: Branch Data Fetch From branch.html file
+  //1.1: GET Company Data Modal API 
+ if (req.method==="GET" && req.url==="/getcomapnydata") {
+    ModalAPI.getComapnyDataAPI(req,res,dbs);
+ }
+
+
+  //2: Branch Data Fetch From branch.html file
   if (req.method === "POST" && req.url === "/branchdata") {
     ModalAPI.branchModalAPI(req, res, dbs);
   }
+   //2.2: GET Branch Data Modal API 
+ if (req.method==="GET" && req.url==="/getbranchdata") {
+    ModalAPI.getBranchDataAPI(req,res,dbs);
+ }
 
-  //8: Department Data Fetch From department.html file
+
+  //3: Department Data Fetch From department.html file
   if (req.method === "POST" && req.url === "/departmentdataapi") {
     ModalAPI.departmentModalAPI(req, res, dbs);
   }
+   //3.3: GET Department Data Modal API 
+ if (req.method==="GET" && req.url==="/getdepartmentdata") {
+    ModalAPI.getDepartmentDataAPI(req,res,dbs);
+ }
 
-  //9 Designation Data Fetch From designation.html
+  //4: Designation Data Fetch From designation.html
   if (req.method === "POST" && req.url === "/designationdataapi") {
     ModalAPI.designationModalAPI(req, res, dbs);
   }
+   //4.4: GET Designation Data Modal API 
+ if (req.method==="GET" && req.url==="/getdesignationdata") {
+    ModalAPI.getDesignationDataAPI(req,res,dbs);
+ }
 
-  //9 Reporting_manager Data Fetch From reportingmanager.html
+  //5: Reporting_manager Data Fetch From reportingmanager.html
   if (req.method === "POST" && req.url === "/reportingmanagerapi") {
     ModalAPI.reportinModalAPI(req, res, dbs);
   }
 
-  //10 Role Data Fetch From role.html
+  //6: Role Data Fetch From role.html
   if (req.method === "POST" && req.url === "/role/create-role") {
     ModalAPI.roleModalAPI(req, res, dbs);
   }

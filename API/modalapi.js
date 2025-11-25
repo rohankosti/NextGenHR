@@ -1,4 +1,4 @@
-import http from "http";
+import http, { get } from "http";
 import mongodb, { Collection, MongoClient, ObjectId } from "mongodb";
 
 //1. Company Modal API
@@ -19,6 +19,13 @@ const comapnyModalAPI = (req, res, dbs) => {
   });
 };
 
+//1.1: GET Company Data Modal API
+const getComapnyDataAPI = async (req, res, dbs) => {
+  const companyData = await dbs.collection("comapny").find({}).toArray();
+  res.writeHead(200, { "content-type": "application/json" });
+  res.end(JSON.stringify(companyData));
+};
+
 //2. Branch Modal API
 const branchModalAPI = (req, res, dbs) => {
   let body = "";
@@ -35,6 +42,13 @@ const branchModalAPI = (req, res, dbs) => {
     res.writeHead(200, { "content-type": "application/json" });
     res.end(JSON.stringify({ msg: "Data Saved Sucssesfully" }));
   });
+};
+
+//2.2: GET Branch Data Modal API
+const getBranchDataAPI = async (req, res, dbs) => {
+  const branchData = await dbs.collection("Branch").find({}).toArray();
+  res.writeHead(200, { "content-type": "application/json" });
+  res.end(JSON.stringify(branchData));
 };
 
 //3. Department Modal API
@@ -54,6 +68,12 @@ const departmentModalAPI = (req, res, dbs) => {
     res.end(JSON.stringify({ msg: "Data Saved Sucssesfully" }));
   });
 };
+//3.3: GET Department Data Modal API
+const getDepartmentDataAPI = async (req, res, dbs) => {
+  const departmentData = await dbs.collection("Department").find({}).toArray();
+  res.writeHead(200, { "content-type": "application/json" });
+  res.end(JSON.stringify(departmentData));
+};
 
 //4. Designation Modal API
 const designationModalAPI = (req, res, dbs) => {
@@ -70,6 +90,15 @@ const designationModalAPI = (req, res, dbs) => {
     res.writeHead(200, { "content-type": "application/json" });
     res.end(JSON.stringify({ msg: "Data Saved Sucssesfully" }));
   });
+};
+//4.4: GET Designation Data Modal API
+const getDesignationDataAPI = async (req, res, dbs) => {
+  const designationData = await dbs
+    .collection("Designation")
+    .find({})
+    .toArray();
+  res.writeHead(200, { "content-type": "application/json" });
+  res.end(JSON.stringify(designationData));
 };
 
 //5. Reporting Manager Modal API
@@ -106,12 +135,18 @@ const rolemodalAPI = (req, res, dbs) => {
 };
 
 const ModalAPI = {
+  //MODAL
   comapnyModalAPI,
   branchModalAPI,
   departmentModalAPI,
   designationModalAPI,
   reportinModalAPI,
   rolemodalAPI,
+  //GET API 
+  getComapnyDataAPI,
+  getBranchDataAPI,
+  getDepartmentDataAPI,
+  getDesignationDataAPI,
 };
 
 export default ModalAPI;
