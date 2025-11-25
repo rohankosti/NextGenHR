@@ -121,41 +121,49 @@
           <label for="reporting_manager" class="form-label">Reporting Manager</label>
           <select class="form-select" id="reporting_manager">
             <option value="">-- Select Manager --</option>
+            <option value="Mitesh Prajapti">Mitesh Prajapti</option>
           </select>
         </div>
       </div>
 
       <button type="submit" class="btn btn-primary w-100 mt-3">Create User</button>
     </form>
+
+    <div id="message"></div>
   </div>
 
   <script>
-    // Example: populate reporting managers dynamically
-    const managers = [
-      { id: '1', name: 'Alice Johnson' },
-      { id: '2', name: 'Bob Smith' }
-    ];
-
-    const reportingSelect = document.getElementById('reporting_manager');
-    managers.forEach(manager => {
-      const option = document.createElement('option');
-      option.value = manager.id;
-      option.textContent = manager.name;
-      reportingSelect.appendChild(option);
-    });
-
     const form = document.getElementById('userForm');
-    form.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const data = {
-        name: document.getElementById('name').value,
-        email: document.getElementById('email').value,
-        role: document.getElementById('role').value,
-        reporting_manager: document.getElementById('reporting_manager').value || null,
-      };
-      console.log("User Data:", data);
-      alert('User submitted! Check console for data.');
-    });
+    form.addEventListener('submit',async (e) => 
+   {
+        e.preventDefault();
+        const reportobj = {
+          name: document.getElementById('name').value,
+          email: document.getElementById('email').value,
+          role: document.getElementById('role').value,
+          reporting_manager: document.getElementById('reporting_manager').value || null,
+        };
+          const data = await fetch ("http://localhost:3000/reportingmanagerapi",{
+          method:"POST",
+          headers:{
+            "Content-Type":"application/json",
+          },  
+          body: JSON.stringify(reportobj) 
+        });
+
+        const response = await data.json();
+        console.log(response);
+        
+        if (data.ok) {
+          let message = document.getElementById('message');
+          message.innerHTML = `<div class="alert alert-success mt-3" role="alert">
+            ${response.msg}</div>`;
+          form.reset();
+        } else {
+         message.innerHTML = `<div class="alert alert-danger mt-3" role="alert">
+            ${response.msg}</div>`; 
+        }
+   });
   </script>
 </body>
 

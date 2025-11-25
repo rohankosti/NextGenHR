@@ -129,7 +129,6 @@
       const eroor = document.getElementById("alertBox");
       if (branch_fetch.ok) {
         eroor.innerHTML = `<div class="alert alert-success">${branch_response.msg}</div>`;
-        // alert("Comapany Data Stored Sucssesfully")
         branchForm.reset();
         setTimeout(() => {
           eroor.innerHTML = "";

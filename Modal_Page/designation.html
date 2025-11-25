@@ -95,7 +95,7 @@
         <div class="col-md-6">
           <label for="company_id" class="form-label">Select Company</label>
           <select class="form-select" id="company_id" required>
-            <option value="">-- Select Company --</option>
+            <option value="COMPANY1">COMPANY1</option>
           </select>
         </div>
 
@@ -103,7 +103,7 @@
         <div class="col-md-6">
           <label for="branch_id" class="form-label">Select Branch</label>
           <select class="form-select" id="branch_id" required>
-            <option value="">-- Select Branch --</option>
+            <option value="MANAGER">MANAGER</option>
           </select>
         </div>
 
@@ -111,7 +111,8 @@
         <div class="col-md-6">
           <label for="department_id" class="form-label">Select Department</label>
           <select class="form-select" id="department_id" required>
-            <option value="">-- Select Department --</option>
+            <!-- <option value="">-- Select Department --</option> -->
+            <option value="HR">HR</option>
           </select>
         </div>
       </div>
@@ -124,21 +125,41 @@
 
       <button type="submit" class="btn btn-primary w-100">Create Designation</button>
     </form>
+
+    <div id="message"></div>
   </div>
 
   <script>
     const form = document.getElementById('designationForm');
-    form.addEventListener('submit', (e) => {
+    form.addEventListener('submit', async (e) => {
       e.preventDefault();
-      const data = {
+      const designationobj = {
         title: document.getElementById('title').value,
         company_id: document.getElementById('company_id').value,
         branch_id: document.getElementById('branch_id').value,
         department_id: document.getElementById('department_id').value,
         description: document.getElementById('description').value
       };
-      console.log("Form Data:", data);
-      alert('Designation submitted! Check console for data.');
+      const data = await fetch("http://localhost:3000/designationdataapi", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify(designationobj)
+      });
+      console.log(data);
+      const response = await data.json();
+      console.log(response);
+
+      if (data.ok) {
+        const message = document.getElementById('message');
+        message.innerHTML = `<div class="alert alert-success mt-3" role="alert">
+            ${response.msg}</div>`
+        form.reset();
+      }
+      else {
+        message.innerHTML = `<div class="alert alert-danger mt-3" role="alert">
+            ${response.msg}</div>`
+      }
+
     });
   </script>
 </body>

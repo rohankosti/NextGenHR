@@ -104,18 +104,41 @@
 
       <button type="submit" class="btn btn-primary w-100">Create Role</button>
     </form>
+    <div id="msg"></div>
   </div>
 
   <script>
     const form = document.getElementById('roleForm');
-    form.addEventListener('submit', (e) => {
+    form.addEventListener('submit', async (e) => {
       e.preventDefault();
-      const data = {
+      const roleobj = {
         role_name: document.getElementById('role_name').value,
         description: document.getElementById('description').value
       };
-      console.log("Role Data:", data);
-      alert('Role submitted! Check console for data.');
+
+      const data = await fetch('http://localhost:3000/role/create-role', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(roleobj)
+      });
+
+      console.log(data);
+
+
+      const response = await data.json();
+      console.log(response);
+      if (data.ok) {
+
+        let msg = document.getElementById('msg');
+        msg.innerHTML = `<div class="alert alert-success mt-3" role="alert">
+        ${response.msg}</div>`;
+      } else {
+        msg.innerHTML = `<div class="alert alert-danger mt-3" role="alert">
+        Data Can't Stored</div>`;
+      }
+
     });
   </script>
 </body>

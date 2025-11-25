@@ -7,7 +7,42 @@
     <title>Apply for Job Vacancy - NextGen HR</title>
     <script src="https://kit.fontawesome.com/4cdd077a78.js" crossorigin="anonymous"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
     <style>
+        .sidebar {
+            min-height: 100vh;
+            background: #212529;
+            color: #fff;
+            padding-top: 2rem;
+            position: fixed;
+            width: 220px;
+            left: 0;
+            top: 0;
+        }
+
+        .sidebar .nav-link {
+            color: #adb5bd;
+            margin-bottom: 1rem;
+            border-radius: 8px;
+        }
+
+        .sidebar .nav-link.active,
+        .sidebar .nav-link:hover {
+            background: #007bff;
+            color: #fff !important;
+        }
+
+        .sidebar .nav-link i {
+            margin-right: 8px;
+        }
+
+        /* MAIN CONTENT SHIFT */
+        .main-content {
+            margin-left: 220px;
+            padding: 2rem;
+        }
+
         .footer {
             background: #343a40;
             color: #fff;
@@ -25,67 +60,52 @@
 </head>
 
 <body>
+
+
     <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container">
-            <a class="navbar-brand " href="#"><span class="text-primary">NextGen</span> HR Admin</a>
-            <!-- Mobile Toggle -->
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+    
+    <!-- SIDEBAR -->
+    <div class="sidebar d-none d-md-block">
+        <div class="text-center mb-4">
+            <h4>NextGenHR</h4>
+        </div>
 
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-
-                    <li class="nav-item">
-                        <a class="nav-link active" href="viewJobpostData.html">
-                            <i class="bi bi-list-check me-1"></i>Applications
-                        </a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="jobpost.html">
-                            <i class="bi bi-plus-circle me-1"></i>Add Job Post
-                        </a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link text-danger fw-semibold" href="login.html">
-                            <i class="bi bi-box-arrow-left me-1"></i>Logout
-                        </a>
-                    </li>
-
-                </ul>
+        <nav class="nav flex-column">
+            <a class="nav-link" href="./dashboard.html"><i class="bi bi-speedometer2"></i> <span>Dashboard</span></a>
+      <a class="nav-link " href="./Register.html"><i class="bi bi-people"></i> <span>Register</span></a>
+      <a class="nav-link " href="./approvals.html"><i class="bi bi-check2-square"></i> <span>Approvals</span></a>
+      <a class="nav-link" href="./reminders.html"><i class="bi bi-bell"></i> <span>Reminders</span></a>
+      <a class="nav-link" href="./users.html"><i class="bi bi-people"></i> <span>Users</span></a>
+      <a class="nav-link" href="./departments.html"><i class="bi bi-diagram-3"></i> <span>Departments</span></a>
+      <a class="nav-link" href="./leaves.html"><i class="bi bi-calendar-check"></i> <span>Leave Requests</span></a>
+      <a class="nav-link" href="./payroll.html"><i class="bi bi-cash-stack"></i> <span>Payroll</span></a>
+      <a class="nav-link" href="./viewJobpostData.html"><i class="bi bi-briefcase"></i> <span>Job Posts</span></a>
+        </nav>
+    </div>
+    
+    <section>
+        <div class="main-content">
+            <div class="container py-4 flex-grow-1">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h2 class="fw-bold mb-0">Job Applications</h2>
+                </div>
+                <div>
+                    <table class="table table-bordered">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Id</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Position</th>
+                                <th>Resume</th>
+                                <th colspan="2" class="text-center">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="jobpostdata"></tbody>
+                    </table>
+                </div>
             </div>
         </div>
-    </nav>
-
-
-    <section>
-        <div class="container py-4 flex-grow-1">
-            <div class="d-flex justify-content-between align-items-center mb-3">
-                <h2 class="fw-bold mb-0">Job Applications</h2>
-            </div>
-            <div>
-                <table class="table table-bordered">
-                    <thead class="table-dark">
-                        <tr>
-                            <th>Id</th>
-                            <th>Name</th>
-                            <th>Email</th>
-                            <th>Position</th>
-                            <th>Resume</th>
-                            <!-- <th>Edit</th>
-                        <th>Delete</th> -->
-                            <th colspan="2" scope="col" class="text-center">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody id="jobpostdata">
-                        <!-- Job post data will be inserted here dynamically -->
-                    </tbody>
-                </table>
-            </div>
     </section>
 
     <!-- Footer -->
@@ -228,35 +248,35 @@
                 const deletebtn = document.querySelectorAll('.delateApplicationBtn'); //return all delete btn 
                 // console.log(deletebtn);
 
-                  deletebtn.forEach(btn => {
+                deletebtn.forEach(btn => {
                     // console.log(btn);
-                      btn.addEventListener("click", async(e)=>{
-                          e.preventDefault();
-                          const btnattri= btn.getAttribute("data-id");
-                          console.log(btnattri); 
-                          const deleteobj = {id:btnattri};
+                    btn.addEventListener("click", async (e) => {
+                        e.preventDefault();
+                        const btnattri = btn.getAttribute("data-id");
+                        console.log(btnattri);
+                        const deleteobj = { id: btnattri };
 
-                        const delate_fetch = await fetch("http://localhost:3000/deletejobapplicationdata",{
-                            method:"DELETE",
-                            headers:{
-                                "content-type":"application/json",
+                        const delate_fetch = await fetch("http://localhost:3000/deletejobapplicationdata", {
+                            method: "DELETE",
+                            headers: {
+                                "content-type": "application/json",
                             },
-                            body:JSON.stringify(deleteobj)
+                            body: JSON.stringify(deleteobj)
                         });
                         // console.log(delate_fetch,"delate fetch");
                         const delate_response = await delate_fetch.json();
                         // console.log(delate_response,"delate response");
-                        
+
                         if (delate_fetch.ok) {
                             alert(`Application deleted successfully! ${delate_response.message}`);
                             location.reload();
 
                         }
-                        else{
+                        else {
                             alert(`failed to delete application: ${delate_response.message}`);
                         }
-                      })
-                  });
+                    })
+                });
 
 
             }

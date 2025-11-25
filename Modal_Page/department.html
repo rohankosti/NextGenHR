@@ -106,6 +106,7 @@
           <label for="company_id" class="form-label">Select Company <span class="text-danger">*</span></label>
           <select class="form-select" id="company_id" required>
             <option value="">-- Select Company --</option>
+            <option value="NextGenHR">NextGenHR </option>
           </select>
         </div>
 
@@ -114,6 +115,7 @@
           <label for="branch_id" class="form-label">Select Branch <span class="text-danger">*</span></label>
           <select class="form-select" id="branch_id" required>
             <option value="">-- Select Branch --</option>
+            <option value="Bapunagar">Bapunagar</option>
           </select>
         </div>
       </div>
@@ -124,22 +126,47 @@
         <textarea class="form-control" id="description" rows="3" placeholder="Enter description"></textarea>
       </div>
 
+      <div id="mdg"></div>
+
       <button type="submit" class="btn btn-primary w-100">Create Department</button>
     </form>
   </div>
 
   <script>
     const form = document.getElementById('departmentForm');
-    form.addEventListener('submit', (e) => {
+    form.addEventListener('submit',async (e) => {
       e.preventDefault();
-      const data = {
+      const departmentobj = {
         dept_name: document.getElementById('dept_name').value,
         company_id: document.getElementById('company_id').value,
         branch_id: document.getElementById('branch_id').value,
         description: document.getElementById('description').value
       };
-      console.log("Department Data:", data);
-      alert('Department submitted! Check console for data.');
+
+      const data = await fetch("http://localhost:3000/departmentdataapi",{
+        method:"POST",
+        headers:{
+          "content-type":"application/json",
+        },
+        body:JSON.stringify(departmentobj),
+      });
+      // console.log(data);
+      const response = await data.json()
+      // console.log(response);
+      if (data.ok) {
+        let mdg = document.getElementById("mdg");
+        mdg.innerHTML=`<div class="alert alert-success">${response.msg}</div>`
+        form.reset();
+        setInterval(() => {
+          mdg.innerHTML="";
+        }, 2000);
+      }
+      else{
+       mdg.innerHTML=`<div class="alert alert-success">Data Can't Stored</div>`;
+      }
+      
+      
+ 
     });
   </script>
 </body>
