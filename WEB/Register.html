@@ -234,8 +234,7 @@
                 <label class="form-label">Reporting Manager</label>
                 <select class="form-select" name="reporting_manager">
                   <option>Select Manager</option>
-                  <option value="1">John Doe</option>
-                  <option value="2">Mitesh Prajapati</option>
+              
                 </select>
               </div>
 
@@ -285,10 +284,7 @@
               <div class="col-md-4">
                 <label class="form-label">Role</label>
                 <select class="form-select" name="role_id">
-                  <option>Select Role</option>
-                  <option value="1">Admin</option>
-                  <option value="2">Employee</option>
-                  <option value="3">HR</option>
+                   <option value="">Select Role</option>
                 </select>
               </div>
 
@@ -372,7 +368,7 @@
 
     });
 
-
+       //API use for store Register Data in mongodb 
     const employeeData = document.getElementById('employeeData');
     employeeData.addEventListener('submit', async (e) => {
       e.preventDefault();
