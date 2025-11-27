@@ -2,7 +2,12 @@ import http from "http";
 import mongodb, { Collection, MongoClient, ObjectId } from "mongodb";
 import { json } from "stream/consumers";
 import jobApplication from "./API/JobApplication.js";
-import ModalAPI from "./API/modalapi.js";
+import comapnymodal from "./API/Companymodal.js";
+import branchmodal from "./API/Brandmodal.js";
+import departmentModal from "./API/Departmentmodal.js";
+import designationmodal from "./API/Designationmodal.js";
+import reportingmanager from "./API/Reportingmanager_modal.js";
+import rolemodal from "./API/Rollmodal.js";
 
 const url = "mongodb://admin:admin123@127.0.0.1:27017/?authSource=admin";
 const client = new MongoClient(url);
@@ -61,70 +66,66 @@ const server = http.createServer((req, res) => {
   }
 
   //6:API to fetch Register.html form data and save in Mongodb database
-  if (req.method==="POST" && req.url==="/storeEmployee") {
-      let body = '';
-      req.on("data",(chunk)=>{
-        body+=chunk.toString();
-      })
+  if (req.method === "POST" && req.url === "/storeEmployee") {
+    let body = "";
+    req.on("data", (chunk) => {
+      body += chunk.toString();
+    });
 
-      req.on("end",async()=>{
-        const regData = JSON.parse(body); 
-        const ragisterCollection = dbs.collection("Register").insertOne(regData);
-        res.writeHead(200, { "Content-Type": "application/json" });
-        res.end(JSON.stringify({ message: "Employee Data Stored Successfully" }));
-      });
+    req.on("end", async () => {
+      const regData = JSON.parse(body);
+      const ragisterCollection = dbs.collection("Register").insertOne(regData);
+      res.writeHead(200, { "Content-Type": "application/json" });
+      res.end(JSON.stringify({ message: "Employee Data Stored Successfully" }));
+    });
   }
-
-
 
   // ======================***********MODAL**********====================
   //1: Comapany Data Fetch From Comapny.html file
   if (req.method === "POST" && req.url === "/companydata") {
-    ModalAPI.comapnyModalAPI(req, res, dbs);
+    comapnymodal.comapnyModalAPI(req, res, dbs);
   }
 
-  //1.1: GET Company Data Modal API 
- if (req.method==="GET" && req.url==="/getcomapnydata") {
-    ModalAPI.getComapnyDataAPI(req,res,dbs);
- }
-
+  //1.1: GET Company Data Modal API
+  if (req.method === "GET" && req.url === "/getcomapnydata") {
+    comapnymodal.getComapnyDataAPI(req, res, dbs);
+  }
 
   //2: Branch Data Fetch From branch.html file
   if (req.method === "POST" && req.url === "/branchdata") {
-    ModalAPI.branchModalAPI(req, res, dbs);
+    branchmodal.branchModalAPI(req, res, dbs);
   }
-   //2.2: GET Branch Data Modal API 
- if (req.method==="GET" && req.url==="/getbranchdata") {
-    ModalAPI.getBranchDataAPI(req,res,dbs);
- }
-
+  //2.2: GET Branch Data Modal API
+  if (req.method === "GET" && req.url === "/getbranchdata") {
+    branchmodal.getBranchDataAPI(req, res, dbs);
+  }
 
   //3: Department Data Fetch From department.html file
   if (req.method === "POST" && req.url === "/departmentdataapi") {
-    ModalAPI.departmentModalAPI(req, res, dbs);
+    departmentModal.departmentModalAPI(req, res, dbs);
   }
-   //3.3: GET Department Data Modal API 
- if (req.method==="GET" && req.url==="/getdepartmentdata") {
-    ModalAPI.getDepartmentDataAPI(req,res,dbs);
- }
+  //3.3: GET Department Data Modal API
+  if (req.method === "GET" && req.url === "/getdepartmentdata") {
+    departmentModal.getDepartmentDataAPI(req, res, dbs);
+  }
 
   //4: Designation Data Fetch From designation.html
   if (req.method === "POST" && req.url === "/designationdataapi") {
-    ModalAPI.designationModalAPI(req, res, dbs);
+    designationmodal.designationModalAPI(req, res, dbs);
   }
-   //4.4: GET Designation Data Modal API 
- if (req.method==="GET" && req.url==="/getdesignationdata") {
-    ModalAPI.getDesignationDataAPI(req,res,dbs);
- }
+  //4.4: GET Designation Data Modal API
+  if (req.method === "GET" && req.url === "/getdesignationdata") {
+    designationmodal.getDesignationDataAPI(req, res, dbs);
+  }
 
   //5: Reporting_manager Data Fetch From reportingmanager.html
   if (req.method === "POST" && req.url === "/reportingmanagerapi") {
-    ModalAPI.reportinModalAPI(req, res, dbs);
+    reportingmanager.reportinModalAPI(req, res, dbs);
   }
 
   //6: Role Data Fetch From role.html
   if (req.method === "POST" && req.url === "/role/create-role") {
-    ModalAPI.roleModalAPI(req, res, dbs);
+    rolemodal.roleModalAPI(req, res, dbs);
   }
 });
 
