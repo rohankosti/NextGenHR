@@ -1,5 +1,6 @@
 import http, { get } from "http";
 import mongodb, { Collection, MongoClient, ObjectId } from "mongodb";
+import url from "url";
 
 //2. Branch Modal API
 const branchModalAPI = (req, res, dbs) => {
@@ -28,11 +29,12 @@ const getBranchDataAPI = async (req, res, dbs) => {
 
 //3 API use for find branch collection and company and change branch name 
 
-const comanywisebranch = async(req,res,dbs)=>{
-    const combra=  await dbs.collection("Branch").findOne({});
-      res.writeHead(200,{"content-type":"application/json"});
-      res.end(JSON.stringify(combra));
+const comanywisebranch = async(req, res, dbs, company_id) => {
+ const combran = await dbs.collection("Branch").find({ companyid: company_id }).toArray();
+    res.writeHead(200, {"content-type": "application/json"});
+    res.end(JSON.stringify(combran));
 }
+
 
 const branchmodal ={
   branchModalAPI,

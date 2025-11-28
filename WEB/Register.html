@@ -328,28 +328,24 @@
 
 
       //:API use to Onchange comapny then automatically change  branchs
-
       select.addEventListener("change", async (e) => {
-        const comany_id = document.querySelector('select[name="company_id"]').value;
-        //  console.log(comany_id,"value");
-
-        const comanywise = await fetch("http://localhost:3000/comapnywisebranchdata");
+        const companyid = document.querySelector('select[name="company_id"]').value;
+        const comanywise = await fetch(`http://localhost:3000/comapnywisebranchdata?company_id=${companyid}`);
 
         const comany_json = await comanywise.json();
-         console.log(comany_json,"branch");
+        console.log(comany_json, "branch");
 
         const combran_select = document.querySelector('select[name="branch_id"]');
-        // console.log(combran_select);
+
+        // dropdown reset
+        combran_select.innerHTML = `<option value="">Select Branch</option>`;
 
         comany_json.forEach(e => {
-          console.log(e, "com");
           const combran_option = document.createElement('option');
           combran_option.value = e._id;
           combran_option.textContent = e.name;
           combran_select.appendChild(combran_option);
         });
-
-
       })
 
 

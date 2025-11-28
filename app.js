@@ -8,10 +8,13 @@ import departmentModal from "./API/Departmentmodal.js";
 import designationmodal from "./API/Designationmodal.js";
 import reportingmanager from "./API/Reportingmanager_modal.js";
 import rolemodal from "./API/Rollmodal.js";
+import url from "url"
+import dotenv from "dotenv";
+dotenv.config();
 
-const url = "mongodb://admin:admin123@127.0.0.1:27017/?authSource=admin";
-const client = new MongoClient(url);
-const dbs_name = "nextgenHR";
+
+const client = new MongoClient(process.env.MONGO_URL);
+const dbs_name = process.env.MONGO_DB;
 
 client
   .connect()
@@ -124,8 +127,8 @@ const server = http.createServer((req, res) => {
   }
 
   //5.5 Get Reporting Manager Data Modal API
-  if (req.method==="GET" && req.url ==="/getreportingmanager") {
-     reportingmanager.getreportingmanger(req,res,dbs);
+  if (req.method === "GET" && req.url === "/getreportingmanager") {
+    reportingmanager.getreportingmanger(req, res, dbs);
   }
 
   //6: Role Data Fetch From role.html
@@ -134,11 +137,12 @@ const server = http.createServer((req, res) => {
   }
 
   //7:API use to Onchange comapny then automatically change  branchs
-     if (req.method==="GET" && req.url==="/comapnywisebranchdata") {
-      branchmodal.comanywisebranch(req,res,dbs);
-     }
-  
-   });
+ if (req.method === "GET" && req.url.startsWith("/comapnywisebranchdata")) {
+   const queryParams = new URLSearchParams(req.url.split('?')[1]);
+        const companyId = queryParams.get('companyId');
+    branchmodal.comanywisebranch(req, res, dbs, companyId);
+}
+});
 
 process.on("SIGINT", async () => {
   await client.close();
