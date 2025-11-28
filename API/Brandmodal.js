@@ -26,9 +26,18 @@ const getBranchDataAPI = async (req, res, dbs) => {
   res.end(JSON.stringify(branchData));
 };
 
+//3 API use for find branch collection and company and change branch name 
+
+const comanywisebranch = async(req,res,dbs)=>{
+    const combra=  await dbs.collection("Branch").findOne({});
+      res.writeHead(200,{"content-type":"application/json"});
+      res.end(JSON.stringify(combra));
+}
+
 const branchmodal ={
   branchModalAPI,
   getBranchDataAPI,
+  comanywisebranch,
 }
 
 export default branchmodal;

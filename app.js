@@ -123,11 +123,22 @@ const server = http.createServer((req, res) => {
     reportingmanager.reportinModalAPI(req, res, dbs);
   }
 
+  //5.5 Get Reporting Manager Data Modal API
+  if (req.method==="GET" && req.url ==="/getreportingmanager") {
+     reportingmanager.getreportingmanger(req,res,dbs);
+  }
+
   //6: Role Data Fetch From role.html
   if (req.method === "POST" && req.url === "/role/create-role") {
     rolemodal.roleModalAPI(req, res, dbs);
   }
-});
+
+  //7:API use to Onchange comapny then automatically change  branchs
+     if (req.method==="GET" && req.url==="/comapnywisebranchdata") {
+      branchmodal.comanywisebranch(req,res,dbs);
+     }
+  
+   });
 
 process.on("SIGINT", async () => {
   await client.close();

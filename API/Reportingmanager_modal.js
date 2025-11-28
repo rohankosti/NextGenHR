@@ -19,8 +19,15 @@ const reportinModalAPI = (req, res, dbs) => {
   });
 };
 
+const getreportingmanger =async (req,res,dbs)=>{
+   let reportigmandata= await dbs.collection("Reporting_Manager").find({}).toArray();
+    res.writeHead(200,{"content-type":"application/json"});
+    res.end(JSON.stringify(reportigmandata));
+}
+
 const reportingmanager={
     reportinModalAPI,
+    getreportingmanger,
 }
 
 export default reportingmanager;

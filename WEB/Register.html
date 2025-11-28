@@ -317,7 +317,7 @@
       //1:API use for comapny id or name for dynamic in register.html
       const response = await fetch('http://localhost:3000/getcomapnydata');
       const companyData = await response.json();
-      console.log("comapny", companyData);
+      // console.log("comapny", companyData);
       const select = document.querySelector('select[name="company_id"]');
       companyData.forEach(company => {
         const option = document.createElement('option');
@@ -326,10 +326,37 @@
         select.appendChild(option);
       });
 
+
+      //:API use to Onchange comapny then automatically change  branchs
+
+      select.addEventListener("change", async (e) => {
+        const comany_id = document.querySelector('select[name="company_id"]').value;
+        //  console.log(comany_id,"value");
+
+        const comanywise = await fetch("http://localhost:3000/comapnywisebranchdata");
+
+        const comany_json = await comanywise.json();
+         console.log(comany_json,"branch");
+
+        const combran_select = document.querySelector('select[name="branch_id"]');
+        // console.log(combran_select);
+
+        comany_json.forEach(e => {
+          console.log(e, "com");
+          const combran_option = document.createElement('option');
+          combran_option.value = e._id;
+          combran_option.textContent = e.name;
+          combran_select.appendChild(combran_option);
+        });
+
+
+      })
+
+
       //2:API use for branch id or name for dynamic in register.html
       const branch_response = await fetch('http://localhost:3000/getbranchdata');
       const branch_Data = await branch_response.json();
-      console.log("branch", branch_Data);
+      // console.log("branch", branch_Data);
 
       const branch_select = document.querySelector('select[name="branch_id"]');
       branch_Data.forEach(company => {
@@ -342,7 +369,7 @@
       //3:API use for department id or name for dynamic in register.html
       const department = await fetch('http://localhost:3000/getdepartmentdata');
       const department_Data = await department.json();
-      console.log("depart", department_Data);
+      // console.log("depart", department_Data);
 
       const department_select = document.querySelector('select[name="department_id"]');
       department_Data.forEach(company => {
@@ -355,7 +382,7 @@
       //4:API use for designation id or name for dynamic in register.html
       const designation = await fetch('http://localhost:3000/getdesignationdata');
       const designation_Data = await designation.json();
-      console.log("desig", designation_Data);
+      // console.log("desig", designation_Data);
 
       const designation_select = document.querySelector('select[name="designation_id"]');
       designation_Data.forEach(company => {
@@ -364,6 +391,24 @@
         designation_option.textContent = company.title;
         designation_select.appendChild(designation_option);
       });
+
+      //5 API use for reportingmanger.html id or name dynamic in register.html
+
+      const reportinfetc = await fetch("http://localhost:3000/getreportingmanager")
+      const reportresp = await reportinfetc.json();
+      console.log(reportresp);
+
+      const selector = document.querySelector('select[name="reporting_manager"]');
+      reportresp.forEach(e => {
+        // console.log(e,"e");
+        const report_option = document.createElement('option')
+        report_option.value = e._id;
+        console.log();
+        report_option.textContent = e.reporting_manager;
+        selector.appendChild(report_option);
+      });
+
+
 
 
     });
