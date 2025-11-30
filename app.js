@@ -138,9 +138,9 @@ const server = http.createServer((req, res) => {
 
   //7:API use to Onchange comapny then automatically change  branchs
  if (req.method === "GET" && req.url.startsWith("/comapnywisebranchdata")) {
-   const queryParams = new URLSearchParams(req.url.split('?')[1]);
-        const companyId = queryParams.get('companyId');
-    branchmodal.comanywisebranch(req, res, dbs, companyId);
+  //  const queryParams = new URLSearchParams(req.url.split('?')[1]);
+        // const companyId = queryParams.get('companyId');
+    branchmodal.comanywisebranch(req, res, dbs);
 }
 });
 
