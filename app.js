@@ -2,6 +2,7 @@ import http from "http";
 import mongodb, { Collection, MongoClient, ObjectId } from "mongodb";
 import { json } from "stream/consumers";
 import jobApplication from "./API/JobApplication.js";
+import registermodal from "./API/Register.js"
 import comapnymodal from "./API/Companymodal.js";
 import branchmodal from "./API/Brandmodal.js";
 import departmentModal from "./API/Departmentmodal.js";
@@ -70,18 +71,19 @@ const server = http.createServer((req, res) => {
 
   //6:API to fetch Register.html form data and save in Mongodb database
   if (req.method === "POST" && req.url === "/storeEmployee") {
-    let body = "";
-    req.on("data", (chunk) => {
-      body += chunk.toString();
-    });
-
-    req.on("end", async () => {
-      const regData = JSON.parse(body);
-      const ragisterCollection = dbs.collection("Register").insertOne(regData);
-      res.writeHead(200, { "Content-Type": "application/json" });
-      res.end(JSON.stringify({ message: "Employee Data Stored Successfully" }));
-    });
+    registermodal.registerdata(req,res,dbs);
   }
+  //API use for Auto Generated register.html Comapny code and save mongodb
+    if (req.method==="GET" && req.url==="/lastemployedata") {
+    registermodal.lastemploye(req,res,dbs);
+  }
+  //API use for Auto Generated comany code get the exact name(NEXTGEN,AVIVORA etc...)
+const parsedUrl = url.parse(req.url, true); // parse url
+if (req.method === "GET" && req.url.startsWith("/autogenratecomany/")) {
+    // company_id ko URL se extract karo
+    const companyId = parsedUrl.pathname.split("/")[2]; // /autogenratecomany/:companyId
+    registermodal.autogenratecomany(req, res, dbs, companyId);
+}
 
   // ======================***********MODAL**********====================
   //1: Comapany Data Fetch From Comapny.html file
@@ -132,16 +134,13 @@ const server = http.createServer((req, res) => {
   }
 
   //6: Role Data Fetch From role.html
-  if (req.method === "POST" && req.url === "/role/create-role") {
-    rolemodal.roleModalAPI(req, res, dbs);
+  if (req.method === "POST" && req.url === "/roledata") {
+    rolemodal.rolemodalAPI(req, res, dbs);
   }
 
-  //7:API use to Onchange comapny then automatically change  branchs
- if (req.method === "GET" && req.url.startsWith("/comapnywisebranchdata")) {
-  //  const queryParams = new URLSearchParams(req.url.split('?')[1]);
-        // const companyId = queryParams.get('companyId');
-    branchmodal.comanywisebranch(req, res, dbs);
-}
+
+
+
 });
 
 process.on("SIGINT", async () => {

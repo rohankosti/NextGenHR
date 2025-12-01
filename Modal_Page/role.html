@@ -116,7 +116,7 @@
         description: document.getElementById('description').value
       };
 
-      const data = await fetch('http://localhost:3000/role/create-role', {
+      const data = await fetch('http://localhost:3000/roledata', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -124,7 +124,7 @@
         body: JSON.stringify(roleobj)
       });
 
-      console.log(data);
+      // console.log(data);
 
 
       const response = await data.json();
