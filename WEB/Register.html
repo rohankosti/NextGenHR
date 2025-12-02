@@ -320,16 +320,12 @@
         option.textContent = company.name;
         select.appendChild(option);
       });
-
-
       //:API use to Onchange comapny then automatically change  branchs
       select.addEventListener("change", async (e) => {
         const companyid = document.querySelector('select[name="company_id"]').value;
         const comanywise = await fetch(`http://localhost:3000/comapnywisebranchdata`);
-
         const comany_json = await comanywise.json();
         // console.log(comany_json, "branch");
-
         const combran_select = document.querySelector('select[name="branch_id"]');
 
         // dropdown reset
@@ -411,13 +407,13 @@
       const lastemploye = async () => {
         const lastemp = await fetch("http://localhost:3000/lastemployedata");
         const lastresp = await lastemp.json()
-        console.log(lastresp , "last");
+        console.log(lastresp, "last");
         // console.log(lastresp[0].company_id,"company id");
         let lastempcode = lastresp[0].emp_code;
         console.log(lastempcode);
-        
+
         // let emp_code = "NEXTGEN" + String(parseInt(lastempcode.replace("NEXTGEN", "") + 1).padStart(3, '0'));
-        let emp_code = "NEXTGEN" + String(parseInt(lastempcode.replace("NEXTGEN","")) + 1).padStart(3, '0');
+        let emp_code = "NEXTGEN" + String(parseInt(lastempcode.replace("NEXTGEN", "")) + 1).padStart(3, '0');
         return emp_code;
       };
       // formData.set('emp_code', await lastemploye());

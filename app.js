@@ -2,17 +2,17 @@ import http from "http";
 import mongodb, { Collection, MongoClient, ObjectId } from "mongodb";
 import { json } from "stream/consumers";
 import jobApplication from "./API/JobApplication.js";
-import registermodal from "./API/Register.js"
+import registermodal from "./API/Register.js";
 import comapnymodal from "./API/Companymodal.js";
 import branchmodal from "./API/Brandmodal.js";
 import departmentModal from "./API/Departmentmodal.js";
 import designationmodal from "./API/Designationmodal.js";
 import reportingmanager from "./API/Reportingmanager_modal.js";
 import rolemodal from "./API/Rollmodal.js";
-import url from "url"
+import logindata from "./API/Authentication.js";
+import url from "url";
 import dotenv from "dotenv";
 dotenv.config();
-
 
 const client = new MongoClient(process.env.MONGO_URL);
 const dbs_name = process.env.MONGO_DB;
@@ -71,19 +71,23 @@ const server = http.createServer((req, res) => {
 
   //6:API to fetch Register.html form data and save in Mongodb database
   if (req.method === "POST" && req.url === "/storeEmployee") {
-    registermodal.registerdata(req,res,dbs);
+    registermodal.registerdata(req, res, dbs);
   }
   //API use for Auto Generated register.html Comapny code and save mongodb
-    if (req.method==="GET" && req.url==="/lastemployedata") {
-    registermodal.lastemploye(req,res,dbs);
+  if (req.method === "GET" && req.url === "/lastemployedata") {
+    registermodal.lastemploye(req, res, dbs);
   }
   //API use for Auto Generated comany code get the exact name(NEXTGEN,AVIVORA etc...)
-const parsedUrl = url.parse(req.url, true); // parse url
-if (req.method === "GET" && req.url.startsWith("/autogenratecomany/")) {
+  const parsedUrl = url.parse(req.url, true); // parse url
+  if (req.method === "GET" && req.url.startsWith("/autogenratecomany/")) {
     // company_id ko URL se extract karo
     const companyId = parsedUrl.pathname.split("/")[2]; // /autogenratecomany/:companyId
     registermodal.autogenratecomany(req, res, dbs, companyId);
-}
+  }
+  //API use for login Authentication
+  if (req.method === "POST" && req.url === "/logindata") {
+    logindata.login(req, res, dbs);
+  }
 
   // ======================***********MODAL**********====================
   //1: Comapany Data Fetch From Comapny.html file
@@ -137,10 +141,6 @@ if (req.method === "GET" && req.url.startsWith("/autogenratecomany/")) {
   if (req.method === "POST" && req.url === "/roledata") {
     rolemodal.rolemodalAPI(req, res, dbs);
   }
-
-
-
-
 });
 
 process.on("SIGINT", async () => {

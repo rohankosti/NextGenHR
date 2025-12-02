@@ -65,35 +65,63 @@
 
 <body>
   <div class="login-box">
-     <h4 class="login-title"><span class="text-dark">NextGen</span>HR Login</h4>
+    <h4 class="login-title"><span class="text-dark">NextGen</span>HR Login</h4>
     <form>
       <div class="mb-3">
         <label for="username" class="form-label">User Name</label>
-        <input type="text" class="form-control" id="username" required autofocus>
+        <input type="email" class="form-control" name="email" id="username" required autofocus>
       </div>
       <div class="mb-3">
         <label for="password" class="form-label">Password</label>
-        <input type="password" class="form-control" id="password" required>
+        <input type="password" name="Password" class="form-control" id="password" required>
       </div>
       <button type="submit" class="btn btn-primary w-100">Login</button>
     </form>
+
+    <div id="eroor" class="my-3"></div>
   </div>
 
 
   <script>
     let form = document.querySelector('form');
-    form.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const username = document.getElementById('username');
-      const password = document.getElementById('password');
+    form.addEventListener('submit', async (e) => {
+      try {
+        e.preventDefault();
+        const loginobj =
+        {
+          email: document.getElementById('username').value,
+          Password: document.getElementById('password').value,
+        }
+        console.log(loginobj);
 
-
-      if (username.value === 'admin' && password.value === 'admin123') {
-        alert('Login successful!');
-        window.location.href = 'dashboard.html';
-      } else {
-        alert('Invalid username or password. Please try again.');
+        const response = await fetch(`http://localhost:3000/logindata`,
+          {
+            method: 'POST',
+            headers: {
+              'content-type': 'application/json',
+            },
+            body: JSON.stringify(loginobj),
+          });
+        console.log(response);
+        const data = await response.json()
+        let eroor =document.getElementById("eroor");
+        console.log(data);
+        if (response.ok) {
+          localStorage.setItem("UserObj", JSON.stringify(data));
+          form.reset();
+          setTimeout(() => {
+            window.location.href = `dashboard.html`
+          }, 2000);
+          eroor.innerHTML = `<div class="alert alert-success">Login Sucssesfully</div>`;
+        }
+        else {
+          eroor.innerHTML = `<div class="alert alert-danger">${data.msg2}</div>`;
+        }
       }
+      catch (error) {
+        console.error(`User Not Found`, error);
+      }
+
     });
   </script>
 </body>
