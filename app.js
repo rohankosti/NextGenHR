@@ -10,7 +10,7 @@ import designationmodal from "./API/Designationmodal.js";
 import reportingmanager from "./API/Reportingmanager_modal.js";
 import rolemodal from "./API/Rollmodal.js";
 import logindata from "./API/Authentication.js";
-import url from "url";
+import { URLSearchParams } from 'url';
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -77,13 +77,6 @@ const server = http.createServer((req, res) => {
   if (req.method === "GET" && req.url === "/lastemployedata") {
     registermodal.lastemploye(req, res, dbs);
   }
-  //API use for Auto Generated comany code get the exact name(NEXTGEN,AVIVORA etc...)
-  const parsedUrl = url.parse(req.url, true); // parse url
-  if (req.method === "GET" && req.url.startsWith("/autogenratecomany/")) {
-    // company_id ko URL se extract karo
-    const companyId = parsedUrl.pathname.split("/")[2]; // /autogenratecomany/:companyId
-    registermodal.autogenratecomany(req, res, dbs, companyId);
-  }
   //API use for login Authentication
   if (req.method === "POST" && req.url === "/logindata") {
     logindata.login(req, res, dbs);
@@ -108,6 +101,13 @@ const server = http.createServer((req, res) => {
   if (req.method === "GET" && req.url === "/getbranchdata") {
     branchmodal.getBranchDataAPI(req, res, dbs);
   }
+  //2.3: GET ComanywiseBranch Data in change effetc Modal API
+ if(req.method === 'GET' && req.url.startsWith('/getCompanyWiseBranch')){
+        const queryParams = new URLSearchParams(req.url.split('?')[1]);
+        const companyId = queryParams.get('companyId');
+        // console.log(companyId);
+        branchmodal.comanywisebranch(req, res, dbs,companyId);
+    }
 
   //3: Department Data Fetch From department.html file
   if (req.method === "POST" && req.url === "/departmentdataapi") {

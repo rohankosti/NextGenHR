@@ -103,19 +103,27 @@
             body: JSON.stringify(loginobj),
           });
         console.log(response);
+
         const data = await response.json()
-        let eroor =document.getElementById("eroor");
-        console.log(data);
+        console.log(data, "data");
+
         if (response.ok) {
-          localStorage.setItem("UserObj", JSON.stringify(data));
-          form.reset();
-          setTimeout(() => {
-            window.location.href = `dashboard.html`
-          }, 2000);
-          eroor.innerHTML = `<div class="alert alert-success">Login Sucssesfully</div>`;
-        }
-        else {
-          eroor.innerHTML = `<div class="alert alert-danger">${data.msg2}</div>`;
+          let eroor = document.getElementById("eroor");
+          let username = document.getElementById("username");
+          let password = document.getElementById("password");
+          if (username.value === data.email && password.value === data.password) {
+
+            localStorage.setItem("UserObj", JSON.stringify(data));
+            setTimeout(() => {
+              form.reset();
+              window.location.href = `dashboard.html`
+            }, 2000);
+            eroor.innerHTML = `<div class="alert alert-success">Login Sucssesfully</div>`;
+          }
+          else {
+            eroor.innerHTML = `<div class="alert alert-danger">User don't match</div>`;
+            form.reset()
+          }
         }
       }
       catch (error) {

@@ -321,23 +321,22 @@
         select.appendChild(option);
       });
       //:API use to Onchange comapny then automatically change  branchs
-      select.addEventListener("change", async (e) => {
-        const companyid = document.querySelector('select[name="company_id"]').value;
-        const comanywise = await fetch(`http://localhost:3000/comapnywisebranchdata`);
-        const comany_json = await comanywise.json();
-        // console.log(comany_json, "branch");
-        const combran_select = document.querySelector('select[name="branch_id"]');
-
-        // dropdown reset
-        combran_select.innerHTML = `<option value="">Select Branch</option>`;
-
-        comany_json.forEach(e => {
-          const combran_option = document.createElement('option');
-          combran_option.value = e._id;
-          combran_option.textContent = e.name;
-          combran_select.appendChild(combran_option);
+       select.addEventListener('change',async ()=>{
+        const companyId = document.querySelector('select[name="company_id"]').value;
+        // console.log(companyId);
+        const response = await fetch(`http://localhost:3000/getCompanyWiseBranch?companyId=${companyId}`);
+        // console.log(response);
+        const branch = await response.json();
+        // console.log(branch);
+        const branchselect = document.querySelector('select[name="branch_id"]');
+        branch.forEach(branch => {
+          // console.log(branch);
+          const option = document.createElement('option');
+          option.value = branch._id;
+          option.textContent = branch.name;
+          branchselect.appendChild(option);
         });
-      })
+    });
 
 
       //2:API use for branch id or name for dynamic in register.html
