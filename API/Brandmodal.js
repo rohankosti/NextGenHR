@@ -29,10 +29,15 @@ const getBranchDataAPI = async (req, res, dbs) => {
 
 //3 API use for find branch collection and company and change branch name
 const comanywisebranch = async (req, res, dbs) => {
-  // 👇 Correct way to read query params in core Node HTTP server
+//new URL: URL ko parse karta hai(object)
+//   new URL(
+//   req.url,                     "/getbranch?companyName=NextGen"
+//   `http://${req.headers.host}` "http://localhost:3000"
+// );
   const urlObj = new URL(req.url, `http://${req.headers.host}`);
+  // console.log(urlObj);
   const companyName = urlObj.searchParams.get("companyName");
-  console.log("Backend received:", companyName);
+  // console.log("Backend received:", companyName);
   const branches=await dbs.collection("Branch").find({ comany: companyName }).toArray()
       res.writeHead(200, { "Content-Type": "application/json" });
       res.end(JSON.stringify(branches));
