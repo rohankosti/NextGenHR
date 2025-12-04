@@ -10,7 +10,8 @@ import designationmodal from "./API/Designationmodal.js";
 import reportingmanager from "./API/Reportingmanager_modal.js";
 import rolemodal from "./API/Rollmodal.js";
 import logindata from "./API/Authentication.js";
-import { URLSearchParams } from 'url';
+import leaverequest from "./API/Leave_requset.js";
+import { URLSearchParams } from "url";
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -81,7 +82,15 @@ const server = http.createServer((req, res) => {
   if (req.method === "POST" && req.url === "/logindata") {
     logindata.login(req, res, dbs);
   }
+  // Leave requset API
+  if (req.method === "POST" && req.url === "/leaverequest") {
+    leaverequest.leavereq(req, res, dbs);
+  }
 
+  if (req.method==="GET" && req.url==="/getregisterdata") {
+    registermodal.getregiterdata(req,res,dbs)
+    
+  }
   // ======================***********MODAL**********====================
   //1: Comapany Data Fetch From Comapny.html file
   if (req.method === "POST" && req.url === "/companydata") {
@@ -102,12 +111,10 @@ const server = http.createServer((req, res) => {
     branchmodal.getBranchDataAPI(req, res, dbs);
   }
   //2.3: GET ComanywiseBranch Data in change effetc Modal API
- if(req.method === 'GET' && req.url.startsWith('/getCompanyWiseBranch')){
-        const queryParams = new URLSearchParams(req.url.split('?')[1]);
-        const companyId = queryParams.get('companyId');
-        // console.log(companyId);
-        branchmodal.comanywisebranch(req, res, dbs,companyId);
-    }
+if (req.method === "GET" && req.url.startsWith("/getCompanyWiseBranch")) {
+    branchmodal.comanywisebranch(req, res, dbs);
+}
+
 
   //3: Department Data Fetch From department.html file
   if (req.method === "POST" && req.url === "/departmentdataapi") {

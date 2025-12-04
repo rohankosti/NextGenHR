@@ -12,7 +12,9 @@ const branchModalAPI = (req, res, dbs) => {
 
   req.on("end", async () => {
     let branchyparse = JSON.parse(body);
-    const branch_collection = await dbs.collection("Branch").insertOne(branchyparse);
+    const branch_collection = await dbs
+      .collection("Branch")
+      .insertOne(branchyparse);
     res.writeHead(200, { "content-type": "application/json" });
     res.end(JSON.stringify({ msg: "Data Saved Sucssesfully" }));
   });
@@ -26,12 +28,15 @@ const getBranchDataAPI = async (req, res, dbs) => {
 };
 
 //3 API use for find branch collection and company and change branch name
-const comanywisebranch =  async (req,res,dbs,companyId) => {
-    const branchCollection = await dbs.collection('Branch').find({'company_id' : companyId}).toArray();
-    // console.log(branch);
-    res.writeHead(200, { 'Content-Type': 'application/json' });
-    res.end(JSON.stringify(branchCollection));
-}
+const comanywisebranch = async (req, res, dbs) => {
+  // 👇 Correct way to read query params in core Node HTTP server
+  const urlObj = new URL(req.url, `http://${req.headers.host}`);
+  const companyName = urlObj.searchParams.get("companyName");
+  console.log("Backend received:", companyName);
+  const branches=await dbs.collection("Branch").find({ comany: companyName }).toArray()
+      res.writeHead(200, { "Content-Type": "application/json" });
+      res.end(JSON.stringify(branches));
+};
 
 const branchmodal = {
   branchModalAPI,

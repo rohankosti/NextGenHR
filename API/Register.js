@@ -1,5 +1,6 @@
 import http, { get } from "http";
 import mongodb, { Collection, MongoClient, ObjectId } from "mongodb";
+import { json } from "stream/consumers";
 
 //1:API to fetch Register.html form data and save in Mongodb database
 const registerdata = (req, res, dbs) => {
@@ -29,10 +30,16 @@ const lastemploye = async (req, res, dbs) => {
   res.end(JSON.stringify(lastemp));
 };
 
+const getregiterdata =async (req,res,dbs)=>{
+  const register = await dbs.collection("Register").find({}).toArray();
+  res.writeHead(200,{"content-type":"application/json"});
+  res.end(JSON.stringify(register));
+}
 
 const registermodal = {
   registerdata,
   lastemploye,
+  getregiterdata,
 };
 
 export default registermodal;

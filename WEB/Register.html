@@ -128,7 +128,7 @@
           <form method="POST" id="employeeData">
 
             <div class="row g-3">
-
+              <input type="hidden" name="type" value="employee">
 
               <!-- First Name -->
               <div class="col-md-4">
@@ -174,7 +174,7 @@
               <!-- Company -->
               <div class="col-md-4">
                 <label class="form-label">Company</label>
-                <select class="form-select" name="company_id">
+                <select class="form-select" name="company_id" id="comp">
                   <option>Select Company</option>
 
                 </select>
@@ -321,23 +321,21 @@
         select.appendChild(option);
       });
       //:API use to Onchange comapny then automatically change  branchs
-       select.addEventListener('change',async ()=>{
-        const companyId = document.querySelector('select[name="company_id"]').value;
-        // console.log(companyId);
-        const response = await fetch(`http://localhost:3000/getCompanyWiseBranch?companyId=${companyId}`);
-        // console.log(response);
-        const branch = await response.json();
-        // console.log(branch);
-        const branchselect = document.querySelector('select[name="branch_id"]');
-        branch.forEach(branch => {
-          // console.log(branch);
+      select.addEventListener('change', async () => {
+        const companySelect = document.querySelector('select[name="company_id"]');
+        const companyName = companySelect.options[companySelect.selectedIndex].textContent;
+        const branchSelect = document.querySelector('select[name="branch_id"]');
+        // RESET BRANCH DROPDOWN
+        branchSelect.innerHTML = `<option value="">Select Branch</option>`;
+        const response = await fetch(`http://localhost:3000/getCompanyWiseBranch?companyName=${companyName}`);
+        const branches = await response.json();
+        branches.forEach(br => {
           const option = document.createElement('option');
-          option.value = branch._id;
-          option.textContent = branch.name;
-          branchselect.appendChild(option);
+          option.value = br._id;
+          option.textContent = br.name;
+          branchSelect.appendChild(option);
         });
-    });
-
+      });
 
       //2:API use for branch id or name for dynamic in register.html
       const branch_response = await fetch('http://localhost:3000/getbranchdata');
