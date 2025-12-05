@@ -19,12 +19,8 @@ const storejobvecancy = (req, res, dbs) => {
   });
 };
 
-const jobvecancylist = (req, res, dbs) => {
-  (async () => {
-    const getjobvecancy_collection = await dbs
-      .collection("jobvecancy")
-      .find({})
-      .toArray();
+const jobvecancylist = (req, res, dbs) => {(async () => {
+    const getjobvecancy_collection = await dbs.collection("jobvecancy").find({}).toArray();
     res.writeHead(200, { "content-type": "application/json" });
     res.end(JSON.stringify(getjobvecancy_collection)); //Bhai res.end() hamesha STRING hi bhejta hai, object nahi.
   })();

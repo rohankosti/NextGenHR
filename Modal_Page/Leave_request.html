@@ -143,7 +143,8 @@
               const select = document.getElementById("employee_id");
               dat.forEach(e => {
                 const option = document.createElement("option");
-                option.value=e._id
+                // option.value=e._id;
+                option.value = e.first_name + " " + e.last_name;
                 option.textContent=e.first_name + e.last_name;
                 select.appendChild(option);
               });
@@ -170,7 +171,7 @@
                 // console.log(response);
                 const data = await response.json();
 
-                // console.log(data);
+                console.log(data);
                 let eroor = document.getElementById("eroor");
 
                 if (response.ok) {

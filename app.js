@@ -86,6 +86,10 @@ const server = http.createServer((req, res) => {
   if (req.method === "POST" && req.url === "/leaverequest") {
     leaverequest.leavereq(req, res, dbs);
   }
+  //API use for get leave request data for crud
+  if (req.method==="GET" && req.url==="/getleaverequest") {
+      leaverequest.getleavereq(req, res, dbs);
+  }
   //API for GET Register.html data and fetch in leave request form get user name and id
   if (req.method === "GET" && req.url === "/getregisterdata") {
     registermodal.getregiterdata(req, res, dbs);
