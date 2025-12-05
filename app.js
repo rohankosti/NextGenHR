@@ -86,10 +86,9 @@ const server = http.createServer((req, res) => {
   if (req.method === "POST" && req.url === "/leaverequest") {
     leaverequest.leavereq(req, res, dbs);
   }
-
-  if (req.method==="GET" && req.url==="/getregisterdata") {
-    registermodal.getregiterdata(req,res,dbs)
-    
+  //API for GET Register.html data and fetch in leave request form get user name and id
+  if (req.method === "GET" && req.url === "/getregisterdata") {
+    registermodal.getregiterdata(req, res, dbs);
   }
   // ======================***********MODAL**********====================
   //1: Comapany Data Fetch From Comapny.html file
@@ -111,10 +110,9 @@ const server = http.createServer((req, res) => {
     branchmodal.getBranchDataAPI(req, res, dbs);
   }
   //2.3: GET ComanywiseBranch Data in change effetc Modal API
-if (req.method === "GET" && req.url.startsWith("/getCompanyWiseBranch")) {
+  if (req.method === "GET" && req.url.startsWith("/getCompanyWiseBranch")) {
     branchmodal.comanywisebranch(req, res, dbs);
-}
-
+  }
 
   //3: Department Data Fetch From department.html file
   if (req.method === "POST" && req.url === "/departmentdataapi") {
