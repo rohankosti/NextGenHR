@@ -90,6 +90,15 @@ const server = http.createServer((req, res) => {
   if (req.method==="GET" && req.url==="/getleaverequest") {
       leaverequest.getleavereq(req, res, dbs);
   }
+ //API for fetch single leave requset data and 
+  if (req.method === "POST" && req.url === "/singleleaverequest") {
+    leaverequest.singleleaverequest(req, res, dbs);
+  }
+ //API for fetch Updated leave request data 
+  if (req.method === "PUT" && req.url === "/updatedleaverequest") {
+    leaverequest.updatedleave(req, res, dbs);
+  }
+
   //API for GET Register.html data and fetch in leave request form get user name and id
   if (req.method === "GET" && req.url === "/getregisterdata") {
     registermodal.getregiterdata(req, res, dbs);

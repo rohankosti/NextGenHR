@@ -227,7 +227,7 @@
                 <td>${e.to_date}</td>
                 <td>${e.reason}</td>
                 <td>${e.approved_by}</td>
-                <td class="status">${e.status}</td>
+                <td id="statu">${e.status}</td>
                 <td><button class="btn btn-approve btn-sm aproveApplicationBtn" data-id="${e._id}">Approve</button></td>
                 <td><button class="btn btn-reject btn-sm rejectApplicationBtn" data-id="${e._id}">Reject</button></td>
            </tr>`
@@ -236,12 +236,57 @@
         // console.log(aproveApplicationBtn);
         aproveApplicationBtn.forEach(btn => {
           //  console.log(btn);
-          btn.addEventListener("click", (e) => {
+          btn.addEventListener("click", async (e) => {
             e.preventDefault()
-          
+            const btnattribute = btn.getAttribute("data-id");
+            // console.log(btnattribute);
 
-          })
+            const idobj = { id: btnattribute }
+            // console.log(idobj);
 
+            const singlefetch = await fetch("http://localhost:3000/singleleaverequest", {
+              method: "POST",
+              headers: {
+                "content-type": "application/json"
+              },
+              body: JSON.stringify(idobj)
+            })
+            const data = await singlefetch.json()
+            // console.log(data);
+            const row = btn.closest('tr');
+            // console.log(row);
+            const statu = row.querySelector("#statu");
+            // console.log(statu);
+            statu.textContent = "Approved";
+
+            const updateddata = {
+              id: btnattribute,
+              status: statu.textContent,
+            }
+            //  console.log(updateddata,"updated");
+
+            //update API
+            const upfetch = await fetch("http://localhost:3000/updatedleaverequest",
+              {
+                method: "PUT",
+                headers: {
+                  "content-type": "application/json"
+                },
+                body: JSON.stringify(updateddata)
+              }
+            );
+            console.log(upfetch);
+
+            const updata = await upfetch.json()
+            console.log(updata);
+
+            if (updata.ok) {
+              alert(`${updata.msg}`)
+            }
+            else {
+              alert(`${updata.msg1}`)
+            }
+          });
         });
       }
       catch (error) {
