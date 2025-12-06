@@ -266,29 +266,74 @@
             //  console.log(updateddata,"updated");
 
             //update API
-            const upfetch = await fetch("http://localhost:3000/updatedleaverequest",
-              {
-                method: "PUT",
-                headers: {
-                  "content-type": "application/json"
-                },
-                body: JSON.stringify(updateddata)
-              }
-            );
-            console.log(upfetch);
-
+            const upfetch = await fetch("http://localhost:3000/updatedleaverequest", {
+              method: "PUT",
+              headers: {
+                "content-type": "application/json"
+              },
+              body: JSON.stringify(updateddata)
+            });
+            // console.log(upfetch);
             const updata = await upfetch.json()
-            console.log(updata);
-
-            if (updata.ok) {
+            // console.log(updata);
+            if (upfetch.ok) {
               alert(`${updata.msg}`)
+              // location.reload()
             }
             else {
               alert(`${updata.msg1}`)
             }
           });
         });
+
+
+        //delate API 
+        const rejectApplicationBtn = document.querySelectorAll(".rejectApplicationBtn");
+
+        rejectApplicationBtn.forEach(rej => {
+          //  console.log(rej);
+          rej.addEventListener("click", async (e) => {
+            e.preventDefault()
+            const rejbtn = rej.getAttribute("data-id");
+            // console.log(rejbtn);
+            const confirmation = confirm("You Want to Delate User Leave Request ")
+            if (confirmation === true) {
+              alert(`Leave Request Delate Sucsessfully`);
+              //  window.location.reload()
+            }
+            else {
+              alert(`Leave Request Can't be Delate`);
+              return;
+            }
+            const rejobj = { id: rejbtn }
+            // console.log(rejobj);
+
+            const rejfetch = await fetch("http://localhost:3000/delateleaverequest", {
+              method: "DELETE",
+              headers: {
+                "content-type": "application/json"
+              },
+              body: JSON.stringify(rejobj)
+            })
+            console.log(rejfetch);
+
+            const rejdata = await rejfetch.json()
+            console.log(rejdata);
+
+            if (rejfetch.ok) {
+              alert("Leave Request Delate Succsesfully")
+              window.location.reload()
+            }
+            else {
+              alert(`${rejdata.msg}`);
+              // alert(`Leave Requset can't Rejected`);
+            }
+
+          });
+        });
+
       }
+
       catch (error) {
         console.error("Eroor in your Side", error);
       }
