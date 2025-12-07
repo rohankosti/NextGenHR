@@ -233,7 +233,7 @@
               <td><span class="badge bg-warning">${user.status}</span></td>
               <td>
                 <button class="text-center btn btn-primary btn-sm showApplicationBtn" data-bs-toggle="modal" data-bs-target="#showApplicationModal" id="edit" data-id="${user._id}"><i class="bi bi-pencil"></i></button>
-                <button class="text-center btn btn-danger btn-sm deltaeApplicationBtn" id="delete" data-id="${e._id}"><i class="bi bi-trash"></i></button>
+                <button class="text-center btn btn-danger btn-sm deltaeApplicationBtn" id="delete" data-id="${user._id}"><i class="bi bi-trash"></i></button>
               </td>
             </tr>`;
         });
@@ -303,7 +303,41 @@
         })
 
         //delate api 
-        const deltaeApplicationBtn = document.querySelectorAll(".deltaeApplicationBtn")
+        const deltaeApplicationBtn = document.querySelectorAll(".deltaeApplicationBtn");
+        deltaeApplicationBtn.forEach(btn => {
+          btn.addEventListener("click", async (e) => {
+            e.preventDefault()
+            const delbtn = btn.getAttribute("data-id")
+            //  console.log(delbtn);
+            const delobj = {
+              id: delbtn
+            }
+            //  console.log(delobj);
+
+            const delfetch = await fetch("http://localhost:3000/deleteuserdashboard", {
+              method: "DELETE",
+              headers: {
+                "content-type": "application/json"
+              },
+              body: JSON.stringify(delobj)
+            })
+            console.log(delfetch);
+
+            const deldata = await delfetch.json()
+            console.log(deldata);
+
+            if (delfetch.ok) {
+              alert(`User Data Delete Sucssesfully`)
+              location.reload()
+            }
+
+            else {
+              alert("User Data Can't be Delete")
+            }
+
+
+          })
+        });
 
       }
       catch (err) {

@@ -87,9 +87,13 @@ const server = http.createServer((req, res) => {
   if (req.method === "POST" && req.url === "/singleuserdashboard") {
     registermodal.singleuserdashboard(req, res, dbs);
   }
-  //API for GET Register.html data and fetch in leave request form get user name and id
+  //API for GET Register.html updated
   if (req.method === "PUT" && req.url === "/updateduserdashboard") {
     registermodal.updateduserdashboard(req, res, dbs);
+  }
+  //API for GET Register.html delete
+  if (req.method === "DELETE" && req.url === "/deleteuserdashboard") {
+    registermodal.deleteuserdashboard(req, res, dbs);
   }
 
   //API use for login Authentication
@@ -101,18 +105,18 @@ const server = http.createServer((req, res) => {
     leaverequest.leavereq(req, res, dbs);
   }
   //API use for get leave request data for crud
-  if (req.method==="GET" && req.url==="/getleaverequest") {
-      leaverequest.getleavereq(req, res, dbs);
+  if (req.method === "GET" && req.url === "/getleaverequest") {
+    leaverequest.getleavereq(req, res, dbs);
   }
- //API for fetch single leave requset data and 
+  //API for fetch single leave requset data and
   if (req.method === "POST" && req.url === "/singleleaverequest") {
     leaverequest.singleleaverequest(req, res, dbs);
   }
- //API for fetch Updated leave request data 
+  //API for fetch Updated leave request data
   if (req.method === "PUT" && req.url === "/updatedleaverequest") {
     leaverequest.updatedleave(req, res, dbs);
   }
- //API for fetch Updated leave request data 
+  //API for fetch Updated leave request data
   if (req.method === "DELETE" && req.url === "/delateleaverequest") {
     leaverequest.delateleaverequest(req, res, dbs);
   }

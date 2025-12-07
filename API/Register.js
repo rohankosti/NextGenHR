@@ -59,7 +59,7 @@ const updateduserdashboard = (req, res, dbs) => {
   req.on("end", async () => {
     const upparse = JSON.parse(body);
     console.log(upparse);
-    
+
     const upcollection = await dbs.collection("Register").updateOne(
       { _id: new ObjectId(upparse.id) },
       {
@@ -67,7 +67,7 @@ const updateduserdashboard = (req, res, dbs) => {
           name: upparse.name,
           email: upparse.email,
           role: upparse.role,
-          status: upparse.status
+          status: upparse.status,
         },
       }
     );
@@ -82,12 +82,34 @@ const updateduserdashboard = (req, res, dbs) => {
   });
 };
 
+const deleteuserdashboard = (req, res, dbs) => {
+  let body = "";
+  req.on("data", (chunk) => {
+    body += chunk.toString();
+  });
+  req.on("end", async () => {
+    const delparse = JSON.parse(body);
+    // console.log(delparse);
+    const delcollection = await dbs
+      .collection("Register")
+      .deleteOne({ _id: new ObjectId(delparse.id) });
+    if (delcollection.deletedCount === 1) {
+      res.writeHead(200, { "content-type": "application/json" });
+      res.end(JSON.stringify({ msg: "User Data Delete Sucssesfuuly" }));
+    } else {
+      res.writeHead(200, { "content-type": "application/json" });
+      res.end(JSON.stringify({ msg: "User Data Can't be Delete" }));
+    }
+  });
+};
+
 const registermodal = {
   registerdata,
   lastemploye,
   getregiterdata,
   singleuserdashboard,
   updateduserdashboard,
+  deleteuserdashboard,
 };
 
 export default registermodal;
