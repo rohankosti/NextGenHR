@@ -78,6 +78,20 @@ const server = http.createServer((req, res) => {
   if (req.method === "GET" && req.url === "/lastemployedata") {
     registermodal.lastemploye(req, res, dbs);
   }
+
+  //API for GET Register.html data and fetch in leave request form get user name and id
+  if (req.method === "GET" && req.url === "/getregisterdata") {
+    registermodal.getregiterdata(req, res, dbs);
+  }
+  //API for GET Register.html data and fetch in leave request form get user name and id
+  if (req.method === "POST" && req.url === "/singleuserdashboard") {
+    registermodal.singleuserdashboard(req, res, dbs);
+  }
+  //API for GET Register.html data and fetch in leave request form get user name and id
+  if (req.method === "PUT" && req.url === "/updateduserdashboard") {
+    registermodal.updateduserdashboard(req, res, dbs);
+  }
+
   //API use for login Authentication
   if (req.method === "POST" && req.url === "/logindata") {
     logindata.login(req, res, dbs);
@@ -103,10 +117,6 @@ const server = http.createServer((req, res) => {
     leaverequest.delateleaverequest(req, res, dbs);
   }
 
-  //API for GET Register.html data and fetch in leave request form get user name and id
-  if (req.method === "GET" && req.url === "/getregisterdata") {
-    registermodal.getregiterdata(req, res, dbs);
-  }
   // ======================***********MODAL**********====================
   //1: Comapany Data Fetch From Comapny.html file
   if (req.method === "POST" && req.url === "/companydata") {
@@ -163,6 +173,10 @@ const server = http.createServer((req, res) => {
   if (req.method === "POST" && req.url === "/roledata") {
     rolemodal.rolemodalAPI(req, res, dbs);
   }
+  //6: Role Data Fetch From role.html
+  // if (req.method === "GET" && req.url === "/getroledata") {
+  //   rolemodal.getroledata(req, res, dbs);
+  // }
 });
 
 process.on("SIGINT", async () => {

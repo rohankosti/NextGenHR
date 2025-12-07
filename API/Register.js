@@ -30,16 +30,64 @@ const lastemploye = async (req, res, dbs) => {
   res.end(JSON.stringify(lastemp));
 };
 
-const getregiterdata =async (req,res,dbs)=>{
+const getregiterdata = async (req, res, dbs) => {
   const register = await dbs.collection("Register").find({}).toArray();
-  res.writeHead(200,{"content-type":"application/json"});
+  res.writeHead(200, { "content-type": "application/json" });
   res.end(JSON.stringify(register));
-}
+};
+
+const singleuserdashboard = (req, res, dbs) => {
+  let body = "";
+  req.on("data", (chunk) => {
+    body += chunk.toString();
+  });
+  req.on("end", async (e) => {
+    const parse = JSON.parse(body);
+    const single = await dbs
+      .collection("Register")
+      .findOne({ _id: new ObjectId(parse.id) });
+    res.writeHead(200, { "content-type": "application/json" });
+    res.end(JSON.stringify(single));
+  });
+};
+
+const updateduserdashboard = (req, res, dbs) => {
+  let body = "";
+  req.on("data", (chunk) => {
+    body += chunk.toString();
+  });
+  req.on("end", async () => {
+    const upparse = JSON.parse(body);
+    console.log(upparse);
+    
+    const upcollection = await dbs.collection("Register").updateOne(
+      { _id: new ObjectId(upparse.id) },
+      {
+        $set: {
+          name: upparse.name,
+          email: upparse.email,
+          role: upparse.role,
+          status: upparse.status
+        },
+      }
+    );
+
+    if (upcollection.modifiedCount === 1) {
+      res.writeHead(200, { "content-type": "application/json" });
+      res.end(JSON.stringify({ msg: "User Data Update Sucssesfuuly" }));
+    } else {
+      res.writeHead(200, { "content-type": "application/json" });
+      res.end(JSON.stringify({ msg: "Data Can't be Updated" }));
+    }
+  });
+};
 
 const registermodal = {
   registerdata,
   lastemploye,
   getregiterdata,
+  singleuserdashboard,
+  updateduserdashboard,
 };
 
 export default registermodal;

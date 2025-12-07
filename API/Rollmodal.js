@@ -16,8 +16,16 @@ const rolemodalAPI = (req, res, dbs) => {
   });
 };
 
+const getroledata =async (req,res,dbs)=>{
+  const getroll = await dbs.collection("Role").find({}).toArray();
+  res.writeHead(200,{"content-type":"application/json"})
+  res.end(JSON.stringify(getroll));
+}
+
+
 const rolemodal ={
   rolemodalAPI,
+  getroledata
 }
 
 export default rolemodal;

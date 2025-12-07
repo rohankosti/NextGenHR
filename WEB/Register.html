@@ -111,7 +111,8 @@
       <a class="nav-link" href="./reminders.html"><i class="bi bi-bell"></i> <span>Reminders</span></a>
       <a class="nav-link" href="./users.html"><i class="bi bi-people"></i> <span>Users</span></a>
       <a class="nav-link" href="./departments.html"><i class="bi bi-diagram-3"></i> <span>Departments</span></a>
-      <a class="nav-link" href="./leave_request.html"><i class="bi bi-calendar-check"></i> <span>Leave Requests</span></a>
+      <a class="nav-link" href="./leave_request.html"><i class="bi bi-calendar-check"></i> <span>Leave
+          Requests</span></a>
       <a class="nav-link" href="./payroll.html"><i class="bi bi-cash-stack"></i> <span>Payroll</span></a>
       <a class="nav-link" href="./viewJobpostData.html"><i class="bi bi-briefcase"></i> <span>Job Posts</span></a>
 
@@ -279,6 +280,11 @@
                 <label class="form-label">Role</label>
                 <select class="form-select" name="role_id">
                   <option value="">Select Role</option>
+                  <option value="Admin">Admin</option>
+                  <option value="Manager">Manager</option>
+                  <option value="Employe">Employe</option>
+                  <option value="Sr.Devloper">Sr.Devloper</option>
+                  <option value="jn.Devloper">jn.Devloper</option>
                   <!-- <option value=""></option> -->
                 </select>
               </div>
@@ -320,7 +326,7 @@
         option.textContent = company.name;
         select.appendChild(option);
       });
-      //:API use to Onchange comapny then automatically change  branchs
+      //:1.1 API use to Onchange comapny then automatically change  branchs
       select.addEventListener('change', async () => {
         const companySelect = document.querySelector('select[name="company_id"]');
         const companyName = companySelect.options[companySelect.selectedIndex].textContent;
@@ -380,17 +386,37 @@
 
       const reportinfetc = await fetch("http://localhost:3000/getreportingmanager")
       const reportresp = await reportinfetc.json();
-      // console.log(reportresp);
+      // console.log(reportresp ,"repo");
 
       const selector = document.querySelector('select[name="reporting_manager"]');
       reportresp.forEach(e => {
         // console.log(e,"e");
         const report_option = document.createElement('option')
         report_option.value = e._id;
-        console.log();
         report_option.textContent = e.reporting_manager;
         selector.appendChild(report_option);
       });
+
+      //6 :API for store role.html rolename dynamic in register.html
+      const getroll = await fetch("http://localhost:3000/getroledata");
+      // console.log(getroll);
+
+      const rlldata = await getroll.json()
+      console.log(rlldata);
+
+      const roll_select = document.querySelector('select[name="role_id"]');
+      console.log(roll_select);
+
+      rlldata.forEach(s => {
+        const option = document.createElement('option')
+        option.value = s._id;
+        option.textContent = s.role_name
+        roll_select.appendChild(option)
+      });
+
+
+
+
     });
 
     //API use for store Register Data in mongodb 
@@ -404,10 +430,10 @@
       const lastemploye = async () => {
         const lastemp = await fetch("http://localhost:3000/lastemployedata");
         const lastresp = await lastemp.json()
-        console.log(lastresp, "last");
+        // console.log(lastresp, "last");
         // console.log(lastresp[0].company_id,"company id");
         let lastempcode = lastresp[0].emp_code;
-        console.log(lastempcode);
+        // console.log(lastempcode);
 
         // let emp_code = "NEXTGEN" + String(parseInt(lastempcode.replace("NEXTGEN", "") + 1).padStart(3, '0'));
         let emp_code = "NEXTGEN" + String(parseInt(lastempcode.replace("NEXTGEN", "")) + 1).padStart(3, '0');
@@ -425,7 +451,7 @@
         body: JSON.stringify(obj),
       });
       const result = await response.json();
-      console.log("res", result);
+      // console.log("res", result);
 
       const responseMsg = document.getElementById('responseMsg');
       if (response.ok) {
