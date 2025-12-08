@@ -317,6 +317,7 @@
 
         const showApplicationBtn = document.querySelectorAll(".showApplicationBtn");
         // console.log(showApplicationBtn,"sd");
+let currentRecord = null;  // GLOBAL
 
         showApplicationBtn.forEach(btn => {
           // console.log(btn);
@@ -337,6 +338,7 @@
               body: JSON.stringify(obj)
             })
             const sindata = await sinfetch.json()
+            currentRecord = sindata
             // console.log(sindata);
             document.getElementById("editId").value = sindata._id
             document.getElementById("editName").value = empMap[sindata.emp_id];
@@ -353,13 +355,13 @@
           e.preventDefault()
           const id= document.getElementById("editId").value
           const upobj = {
-            Name: document.getElementById("editName").value,
+            emp_id: currentRecord.emp_id,
             Date: document.getElementById("edit_date").value,
             Check_in: document.getElementById("edit_check_in").value,
             Check_out: document.getElementById("edit_check_out").value,
             Stetus: document.getElementById("edit_status").value
           }
-          // console.log(upobj, "up");
+          console.log(upobj, "up");
            
           const upfetch = await fetch("http://localhost:3000/updatedattandancedata",{
             method:"PUT",
@@ -368,9 +370,11 @@
             },
             body:JSON.stringify({id,...upobj})
           });
-          console.log(upfetch);
+        
+          
+          console.log(upfetch,"up");
           const updata = await upfetch.json()
-          console.log(updata);
+          console.log(updata,"up");
           
           if (upfetch.ok) {
             alert(`${updata.msg}`)
@@ -382,7 +386,41 @@
         })
             
       //  delete api 
+ const deltaeApplicationBtn = document.querySelectorAll(".deltaeApplicationBtn");
+        deltaeApplicationBtn.forEach(btn => {
+          btn.addEventListener("click", async (e) => {
+            e.preventDefault()
+            const delbtn = btn.getAttribute("data-id")
+            //  console.log(delbtn);
+            const delobj = {
+              id: delbtn
+            }
+            //  console.log(delobj);
 
+            const delfetch = await fetch("http://localhost:3000/deletedataattandance", {
+              method: "DELETE",
+              headers: {
+                "content-type": "application/json"
+              },
+              body: JSON.stringify(delobj)
+            })
+            console.log(delfetch);
+
+            const deldata = await delfetch.json()
+            console.log(deldata);
+
+            if (delfetch.ok) {
+              alert(`User Data Delete Sucssesfully`)
+              location.reload()
+            }
+
+            else {
+              alert("User Data Can't be Delete")
+            }
+
+
+          })
+        });
 
 
       }

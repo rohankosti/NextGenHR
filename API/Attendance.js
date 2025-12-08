@@ -49,10 +49,10 @@ const updateddata = (req, res, dbs) => {
       {
         $set: {
           Name: upparse.Name,
-          Date: upparse.Date,
-          Check_in: upparse.Check_in,
-          Check_out: upparse.Check_out,
-          Stetus: upparse.Stetus,
+          date: upparse.Date,
+          check_in: upparse.Check_in,
+          check_out: upparse.Check_out,
+          status: upparse.Stetus,
         },
       }
     );
@@ -66,16 +66,32 @@ const updateddata = (req, res, dbs) => {
   });
 };
 
-const delateddata= (req,res,dbs)=>{
-
-
-}
+const delateddata = (req, res, dbs) => {
+  let body = "";
+  req.on("data", (chunk) => {
+    body += chunk.toString();
+  });
+  req.on("end", async () => {
+    const delparse = JSON.parse(body);
+    // console.log(delparse);
+    const delcollection = await dbs
+      .collection("Attendance")
+      .deleteOne({ _id: new ObjectId(delparse.id) });
+    if (delcollection.deletedCount === 1) {
+      res.writeHead(200, { "content-type": "application/json" });
+      res.end(JSON.stringify({ msg: "User Data Delete Sucssesfuuly" }));
+    } else {
+      res.writeHead(200, { "content-type": "application/json" });
+      res.end(JSON.stringify({ msg: "User Data Can't be Delete" }));
+    }
+  });
+};
 const Attendance = {
   Attendancepost,
   GetAttandance,
   singledata,
   updateddata,
-  delateddata
+  delateddata,
 };
 
 export default Attendance;
