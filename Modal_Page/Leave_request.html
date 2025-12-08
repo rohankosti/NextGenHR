@@ -60,7 +60,7 @@
                         <label class="form-label">Employee</label>
                         <select class="form-select" id="employee_id" name="employee_id">
                             <option value="">Select Employee</option>
-                            
+
                         </select>
                     </div>
 
@@ -115,10 +115,21 @@
                         </select>
                     </div>
 
-                    <!-- Button -->
-                    <div class="text-center mt-4">
-                        <button type="submit" class="btn btn-custom">Submit Request</button>
+                    <!-- BUTTONS ROW (Save + Close together) -->
+                    <div class="col-12 mt-3 d-flex justify-content-center gap-3">
+
+                        <!-- SAVE -->
+                        <button type="submit" class="btn btn-custom px-4">
+                            Save
+                        </button>
+
+                        <!-- CLOSE -->
+                        <button type="button" class="btn btn-outline-secondary px-4" onclick="window.history.back()">
+                            Close
+                        </button>
+
                     </div>
+
 
                 </form>
                 <div id="eroor" class="mt-2"></div>
@@ -132,24 +143,24 @@
 
     <script>
 
-        addEventListener("DOMContentLoaded",async(e)=>{
+        addEventListener("DOMContentLoaded", async (e) => {
             e.preventDefault();
-              const res =await fetch("http://localhost:3000/getregisterdata")
+            const res = await fetch("http://localhost:3000/getregisterdata")
             //   console.log(res);
 
-              const dat = await res.json()
+            const dat = await res.json()
             //   console.log(dat);
 
-              const select = document.getElementById("employee_id");
-              dat.forEach(e => {
+            const select = document.getElementById("employee_id");
+            dat.forEach(e => {
                 const option = document.createElement("option");
                 // option.value=e._id;
                 // option.value = e.first_name + " " + e.last_name;
-                option.textContent=e.first_name + e.last_name;
+                option.textContent = e.first_name + e.last_name;
                 select.appendChild(option);
-              });
-              
-              
+            });
+
+
         })
 
         const leaveForm = document.getElementById("leaveForm");
@@ -178,9 +189,11 @@
                     // alert("Data Saved Succsesfully")
                     eroor.innerHTML = `<div class="alert alert-success">${data.msg}</div>`;
                     leaveForm.reset();
+                    // window.location.href = "/WEB/leave_request.html";
+
                 }
-                else{
-                    eroor.innerHTML=`<div class="alert alert-warning">Data Can't Stored</div>`;;
+                else {
+                    eroor.innerHTML = `<div class="alert alert-warning">Data Can't Stored</div>`;;
                 }
             }
             catch (err) {

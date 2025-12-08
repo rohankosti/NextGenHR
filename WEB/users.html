@@ -132,6 +132,7 @@
           Requests</span></a>
       <a class="nav-link" href="./payroll.html"><i class="bi bi-cash-stack"></i> <span>Payroll</span></a>
       <a class="nav-link" href="./viewJobpostData.html"><i class="bi bi-briefcase"></i> <span>Job Posts</span></a>
+      <a class="nav-link " href="./Attendance.html"><i class="bi bi-fingerprint"></i> <span>Attendance</span></a>
 
     </nav>
   </div>
@@ -262,7 +263,7 @@
             const data = await res.json();
             // console.log(data);
 
-            document.getElementById("editId").value = data._id
+            document.getElementById("editId").textContent = data._id
             document.getElementById("editName").value = data.first_name + " " + data.last_name
             document.getElementById("editEmail").value = data.email
             document.getElementById("editPosition").value = data.role_id

@@ -11,6 +11,7 @@ import reportingmanager from "./API/Reportingmanager_modal.js";
 import rolemodal from "./API/Rollmodal.js";
 import logindata from "./API/Authentication.js";
 import leaverequest from "./API/Leave_requset.js";
+import Attendance from "./API/Attendance.js"
 import { URLSearchParams } from "url";
 import dotenv from "dotenv";
 dotenv.config();
@@ -181,6 +182,27 @@ const server = http.createServer((req, res) => {
   // if (req.method === "GET" && req.url === "/getroledata") {
   //   rolemodal.getroledata(req, res, dbs);
   // }
+
+  //Attendance CRUD Operation 1: 
+  if (req.method==="POST" && req.url==="/Attendancedata") {
+     Attendance.Attendancepost(req,res,dbs)
+  }
+  //2
+  if (req.method==="GET" && req.url==="/getattendancedata") {
+     Attendance.GetAttandance(req,res,dbs)
+  }
+  //3
+  if (req.method==="POST" && req.url==="/getsingalattendancedata") {
+     Attendance.singledata(req,res,dbs)
+  }
+  //4
+  if (req.method==="PUT" && req.url==="/updatedattandancedata") {
+     Attendance.updateddata(req,res,dbs)
+  }
+  //5
+  if (req.method==="DELETE" && req.url==="/deletedataattandance") {
+     Attendance.delateddata(req,res,dbs)
+  }
 });
 
 process.on("SIGINT", async () => {
