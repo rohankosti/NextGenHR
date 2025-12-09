@@ -147,13 +147,25 @@ const server = http.createServer((req, res) => {
     branchmodal.comanywisebranch(req, res, dbs);
   }
 
-  //3: Department Data Fetch From department.html file
+  //1 Department Full crud
   if (req.method === "POST" && req.url === "/departmentdataapi") {
     departmentModal.departmentModalAPI(req, res, dbs);
   }
-  //3.3: GET Department Data Modal API
+  //2: GET Department Data Modal API
   if (req.method === "GET" && req.url === "/getdepartmentdata") {
     departmentModal.getDepartmentDataAPI(req, res, dbs);
+  }
+  //3 
+  if (req.method === "POST" && req.url === "/singledata") {
+    departmentModal.singledata(req, res, dbs);
+  }
+  //4 
+  if (req.method === "PUT" && req.url === "/Updateddata") {
+    departmentModal.Updateddata(req, res, dbs);
+  }
+  //5 
+  if (req.method === "DELETE" && req.url === "/Deletedata") {
+    departmentModal.Deletedata(req, res, dbs);
   }
 
   //4: Designation Data Fetch From designation.html

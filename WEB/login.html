@@ -112,7 +112,6 @@
           let username = document.getElementById("username");
           let password = document.getElementById("password");
           if (username.value === data.email && password.value === data.password) {
-
             localStorage.setItem("UserObj", JSON.stringify(data));
             setTimeout(() => {
               form.reset();
