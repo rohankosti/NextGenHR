@@ -43,7 +43,7 @@ const updateddata = (req, res, dbs) => {
   });
   req.on("end", async () => {
     const upparse = JSON.parse(body);
-    console.log(upparse);
+    // console.log(upparse);
     const upcollection = await dbs.collection("Attendance").updateOne(
       { _id: new ObjectId(upparse.id) },
       {

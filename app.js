@@ -80,6 +80,7 @@ const server = http.createServer((req, res) => {
     registermodal.lastemploye(req, res, dbs);
   }
 
+  //user dasboard API
   //API for GET Register.html data and fetch in leave request form get user name and id
   if (req.method === "GET" && req.url === "/getregisterdata") {
     registermodal.getregiterdata(req, res, dbs);
