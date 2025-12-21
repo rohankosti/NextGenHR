@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Departments - NextGenHR</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+  <style>
+    body {
+      background: #f8f9fa;
+    }
+
+    .sidebar {
+      min-height: 100vh;
+      background: #212529;
+      color: #fff;
+      padding-top: 2rem;
+      position: fixed;
+      width: 220px;
+    }
+
+    .sidebar .nav-link {
+      color: #adb5bd;
+      margin-bottom: 1rem;
+      border-radius: 8px;
+    }
+
+    .sidebar .nav-link.active,
+    .sidebar .nav-link:hover {
+      background: #007bff;
+      color: #fff;
+    }
+
+    .sidebar .nav-link i {
+      margin-right: 8px;
+    }
+
+    .main-content {
+      margin-left: 220px;
+      padding: 2rem;
+    }
+
+    .topbar {
+      background: #fff;
+      border-bottom: 1px solid #e9ecef;
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .table-departments td,
+    .table-departments th {
+      vertical-align: middle;
+    }
+
+    .btn-add {
+      background: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+    }
+
+    .btn-add:hover {
+      background: #0056b3;
+    }
+
+    .btn-edit,
+    .btn-delete {
+      border: none;
+      background: none;
+      color: #007bff;
+      margin-left: 8px;
+    }
+
+    .btn-edit:hover {
+      color: #0056b3;
+    }
+
+    .btn-delete {
+      color: #dc3545;
+    }
+
+    .btn-delete:hover {
+      color: #a71d2a;
+    }
+
+    @media (max-width: 991px) {
+      .sidebar {
+        width: 100px;
+      }
+
+      .main-content {
+        margin-left: 100px;
+      }
+
+      .sidebar .nav-link span {
+        display: none;
+      }
+    }
+
+    @media (max-width: 767px) {
+      .sidebar {
+        display: none;
+      }
+
+      .main-content {
+        margin-left: 0;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="sidebar d-none d-md-block">
+    <div class="text-center mb-4">
+      <h4>NextGen<span class="text-primary">HR</span> </h4>
+    </div>
+    <nav class="nav flex-column">
+      <a class="nav-link" href="./dashboard.html"><i class="bi bi-speedometer2"></i> <span>Dashboard</span></a>
+      <a class="nav-link " href="./Register.html"><i class="bi bi-people"></i> <span>Register</span></a>
+
+      <a class="nav-link " href="./approvals.html"><i class="bi bi-check2-square"></i> <span>Approvals</span></a>
+      <a class="nav-link" href="./reminders.html"><i class="bi bi-bell"></i> <span>Reminders</span></a>
+      <a class="nav-link" href="./users.html"><i class="bi bi-people"></i> <span>Users</span></a>
+      <a class="nav-link active" href="./departments.html"><i class="bi bi-diagram-3"></i> <span>Departments</span></a>
+      <a class="nav-link" href="./leave_request.html"><i class="bi bi-calendar-check"></i> <span>Leave
+          Requests</span></a>
+      <a class="nav-link" href="./payroll.html"><i class="bi bi-cash-stack"></i> <span>Payroll</span></a>
+      <a class="nav-link" href="./viewJobpostData.html"><i class="bi bi-briefcase"></i> <span>Job Posts</span></a>
+      <a class="nav-link " href="./Attendance.html"><i class="bi bi-person-check"></i> <span>Attendance</span></a>
+
+    </nav>
+  </div>
+  <div class="main-content">
+    <div class="topbar rounded-4 mb-4 shadow-sm px-3">
+      <h5>Department List</h5>
+      <div class="dropdown d-flex align-items-center gap-2">
+
+        <!-- Leave Form Button -->
+        <a href="/Modal_Page/department.html" class="btn btn-primary">
+          Department Form
+        </a>
+
+        <!-- Admin Dropdown -->
+        <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown">
+          <i class="bi bi-person-circle"></i> Admin
+        </button>
+
+        <ul class="dropdown-menu dropdown-menu-end">
+          <li><a class="dropdown-item" href="#">Profile</a></li>
+          <li><a class="dropdown-item" href="#">Settings</a></li>
+          <li>
+            <hr class="dropdown-divider">
+          </li>
+          <li><a class="dropdown-item" href="login.html">Logout</a></li>
+        </ul>
+
+      </div>
+
+    </div>
+    <div class="container-fluid mt-4">
+      <div class="card p-4">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h6>Department List</h6>
+          <button class="btn btn-add btn-sm"><i class="bi bi-plus"></i> Add Department</button>
+        </div>
+        <table class="table table-departments mt-3">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Department Name</th>
+              <th>Comapany</th>
+              <th>Barnch</th>
+              <th>Manager</th>
+              <!-- <th>Employees</th> -->
+              <th colspan="2">Action</th>
+            </tr>
+          </thead>
+          <tbody id="departmentbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <!-- Update Attendance Modal -->
+  <div class="modal fade" id="updateAttendanceModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+
+        <div class="modal-header bg-primary text-white">
+          <h5 class="modal-title">Update Attendance</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+
+        <div class="modal-body">
+
+          <form id="updateDepartmentForm">
+            <input type="hidden" id="editId" name="id">
+            <!-- Employee -->
+
+            <div class="mb-3">
+              <label class="form-label fw-bold" for="editName">Department Name:</label>
+              <input type="text" class="form-control" id="editName" name="name" required>
+            </div>
+
+            <!-- Date -->
+            <div class="mb-3">
+              <label class="form-label fw-bold">Comapany</label>
+              <input type="text" class="form-control" id="editcomapny">
+            </div>
+
+            <!-- Check In -->
+            <div class="mb-3">
+              <label class="form-label fw-bold">Branch</label>
+              <input type="text" class="form-control" id="editbranch">
+            </div>
+
+            <!-- Check Out -->
+            <div class="mb-3">
+              <label class="form-label fw-bold">Manager</label>
+              <input type="text" class="form-control" id="editmanager">
+            </div>
+            <div class="modal-footer d-flex justify-content-end">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                Close
+              </button>
+              <button type="submit" class="btn btn-primary" id="saveAttendanceBtn">
+                Save Changes
+              </button>
+            </div>
+          </form>
+
+        </div>
+
+
+      </div>
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    addEventListener("DOMContentLoaded", async (e) => {
+      try {
+        const res = await fetch("http://localhost:3000/getdepartmentdata")
+        // console.log(res);
+        const data = await res.json()
+        console.log(data, "get");
+        data.forEach((e, index) => {
+          const departmentbody = document.getElementById("departmentbody");
+          departmentbody.innerHTML +=
+            `<tr>
+                <td>${index + 1}</td>
+                <td>${e.dept_name}</td>
+                <td>${e.company_id}</td>
+                <td>${e.branch_id}</td>
+                <td>${e.manager_id}</td>
+                <td>
+                  <button class="text-center btn btn-primary btn-sm showApplicationBtn" data-bs-toggle="modal" data-bs-target="#updateAttendanceModal" id="edit" data-id="${e._id}"><i class="bi bi-pencil"></i></button>
+                  <button class="text-center btn btn-danger btn-sm deltaeApplicationBtn" id="delete" data-id="${e._id}"><i class="bi bi-trash"></i></button>
+                </td>
+              </tr>
+           `
+        });
+        const showApplicationBtn = document.querySelectorAll(".showApplicationBtn");
+        //  console.log(showApplicationBtn);
+        showApplicationBtn.forEach(btn => {
+          btn.addEventListener("click", async (e) => {
+            //  console.log(e);
+            const btnattribute = btn.getAttribute("data-id");
+            const btnobj = { id: btnattribute }
+
+            const sinres = await fetch("http://localhost:3000/singledata", {
+              method: "POST",
+              headers: {
+                "content-type": "application/json"
+              },
+              body: JSON.stringify(btnobj)
+            })
+        
+            const data = await sinres.json()
+            console.log(data,"sin");
+            
+            document.getElementById("editId").value= data._id;
+            document.getElementById("editName").value= data.dept_name;
+            document.getElementById("editcomapny").value= data.company_id;
+            document.getElementById("editbranch").value= data.branch_id;
+            document.getElementById("editmanager").value= data.manager_id;
+          })
+        });
+        //Updated API
+        const updateDepartmentForm = document.getElementById("updateDepartmentForm");
+        updateDepartmentForm.addEventListener("submit",async(e)=>{
+          e.preventDefault();
+          const id =document.getElementById("editId").value;
+          const upobj = {
+            dep:document.getElementById("editName").value,
+            com:document.getElementById("editcomapny").value,
+            bra:document.getElementById("editbranch").value,
+            man:document.getElementById("editmanager").value
+          }
+          // console.log(upobj,"upobj");
+          
+          const upres = await fetch("http://localhost:3000/Updateddata",{
+            method:"PUT",
+            headers:{
+              "content-type":"application/json"
+            },
+            body:JSON.stringify({id,...upobj})
+          })
+
+          const updata = await upres.json()
+          console.log(updata);
+
+          if (upres.ok) {
+            alert(`${updata.msg}`)
+            location.reload()
+          }
+          else{
+            alert("Department Data Can't Be Updated");
+          }
+          
+        })
+       
+        const deltaeApplicationBtn = document.querySelectorAll(".deltaeApplicationBtn");
+        deltaeApplicationBtn.forEach(btn => {
+           btn.addEventListener("click",async(e)=>{
+            // console.log(e);
+            const delbtn = btn.getAttribute('data-id');
+            // console.log(delbtn);
+            const delobj = {id:delbtn}
+            // console.log(delobj);
+            const delres = await fetch("http://localhost:3000/Deletedata",{
+              method:"DELETE",
+              headers:{
+                "content-type":"application/json"
+              },
+              body:JSON.stringify(delobj)
+            })
+
+            const deldata = await delres.json()
+            console.log(deldata);
+
+            if (delres.ok) {
+               alert(`${deldata.msg}`)
+               location.reload()
+            }
+            else{
+              alert("Data Can't Be Deleted")
+            }
+            
+            
+            
+           })
+        });
+
+
+
+
+
+
+
+
+
+
+
+
+
+      }
+      catch (error) {
+        console.error("Eroor In Your Side", error);
+
+      }
+    })
+  </script>
+</body>
+
+</html>

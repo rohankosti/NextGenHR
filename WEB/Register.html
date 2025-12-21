@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NextGenHR Register</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+  <style>
+    body {
+      background: #f8f9fa;
+    }
+
+    .sidebar {
+      min-height: 100vh;
+      background: #212529;
+      color: #fff;
+      padding-top: 2rem;
+      position: fixed;
+      width: 220px;
+      transition: all 0.3s;
+    }
+
+    .sidebar .nav-link {
+      color: #adb5bd;
+      margin-bottom: 1rem;
+      border-radius: 8px;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .sidebar .nav-link.active,
+    .sidebar .nav-link:hover {
+      background: #007bff;
+      color: #fff;
+    }
+
+    .sidebar .nav-link i {
+      margin-right: 8px;
+    }
+
+    .main-content {
+      margin-left: 220px;
+      /* padding: 2rem; */
+      transition: margin 0.3s;
+    }
+
+    .topbar {
+      background: #fff;
+      border-bottom: 1px solid #e9ecef;
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .card {
+      border-radius: 16px;
+      box-shadow: 0 2px 16px rgba(0, 0, 0, 0.04);
+      transition: box-shadow 0.2s;
+    }
+
+    .card:hover {
+      box-shadow: 0 4px 32px rgba(0, 123, 255, 0.10);
+    }
+
+    .stat-icon {
+      font-size: 2rem;
+      color: #007bff;
+      margin-bottom: 0.5rem;
+    }
+
+    @media (max-width: 991px) {
+      .sidebar {
+        width: 100px;
+      }
+
+      .main-content {
+        margin-left: 100px;
+      }
+
+      .sidebar .nav-link span {
+        display: none;
+      }
+    }
+
+    @media (max-width: 767px) {
+      .sidebar {
+        display: none;
+      }
+
+      .main-content {
+        margin-left: 0;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="sidebar d-none d-md-block">
+    <div class="text-center mb-4">
+      <h4>NextGen<span class="text-primary">HR</span> </h4>
+    </div>
+    <nav class="nav flex-column">
+      <a class="nav-link" href="./dashboard.html"><i class="bi bi-speedometer2"></i> <span>Dashboard</span></a>
+      <a class="nav-link active" href="./Register.html"><i class="bi bi-people"></i> <span>Register</span></a>
+      <a class="nav-link " href="./approvals.html"><i class="bi bi-check2-square"></i> <span>Approvals</span></a>
+      <a class="nav-link" href="./reminders.html"><i class="bi bi-bell"></i> <span>Reminders</span></a>
+      <a class="nav-link" href="./users.html"><i class="bi bi-people"></i> <span>Users</span></a>
+      <a class="nav-link" href="./departments.html"><i class="bi bi-diagram-3"></i> <span>Departments</span></a>
+      <a class="nav-link" href="./leave_request.html"><i class="bi bi-calendar-check"></i> <span>Leave Requests</span></a>
+      <a class="nav-link" href="./payroll.html"><i class="bi bi-cash-stack"></i> <span>Payroll</span></a>
+      <a class="nav-link" href="./viewJobpostData.html"><i class="bi bi-briefcase"></i> <span>Job Posts</span></a>
+      <a class="nav-link " href="./Attendance.html"><i class="bi bi-person-check"></i> <span>Attendance</span></a>
+
+    </nav>
+  </div>
+  <div class="main-content">
+    <div class="container">
+      <div class="card shadow">
+        <div class="card-header bg-primary text-white">
+          <h4 class="mb-0">Employee Form</h4>
+        </div>
+        <div class="card-body">
+
+          <form method="POST" id="employeeData">
+
+            <div class="row g-3">
+              <input type="hidden" name="type" value="employee">
+
+              <!-- First Name -->
+              <div class="col-md-4">
+                <label class="form-label">First Name</label>
+                <input type="text" class="form-control" name="first_name">
+              </div>
+
+              <!-- Last Name -->
+              <div class="col-md-4">
+                <label class="form-label">Last Name</label>
+                <input type="text" class="form-control" name="last_name">
+              </div>
+
+              <!-- Gender -->
+              <div class="col-md-4">
+                <label class="form-label">Gender</label>
+                <select class="form-select" name="gender">
+                  <option value="">Select Gender</option>
+                  <option>Male</option>
+                  <option>Female</option>
+                  <!-- <option>Other</option> -->
+                </select>
+              </div>
+
+              <!-- DOB -->
+              <div class="col-md-4">
+                <label class="form-label">Date of Birth</label>
+                <input type="date" class="form-control" name="dob">
+              </div>
+
+              <!-- Contact Number -->
+              <div class="col-md-4">
+                <label class="form-label">Contact Number</label>
+                <input type="text" class="form-control" name="contact_number">
+              </div>
+
+              <!-- Email -->
+              <div class="col-md-4">
+                <label class="form-label">Email</label>
+                <input type="email" class="form-control" name="email" required>
+              </div>
+
+              <!-- Company -->
+              <div class="col-md-4">
+                <label class="form-label">Company</label>
+                <select class="form-select" name="company_id" id="comp">
+                  <option>Select Company</option>
+
+                </select>
+              </div>
+              <!-- Branch -->
+              <div class="col-md-4">
+                <label class="form-label">Branch</label>
+                <select class="form-select" name="branch_id">
+                  <option>Select Company</option>
+                </select>
+              </div>
+              <!-- Department -->
+              <div class="col-md-4">
+                <label class="form-label">Department</label>
+                <select class="form-select" name="department_id">
+                  <option>Select Department</option>
+
+                </select>
+              </div>
+
+              <!-- Designation -->
+              <div class="col-md-4">
+                <label class="form-label">Designation</label>
+                <select class="form-select" name="designation_id">
+                  <option>Select Designation</option>
+
+                </select>
+              </div>
+
+
+
+              <!-- Join Date -->
+              <div class="col-md-4">
+                <label class="form-label">Join Date</label>
+                <input type="date" class="form-control" name="join_date">
+              </div>
+
+              <!-- Employment Type -->
+              <div class="col-md-4">
+                <label class="form-label">Employment Type</label>
+                <select class="form-select" name="employment_type">
+                  <option>Select Type</option>
+                  <option>Full Time</option>
+                  <option>Part Time</option>
+                  <option>Intern</option>
+                </select>
+              </div>
+
+              <!-- Reporting Manager -->
+              <div class="col-md-4">
+                <label class="form-label">Reporting Manager</label>
+                <select class="form-select" name="reporting_manager">
+                  <option>Select Manager</option>
+
+                </select>
+              </div>
+
+              <!-- Address Line 1 -->
+              <div class="col-md-6">
+                <label class="form-label">Address Line 1</label>
+                <input type="text" class="form-control" name="address_line1">
+              </div>
+
+              <!-- City -->
+              <div class="col-md-3">
+                <label class="form-label">City</label>
+                <input type="text" class="form-control" name="city">
+              </div>
+
+              <!-- State -->
+              <div class="col-md-3">
+                <label class="form-label">State</label>
+                <input type="text" class="form-control" name="state">
+              </div>
+
+              <!-- Pincode -->
+              <div class="col-md-3">
+                <label class="form-label">Pincode</label>
+                <input type="text" class="form-control" name="pincode">
+              </div>
+
+              <!-- Photo URL -->
+              <div class="col-md-4">
+                <label class="form-label">Photo URL</label>
+                <input type="text" class="form-control" name="photo_url">
+              </div>
+
+              <!-- Username -->
+              <div class="col-md-4">
+                <label class="form-label">Username</label>
+                <input type="text" class="form-control" name="username" required>
+              </div>
+
+              <!-- Password -->
+              <div class="col-md-4">
+                <label class="form-label">Password</label>
+                <input type="password" class="form-control" name="password" required>
+              </div>
+
+              <!-- Role -->
+              <div class="col-md-4">
+                <label class="form-label">Role</label>
+                <select class="form-select" name="role_id">
+                  <option value="">Select Role</option>
+                  <option value="Admin">Admin</option>
+                  <option value="Manager">Manager</option>
+                  <option value="Employe">Employe</option>
+                  <option value="Sr.Devloper">Sr.Devloper</option>
+                  <option value="jn.Devloper">jn.Devloper</option>
+                  <!-- <option value=""></option> -->
+                </select>
+              </div>
+
+              <!-- Status -->
+              <div class="col-md-4">
+                <label class="form-label">Status</label>
+                <select class="form-select" name="status">
+                  <option value="probation">Probation</option>
+                  <option value="confirmed">Confirmed</option>
+                  <option value="resigned">Resigned</option>
+                  <option value="terminated">Terminated</option>
+                </select>
+              </div>
+
+            </div>
+
+            <div class="mt-4 text-end">
+              <button class="btn btn-success px-4">Submit</button>
+            </div>
+
+          </form>
+          <div id="responseMsg" class="mt-3"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    addEventListener('DOMContentLoaded', async (e) => {
+      //1:API use for comapny id or name for dynamic in register.html
+      const response = await fetch('http://localhost:3000/getcomapnydata');
+      const companyData = await response.json();
+      // console.log("comapny", companyData);
+      const select = document.querySelector('select[name="company_id"]');
+      companyData.forEach(company => {
+        const option = document.createElement('option');
+        option.value = company._id;
+        option.textContent = company.name;
+        select.appendChild(option);
+      });
+      //:1.1 API use to Onchange comapny then automatically change  branchs
+      select.addEventListener('change', async () => {
+        const companySelect = document.querySelector('select[name="company_id"]');
+        const companyName = companySelect.options[companySelect.selectedIndex].textContent;
+        const branchSelect = document.querySelector('select[name="branch_id"]');
+        // RESET BRANCH DROPDOWN
+        branchSelect.innerHTML = `<option value="">Select Branch</option>`;
+        const response = await fetch(`http://localhost:3000/getCompanyWiseBranch?companyName=${companyName}`);
+        const branches = await response.json();
+        branches.forEach(br => {
+          const option = document.createElement('option');
+          option.value = br._id;
+          option.textContent = br.name;
+          branchSelect.appendChild(option);
+        });
+      });
+
+      //2:API use for branch id or name for dynamic in register.html
+      const branch_response = await fetch('http://localhost:3000/getbranchdata');
+      const branch_Data = await branch_response.json();
+      // console.log("branch", branch_Data);
+
+      const branch_select = document.querySelector('select[name="branch_id"]');
+      branch_Data.forEach(company => {
+        const branch_option = document.createElement('option');
+        branch_option.value = company._id;
+        branch_option.textContent = company.name;
+        branch_select.appendChild(branch_option);
+      });
+
+      //3:API use for department id or name for dynamic in register.html
+      const department = await fetch('http://localhost:3000/getdepartmentdata');
+      const department_Data = await department.json();
+      // console.log("depart", department_Data);
+
+      const department_select = document.querySelector('select[name="department_id"]');
+      department_Data.forEach(company => {
+        const department_option = document.createElement('option');
+        department_option.value = company._id;
+        department_option.textContent = company.dept_name;
+        department_select.appendChild(department_option);
+      });
+
+      //4:API use for designation id or name for dynamic in register.html
+      const designation = await fetch('http://localhost:3000/getdesignationdata');
+      const designation_Data = await designation.json();
+      // console.log("desig", designation_Data);
+
+      const designation_select = document.querySelector('select[name="designation_id"]');
+      designation_Data.forEach(company => {
+        const designation_option = document.createElement('option');
+        designation_option.value = company._id;
+        designation_option.textContent = company.title;
+        designation_select.appendChild(designation_option);
+      });
+
+      //5 API use for reportingmanger.html id or name dynamic in register.html
+
+      const reportinfetc = await fetch("http://localhost:3000/getreportingmanager")
+      const reportresp = await reportinfetc.json();
+      // console.log(reportresp ,"repo");
+
+      const selector = document.querySelector('select[name="reporting_manager"]');
+      reportresp.forEach(e => {
+        // console.log(e,"e");
+        const report_option = document.createElement('option')
+        report_option.value = e._id;
+        report_option.textContent = e.reporting_manager;
+        selector.appendChild(report_option);
+      });
+
+      //6 :API for store role.html rolename dynamic in register.html
+      const getroll = await fetch("http://localhost:3000/getroledata");
+      // console.log(getroll);
+
+      const rlldata = await getroll.json()
+      console.log(rlldata);
+
+      const roll_select = document.querySelector('select[name="role_id"]');
+      console.log(roll_select);
+
+      rlldata.forEach(s => {
+        const option = document.createElement('option')
+        option.value = s._id;
+        option.textContent = s.role_name
+        roll_select.appendChild(option)
+      });
+
+
+
+
+    });
+
+    //API use for store Register Data in mongodb 
+    const employeeData = document.getElementById('employeeData');
+    employeeData.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const formData = new FormData(employeeData);
+      const obj = Object.fromEntries(formData.entries());
+
+      //API use for Auto Generated register.html Comapny code and save mongodb
+      const lastemploye = async () => {
+        const lastemp = await fetch("http://localhost:3000/lastemployedata");
+        const lastresp = await lastemp.json()
+        // console.log(lastresp, "last");
+        // console.log(lastresp[0].company_id,"company id");
+        let lastempcode = lastresp[0].emp_code;
+        // console.log(lastempcode);
+
+        // let emp_code = "NEXTGEN" + String(parseInt(lastempcode.replace("NEXTGEN", "") + 1).padStart(3, '0'));
+        let emp_code = "NEXTGEN" + String(parseInt(lastempcode.replace("NEXTGEN", "")) + 1).padStart(3, '0');
+        return emp_code;
+      };
+      // formData.set('emp_code', await lastemploye());
+      obj.emp_code = await lastemploye();
+
+
+      const response = await fetch('http://localhost:3000/storeEmployee', {
+        method: 'POST',
+        headers: {
+          'content-type': 'application/json',
+        },
+        body: JSON.stringify(obj),
+      });
+      const result = await response.json();
+      // console.log("res", result);
+
+      const responseMsg = document.getElementById('responseMsg');
+      if (response.ok) {
+        responseMsg.innerHTML = `<div class="alert alert-success">${result.message}</div>`;
+        employeeData.reset();
+      } else {
+        responseMsg.innerHTML = `<div class="alert alert-danger">Data Can't Be Stored</div>`;
+      }
+    });
+  </script>
+</body>
+
+</html>

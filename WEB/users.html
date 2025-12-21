@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Users - NextGenHR</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+  <style>
+    body {
+      background: #f8f9fa;
+    }
+
+    .sidebar {
+      min-height: 100vh;
+      background: #212529;
+      color: #fff;
+      padding-top: 2rem;
+      position: fixed;
+      width: 220px;
+    }
+
+    .sidebar .nav-link {
+      color: #adb5bd;
+      margin-bottom: 1rem;
+      border-radius: 8px;
+    }
+
+    .sidebar .nav-link.active,
+    .sidebar .nav-link:hover {
+      background: #007bff;
+      color: #fff;
+    }
+
+    .sidebar .nav-link i {
+      margin-right: 8px;
+    }
+
+    .main-content {
+      margin-left: 220px;
+      padding: 2rem;
+    }
+
+    .topbar {
+      background: #fff;
+      border-bottom: 1px solid #e9ecef;
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .table-users td,
+    .table-users th {
+      vertical-align: middle;
+    }
+
+    .btn-add {
+      background: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+    }
+
+    .btn-add:hover {
+      background: #0056b3;
+    }
+
+    .btn-edit,
+    .btn-delete {
+      border: none;
+      background: none;
+      color: #007bff;
+      margin-left: 8px;
+    }
+
+    .btn-edit:hover {
+      color: #0056b3;
+    }
+
+    .btn-delete {
+      color: #dc3545;
+    }
+
+    .btn-delete:hover {
+      color: #a71d2a;
+    }
+
+    @media (max-width: 991px) {
+      .sidebar {
+        width: 100px;
+      }
+
+      .main-content {
+        margin-left: 100px;
+      }
+
+      .sidebar .nav-link span {
+        display: none;
+      }
+    }
+
+    @media (max-width: 767px) {
+      .sidebar {
+        display: none;
+      }
+
+      .main-content {
+        margin-left: 0;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="sidebar d-none d-md-block">
+    <div class="text-center mb-4">
+      <h4>NextGen<span class="text-primary">HR</span> </h4>
+    </div>
+    <nav class="nav flex-column">
+      <a class="nav-link" href="./dashboard.html"><i class="bi bi-speedometer2"></i> <span>Dashboard</span></a>
+      <a class="nav-link " href="./Register.html"><i class="bi bi-people"></i> <span>Register</span></a>
+      <a class="nav-link " href="./approvals.html"><i class="bi bi-check2-square"></i> <span>Approvals</span></a>
+      <a class="nav-link" href="./reminders.html"><i class="bi bi-bell"></i> <span>Reminders</span></a>
+      <a class="nav-link active" href="./users.html"><i class="bi bi-people"></i> <span>Users</span></a>
+      <a class="nav-link" href="./departments.html"><i class="bi bi-diagram-3"></i> <span>Departments</span></a>
+      <a class="nav-link" href="./leave_request.html"><i class="bi bi-calendar-check"></i> <span>Leave
+          Requests</span></a>
+      <a class="nav-link" href="./payroll.html"><i class="bi bi-cash-stack"></i> <span>Payroll</span></a>
+      <a class="nav-link" href="./viewJobpostData.html"><i class="bi bi-briefcase"></i> <span>Job Posts</span></a>
+      <a class="nav-link " href="./Attendance.html"><i class="bi bi-person-check"></i> <span>Attendance</span></a>
+
+    </nav>
+  </div>
+  <div class="main-content">
+    <div class="topbar rounded-4 mb-4 d-flex justify-content-between align-items-center shadow-sm px-3">
+      <h5>Users</h5>
+      <div class="dropdown">
+        <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <i class="bi bi-person-circle"></i> Admin
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end">
+          <li><a class="dropdown-item" href="#">Profile</a></li>
+          <li><a class="dropdown-item" href="#">Settings</a></li>
+          <li>
+            <hr class="dropdown-divider">
+          </li>
+          <li><a class="dropdown-item" href="login.html">Logout</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="container-fluid mt-4">
+      <div class="card p-4">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h6>User List</h6>
+          <button class="btn btn-add btn-sm"><i class="bi bi-plus"></i> Add User</button>
+        </div>
+        <table class="table table-users mt-3">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Role</th>
+              <th>Status</th>
+              <th colspan="2">Action</th>
+            </tr>
+          </thead>
+          <tbody id="rolldata"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <!-- modal-body -->
+  <div class="modal fade" id="showApplicationModal" tabindex="-1" aria-labelledby="showApplicationModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="showApplicationModalLabel">Edit Application Details</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form id="editApplicationForm">
+          <div class="modal-body">
+            <input type="hidden" id="editId" name="id">
+            <div class="mb-3">
+              <label class="form-label fw-bold" for="editName">Full Name:</label>
+              <input type="text" class="form-control" id="editName" name="name" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label fw-bold" for="editEmail">Email address:</label>
+              <input type="email" class="form-control" id="editEmail" name="email" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label fw-bold" for="editPosition">Role:</label>
+              <input type="text" class="form-control" id="editPosition" name="position" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label fw-bold" for="status">Status:</label>
+              <input type="text" class="form-control" id="status" name="position" required>
+
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="edit">Close</button>
+            <button type="submit" class="btn btn-primary">Update</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+
+    addEventListener("DOMContentLoaded", async (e) => {
+      try {
+        const res = await fetch('http://localhost:3000/getregisterdata');
+        const usersd = await res.json();
+        // console.log(usersd);
+
+        const tbody = document.getElementById('rolldata');
+        usersd.forEach((user, index) => {
+          tbody.innerHTML +=
+            `<tr>
+              <td>${index + 1}</td>
+              <td>${user.first_name + " " + user.last_name}</td>
+              <td>${user.email}</td>
+              <td>${user.role_id}</td>
+              <td><span class="badge bg-warning">${user.status}</span></td>
+              <td>
+                <button class="text-center btn btn-primary btn-sm showApplicationBtn" data-bs-toggle="modal" data-bs-target="#showApplicationModal" id="edit" data-id="${user._id}"><i class="bi bi-pencil"></i></button>
+                <button class="text-center btn btn-danger btn-sm deltaeApplicationBtn" id="delete" data-id="${user._id}"><i class="bi bi-trash"></i></button>
+              </td>
+            </tr>`;
+        });
+
+        const showApplicationBtn = document.querySelectorAll(".showApplicationBtn");
+        showApplicationBtn.forEach(btn => {
+          btn.addEventListener("click", async (e) => {
+            e.preventDefault();
+            const btnattribute = btn.getAttribute("data-id");
+            // console.log(btnattribute);
+            const idobj = {
+              id: btnattribute
+            }
+            // console.log(idobj);
+
+            //single data api 
+            const res = await fetch("http://localhost:3000/singleuserdashboard", {
+              method: "POST",
+              headers: {
+                "content-type": "application/json",
+              },
+              body: JSON.stringify(idobj)
+            })
+            // console.log(res);
+
+            const data = await res.json();
+            // console.log(data);
+
+            document.getElementById("editId").textContent = data._id
+            document.getElementById("editName").value = data.first_name + " " + data.last_name
+            document.getElementById("editEmail").value = data.email
+            document.getElementById("editPosition").value = data.role_id
+            document.getElementById("status").value = data.status
+          })
+        });
+        // updated data api
+        const editApplicationForm = document.getElementById("editApplicationForm")
+        editApplicationForm.addEventListener("submit", async (e) => {
+          e.preventDefault();
+
+          const id = document.getElementById("editId").value
+          const updatedobj = {
+            name: document.getElementById("editName").value,
+            email: document.getElementById("editEmail").value,
+            role: document.getElementById("editPosition").value,
+            status: document.getElementById("status").value
+          };
+          const upfetch = await fetch("http://localhost:3000/updateduserdashboard", {
+            method: "PUT",
+            headers: {
+              "content-type": "application/json"
+            },
+            body: JSON.stringify({ id, ...updatedobj })
+          })
+          console.log(upfetch);
+
+          const updata = await upfetch.json()
+          console.log(updata);
+
+          if (upfetch.ok) {
+            alert(`${updata.msg}`)
+            location.reload()
+          }
+          else {
+            alert("Data Can't be Updated")
+          }
+        })
+
+        //delate api 
+        const deltaeApplicationBtn = document.querySelectorAll(".deltaeApplicationBtn");
+        deltaeApplicationBtn.forEach(btn => {
+          btn.addEventListener("click", async (e) => {
+            e.preventDefault()
+            const delbtn = btn.getAttribute("data-id")
+            //  console.log(delbtn);
+            const delobj = {
+              id: delbtn
+            }
+            //  console.log(delobj);
+
+            const delfetch = await fetch("http://localhost:3000/deleteuserdashboard", {
+              method: "DELETE",
+              headers: {
+                "content-type": "application/json"
+              },
+              body: JSON.stringify(delobj)
+            })
+            console.log(delfetch);
+
+            const deldata = await delfetch.json()
+            console.log(deldata);
+
+            if (delfetch.ok) {
+              alert(`User Data Delete Sucssesfully`)
+              location.reload()
+            }
+
+            else {
+              alert("User Data Can't be Delete")
+            }
+
+
+          })
+        });
+
+      }
+      catch (err) {
+        console.error('Eroor In Your Side', err);
+      }
+    })
+  </script>
+</body>
+
+</html>
