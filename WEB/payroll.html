@@ -89,7 +89,26 @@
     .btn-delete:hover {
       color: #a71d2a;
     }
+ tbody tr {
+            transition: all 0.25s ease-in-out;
+        }
 
+        label {
+            cursor: pointer;
+        }
+
+        tbody tr:hover {
+
+            transform: translateX(6px);
+            cursor: pointer;
+
+        }
+
+        .table,
+        .table th,
+        .table td {
+            border: none !important;
+        }
     @media (max-width: 991px) {
       .sidebar {
         width: 100px;

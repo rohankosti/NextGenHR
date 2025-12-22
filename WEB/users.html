@@ -89,7 +89,26 @@
     .btn-delete:hover {
       color: #a71d2a;
     }
+ tbody tr {
+            transition: all 0.25s ease-in-out;
+        }
 
+        label {
+            cursor: pointer;
+        }
+
+        tbody tr:hover {
+
+            transform: translateX(6px);
+            cursor: pointer;
+
+        }
+
+        .table,
+        .table th,
+        .table td {
+            border: none !important;
+        }
     @media (max-width: 991px) {
       .sidebar {
         width: 100px;
@@ -157,7 +176,7 @@
       <div class="card p-4">
         <div class="d-flex justify-content-between align-items-center mb-3">
           <h6>User List</h6>
-          <button class="btn btn-add btn-sm"><i class="bi bi-plus"></i> Add User</button>
+          <a href="./Register.html"><button class="btn btn-add btn-sm"><i class="bi bi-plus"></i> Add User</button></a>
         </div>
         <table class="table table-users mt-3">
           <thead>
@@ -261,25 +280,25 @@
             // console.log(res);
 
             const data = await res.json();
-            // console.log(data);
+            console.log(data, "single data");
+            document.getElementById("editId").value = data._id;
+            document.getElementById("editName").value = data.first_name;
+            document.getElementById("editEmail").value = data.email;
+            document.getElementById("editPosition").value = data.role_id;
+            document.getElementById("status").value = data.status;
 
-            document.getElementById("editId").textContent = data._id
-            document.getElementById("editName").value = data.first_name + " " + data.last_name
-            document.getElementById("editEmail").value = data.email
-            document.getElementById("editPosition").value = data.role_id
-            document.getElementById("status").value = data.status
           })
         });
         // updated data api
         const editApplicationForm = document.getElementById("editApplicationForm")
         editApplicationForm.addEventListener("submit", async (e) => {
           e.preventDefault();
-
           const id = document.getElementById("editId").value
+          console.log(id,"upid");
           const updatedobj = {
-            name: document.getElementById("editName").value,
+            first_name: document.getElementById("editName").value,
             email: document.getElementById("editEmail").value,
-            role: document.getElementById("editPosition").value,
+            role_id: document.getElementById("editPosition").value,
             status: document.getElementById("status").value
           };
           const upfetch = await fetch("http://localhost:3000/updateduserdashboard", {
@@ -289,10 +308,10 @@
             },
             body: JSON.stringify({ id, ...updatedobj })
           })
-          console.log(upfetch);
+          // console.log(upfetch);
 
           const updata = await upfetch.json()
-          console.log(updata);
+          console.log(updata, "updata");
 
           if (upfetch.ok) {
             alert(`${updata.msg}`)

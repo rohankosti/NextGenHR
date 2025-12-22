@@ -32,11 +32,11 @@ router.get("/getdepartmentdata", async (req, res) => {
 
 router.post("/singledata", async (req, res) => {
   const single = req.body;
-  // console.log(sinparse);
+  console.log(single);
   const sincollection = await dbs
     .collection("Department")
     .findOne({ _id: new ObjectId(single.id) });
-  res.setatus(200).send(sincollection);
+  res.status(200).send(sincollection);
 });
 
 router.put("/Updateddata", async (req, res) => {
@@ -46,9 +46,9 @@ router.put("/Updateddata", async (req, res) => {
     {
       $set: {
         dept_name: updatebody.dep,
-        company_id: updatebody.com,
-        branch_id: updatebody.bra,
-        manager_id: updatebody.man,
+          company_id: updatebody.com,
+          branch_id: updatebody.bra,
+          manager_id: updatebody.man,
       },
     }
   );

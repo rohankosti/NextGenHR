@@ -35,27 +35,26 @@ router.post("/getsingalattendancedata", async (req, res) => {
     .findOne({ _id: new ObjectId(singledata.id) });
   res.status(200).send(single);
 });
-
 router.put("/updatedattandancedata", async (req, res) => {
-  const updatebody = req.body;
-  console.log(updatebody);
-  
+  const u = req.body;
+  console.log(u);
   const upcollection = await dbs.collection("Attendance").updateOne(
-    { _id: new ObjectId(updatebody.id) },
+    { _id: new ObjectId(u.id) },
     {
-       $set: {
-          emp_id: updatebody.emp_id,
-          date: updatebody.Date,
-          check_in: updatebody.Check_in,
-          check_out: updatebody.Check_out,
-          status: updatebody.Stetus,
-        },
+      $set: {
+        emp_id: u.emp_id,
+        date: u.date,
+        check_in: u.check_in,
+        check_out: u.check_out,
+        status: u.status,
+      },
     }
   );
+
   if (upcollection.modifiedCount === 1) {
-    res.status(200).send({ msg: "Attandance Data Sucsessfully Updated" });
+    res.status(200).send({ msg: "Attendance Data Successfully Updated" });
   } else {
-    res.status(200).send({ msg: "Attandance Data Can't Be Updated" });
+    res.status(200).send({ msg: "Attendance Data Can't Be Updated" });
   }
 });
 

@@ -18,7 +18,7 @@ const router = Router();
 const dbs = client.db(dbs_name);
 
 //1:API to fetch Register.html form data and save in Mongodb database
-router.post("/registerdata", async (req, res) => {
+router.post("/storeEmployee", async (req, res) => {
   const body = req.body;
   const ragisterCollection = dbs.collection("Register").insertOne(body);
   res.status(200).send({ message: "Employee Data Stored Successfully" });
@@ -26,7 +26,12 @@ router.post("/registerdata", async (req, res) => {
 
 //API use for Auto Generated register.html Comapny code and save mongodb
 router.get("/lastemployedata", async (req, res) => {
-  const lastemp = await dbs.collection("Register").find({}).sort({ _id: -1 }).limit(1).toArray();
+  const lastemp = await dbs
+    .collection("Register")
+    .find({})
+    .sort({ _id: -1 })
+    .limit(1)
+    .toArray();
   res.status(200).send(lastemp);
 });
 
@@ -36,6 +41,8 @@ router.get("/getregisterdata", async (req, res) => {
 });
 router.post("/singleuserdashboard", async (req, res) => {
   const body = req.body;
+  console.log(body);
+
   const single = await dbs
     .collection("Register")
     .findOne({ _id: new ObjectId(body.id) });
@@ -50,9 +57,9 @@ router.put("/updateduserdashboard", async (req, res) => {
     { _id: new ObjectId(body.id) },
     {
       $set: {
-        name: body.name,
+        first_name: body.first_name,
         email: body.email,
-        role: body.role,
+        role_id: body.role_id,
         status: body.status,
       },
     }

@@ -37,7 +37,7 @@ res.status(200).send(branchData);
 //3 API use for find branch collection and company and change branch name
 router.get("/getCompanyWiseBranch", async (req, res) => {
   const companyName = req.query.companyName;
-  const branches = await req.app.locals.dbs.collection("Branch").find({ comany: companyName }).toArray();
+  const branches = await dbs.collection("Branch").find({ comany: companyName }).toArray() 
   res.status(200).send(branches);
 });
 
@@ -45,11 +45,11 @@ export default router;
 
 
 // router.get("/getCompanyWiseBranch", async (req, res, dbs) => {
-//new URL: URL ko parse karta hai(object) 
-  // new URL( // req.url, "/getbranch?companyName=NextGen" // http://${req.headers.host} "http://localhost:3000" // ); 
-  // const urlObj = new URL(req.url, http://${req.headers.host}); 
-  // console.log(urlObj); const companyName = urlObj.searchParams.get("companyName"); 
-  // // console.log("Backend received:", companyName);
-  //  const branches=await dbs.collection("Branch").find({ comany: companyName }).toArray() 
-  // res.status(200).send(branches);
-  //  });
+// new URL: URL ko parse karta hai(object) 
+//   new URL( // req.url, "/getbranch?companyName=NextGen" // http://${req.headers.host} "http://localhost:3000" // ); 
+//   const urlObj = new URL(req.url, http://${req.headers.host}); 
+//   console.log(urlObj); const companyName = urlObj.searchParams.get("companyName"); 
+//   // console.log("Backend received:", companyName);
+//    const branches=await dbs.collection("Branch").find({ comany: companyName }).toArray() 
+//   res.status(200).send(branches);
+//    });
