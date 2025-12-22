@@ -30,7 +30,7 @@ router.get("/getdepartmentdata", async (req, res) => {
   res.status(200).send(departmentData);
 });
 
-router.post("/singledata", async (req, res, dbs) => {
+router.post("/singledata", async (req, res) => {
   const single = req.body;
   // console.log(sinparse);
   const sincollection = await dbs
@@ -59,7 +59,7 @@ router.put("/Updateddata", async (req, res) => {
   }
 });
 
-router.delete("/Deletedata", async (req, res, dbs) => {
+router.delete("/Deletedata", async (req, res) => {
   const delparse = req.body;
   const delcollection = await dbs
     .collection("Department")

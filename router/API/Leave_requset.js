@@ -59,7 +59,7 @@ router.put("/updatedleaverequest", async (req, res) => {
   }
 });
 
-router.delete("/delateleaverequest", async (req, res, dbs) => {
+router.delete("/delateleaverequest", async (req, res) => {
   const deldata = req.body;
   const rejcollection = await dbs
     .collection("LeaveRequset")
