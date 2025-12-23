@@ -8,7 +8,7 @@ const dbs_name = process.env.MONGO_DB;
 client
   .connect()
   .then(() => {
-    console.log("MongoDB connected successfully");
+    // console.log("MongoDB connected successfully");
   })
   .catch((err) => {
     console.log("MongoDb Server Not Connected ! Error", err);

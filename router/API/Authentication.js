@@ -19,19 +19,20 @@ const dbs = client.db(dbs_name);
 
 router.post("/logindata", async (req, res) => {
   const auth = req.body;
-  // console.log(auth);
+  console.log(auth);
   
-    const logindata = await dbs.collection("Register").findOne({ email: auth.email });
+    const logindata = await dbs.collection("Register").findOne({ email: parse.email });
     if (logindata) {
-      if (auth.email === logindata.email) {
-        res.status(200).send({ msg: "Login Successful", data: logindata });
+      if (parse.email === logindata.email) {
+        res.status(200).json(logindata);
       } else {
-        res.status(401).send({ msg: "Invalid Email or Password" });
+        res.status(401).json({ msg1: "Invalid Password" });
       }
     } else {
-      res.status(404).send({ msg: "User Not Found" });
+      res.status(404).json({ msg2: "User Not Found" });
     }
   });
+
 
 
 export default router;

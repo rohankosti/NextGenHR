@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Attendance - NextGenHR</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
+  <style>
+    body {
+      background: #f8f9fa;
+    }
+
+    .sidebar {
+      min-height: 100vh;
+      background: #212529;
+      color: #fff;
+      padding-top: 2rem;
+      position: fixed;
+      width: 220px;
+    }
+
+    .sidebar .nav-link {
+      color: #adb5bd;
+      margin-bottom: 1rem;
+      border-radius: 8px;
+    }
+
+    .sidebar .nav-link.active,
+    .sidebar .nav-link:hover {
+      background: #007bff;
+      color: #fff;
+    }
+
+    .sidebar .nav-link i {
+      margin-right: 8px;
+    }
+
+    .main-content {
+      margin-left: 220px;
+      padding: 2rem;
+    }
+
+    .topbar {
+      background: #fff;
+      border-bottom: 1px solid #e9ecef;
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .table-attendance td,
+    .table-attendance th {
+      vertical-align: middle;
+    }
+
+    .btn-edit {
+      background: #0d6efd;
+      color: #fff;
+      border-radius: 6px;
+    }
+
+    .btn-delete {
+      background: #dc3545;
+      color: #fff;
+      border-radius: 6px;
+    }
+
+    .btn-edit:hover {
+      background: #0b5ed7;
+    }
+
+    .btn-delete:hover {
+      background: #bb2d3b;
+    }
+
+    .footer {
+      background: #343a40;
+      color: #fff;
+      padding: 30px 0 10px 0;
+    }
+
+    .navbar-brand span {
+      color: #007bff;
+    }
+
+    label {
+      cursor: pointer;
+    }
+
+    /* table tr:hover {
+      text-decoration: none;
+      transform: translateX(5px);
+      transition:all 0.2s ease-in-out;
+    } */
+    tbody tr {
+      transition: all 0.25s ease-in-out;
+    }
+
+    tbody tr:hover {
+
+      transform: translateX(6px);
+      cursor: pointer;
+
+    }
+
+    .table,
+    .table th,
+    .table td {
+      border: none !important;
+    }
+
+
+    @media (max-width: 991px) {
+      .sidebar {
+        width: 100px;
+      }
+
+      .main-content {
+        margin-left: 100px;
+      }
+
+      .sidebar .nav-link span {
+        display: none;
+      }
+    }
+
+    @media (max-width: 767px) {
+      .sidebar {
+        display: none;
+      }
+
+      .main-content {
+        margin-left: 0;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Sidebar -->
+  <div class="sidebar d-none d-md-block">
+    <div class="text-center mb-4">
+      <h4>NextGen<span class="text-primary">HR</span></h4>
+    </div>
+
+    <nav class="nav flex-column">
+      <a class="nav-link" href="/Dashboard"><i class="bi bi-speedometer2"></i> <span>Dashboard</span></a>
+      <a class="nav-link" href="/Register"><i class="bi bi-people"></i> <span>Register</span></a>
+      <a class="nav-link" href="/Approvals"><i class="bi bi-check2-square"></i> <span>Approvals</span></a>
+      <a class="nav-link" href="/Reminders"><i class="bi bi-bell"></i> <span>Reminders</span></a>
+      <a class="nav-link" href="/Users"><i class="bi bi-people"></i> <span>Users</span></a>
+      <a class="nav-link" href="/Departments"><i class="bi bi-diagram-3"></i> <span>Departments</span></a>
+      <a class="nav-link" href="/Leave_Request"><i class="bi bi-calendar-check"></i> <span>Leave Requests</span></a>
+      <a class="nav-link" href="/Payroll"><i class="bi bi-cash-stack"></i> <span>Payroll</span></a>
+      <a class="nav-link" href="/viewJobpostData"><i class="bi bi-briefcase"></i> <span>Job Posts</span></a>
+      <a class="nav-link" href="/Attendance"><i class="bi bi-person-check"></i> <span>Attendance</span></a>
+
+    </nav>
+  </div>

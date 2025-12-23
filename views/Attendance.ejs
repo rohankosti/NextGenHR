@@ -1,0 +1,283 @@
+<%- include('Layout-nav/header'); %>
+
+<!-- Main Content -->
+  <div class="main-content">
+
+    <!-- Topbar -->
+    <div class="topbar rounded-4 mb-4 shadow-sm px-3">
+      <h5>Attendance Records</h5>
+      <div class="dropdown d-flex align-items-center gap-2">
+
+        <!-- Leave Form Button -->
+        <a href="/Modal_Page/Attendance-form.html" class="btn btn-primary">
+          Attendance Form
+        </a>
+
+        <!-- Admin Dropdown -->
+        <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown">
+          <i class="bi bi-person-circle"></i> Admin
+        </button>
+
+        <ul class="dropdown-menu dropdown-menu-end">
+          <li><a class="dropdown-item" href="#">Profile</a></li>
+          <li><a class="dropdown-item" href="#">Settings</a></li>
+          <li>
+            <hr class="dropdown-divider">
+          </li>
+          <li><a class="dropdown-item" href="login.html">Logout</a></li>
+        </ul>
+
+      </div>
+
+    </div>
+
+    <div class="container-fluid">
+      <div class="card p-4">
+
+        <!-- <h6 class="mb-3">Attendance List</h6> -->
+
+        <table class="table table-attendance mt-3 align-middle">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Employee</th>
+              <th>Date</th>
+              <th>Check-In</th>
+              <th>Check-Out</th>
+              <th>Status</th>
+              <th colspan="2">Actions</th>
+            </tr>
+          </thead>
+
+          <tbody id="attendanceTable">
+            <!-- JS se dynamically rows aa jayegi -->
+          </tbody>
+
+        </table>
+
+      </div>
+    </div>
+
+  </div>
+
+
+
+  <!-- Update Attendance Modal -->
+  <div class="modal fade" id="updateAttendanceModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+
+        <div class="modal-header bg-primary text-white">
+          <h5 class="modal-title">Update Attendance</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+
+        <div class="modal-body">
+
+          <form id="updateAttendanceForm">
+            <input type="hidden" id="editId" name="id">
+            <!-- Employee -->
+
+            <div class="mb-3">
+              <label class="form-label " for="editName">Full Name:</label>
+              <input type="text" class="form-control" id="editName" name="name" required>
+            </div>
+
+            <!-- Date -->
+            <div class="mb-3">
+              <label class="form-label">Date</label>
+              <input type="date" class="form-control" id="edit_date">
+            </div>
+
+            <!-- Check In -->
+            <div class="mb-3">
+              <label class="form-label">Check In</label>
+              <input type="time" class="form-control" id="edit_check_in">
+            </div>
+
+            <!-- Check Out -->
+            <div class="mb-3">
+              <label class="form-label">Check Out</label>
+              <input type="time" class="form-control" id="edit_check_out">
+            </div>
+
+            <!-- Status -->
+            <div class="mb-3">
+              <label class="form-label">Status</label>
+              <select class="form-select" id="edit_status">
+                <option value="Present">Present</option>
+                <option value="Absent">Absent</option>
+                <option value="Leave">Leave</option>
+              </select>
+            </div>
+
+            <div class="modal-footer d-flex justify-content-end">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                Close
+              </button>
+              <button type="submit" class="btn btn-primary" id="saveAttendanceBtn">
+                Save Changes
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    addEventListener("DOMContentLoaded", async (e) => {
+      try {
+        //Maping id = name for crud 
+        const empRes = await fetch("http://localhost:3000/getregisterdata");
+        const employees = await empRes.json();
+        // console.log(employees,"emp");
+        const empMap = {};
+        employees.forEach(emp => {
+          empMap[emp._id] = emp.first_name + " " + emp.last_name;
+        });
+        // console.log("empMap", empMap);
+        const attendanceTable = document.getElementById("attendanceTable");
+        const res = await fetch("http://localhost:3000/getattendancedata")
+        // console.log(res);
+        const data = await res.json()
+        // console.log(data, "attendace data");
+        data.forEach((e, index) => {
+          attendanceTable.innerHTML += `
+           <tr>
+              <td>${index + 1}</td>
+              <td>${empMap[e.emp_id]}</td>
+              <td>${e.date}</td>
+              <td>${e.check_in}</td>
+              <td>${e.check_out}</td>
+              <td>${e.status}</td>
+              <td>                                                                                                                                      
+                <button class="text-center btn btn-primary btn-sm showApplicationBtn" data-bs-toggle="modal" data-bs-target="#updateAttendanceModal" id="edit" data-id="${e._id}"><i class="bi bi-pencil"></i></button>
+                <button class="text-center btn btn-danger btn-sm deltaeApplicationBtn" id="delete" data-id="${e._id}"><i class="bi bi-trash"></i></button>
+              </td>
+            </tr>
+           `
+        });
+
+        const showApplicationBtn = document.querySelectorAll(".showApplicationBtn");
+        // console.log(showApplicationBtn,"sd");
+        let currentRecord = null;  // GLOBAL
+
+        showApplicationBtn.forEach(btn => {
+          // console.log(btn);
+          btn.addEventListener("click", async (e) => {
+            // e.preventDefault()
+            const btnattr = btn.getAttribute("data-id")
+            // console.log(btnattr);
+            const obj = {
+              id: btnattr
+            }
+            // console.log(obj);
+            //single updated api
+            const sinfetch = await fetch("http://localhost:3000/getsingalattendancedata", {
+              method: "POST",
+              headers: {
+                "content-type": "application/json"
+              },
+              body: JSON.stringify(obj)
+            })
+            const sindata = await sinfetch.json()
+            console.log(sindata);
+
+            currentRecord = sindata
+            // console.log(sindata,"sindata");          
+            document.getElementById("editId").value = sindata._id
+            document.getElementById("editName").value = empMap[sindata.emp_id];
+            document.getElementById("edit_date").value = sindata.date
+            document.getElementById("edit_check_in").value = sindata.check_in
+            document.getElementById("edit_check_out").value = sindata.check_out
+            document.getElementById("edit_status").value = sindata.status
+          })
+        });
+        // updated api 
+        const updateAttendanceForm = document.getElementById("updateAttendanceForm");
+        // console.log(updateAttendanceForm);
+        updateAttendanceForm.addEventListener("submit", async (e) => {
+          e.preventDefault()
+          const id = document.getElementById("editId").value
+          const upobj = {
+            emp_id: currentRecord.emp_id,
+            date: document.getElementById("edit_date").value,
+            check_in: document.getElementById("edit_check_in").value,
+            check_out: document.getElementById("edit_check_out").value,
+            status: document.getElementById("edit_status").value
+          };
+          // console.log(upobj, "up");
+
+          const upfetch = await fetch("http://localhost:3000/updatedattandancedata", {
+            method: "PUT",
+            headers: {
+              "content-type": "application/json"
+            },
+            body: JSON.stringify({ id, ...upobj })
+          });
+
+
+          console.log(upfetch, "up");
+          const updata = await upfetch.json()
+          // console.log(updata, "up");
+
+          if (upfetch.ok) {
+            alert(`${updata.msg}`)
+            location.reload()
+          }
+          else {
+            alert("Data Can't Be Updated")
+          }
+        })
+
+        //  delete api 
+        const deltaeApplicationBtn = document.querySelectorAll(".deltaeApplicationBtn");
+        deltaeApplicationBtn.forEach(btn => {
+          btn.addEventListener("click", async (e) => {
+            e.preventDefault()
+            const delbtn = btn.getAttribute("data-id")
+            //  console.log(delbtn);
+            const delobj = {
+              id: delbtn
+            }
+            //  console.log(delobj);
+
+            const delfetch = await fetch("http://localhost:3000/deletedataattandance", {
+              method: "DELETE",
+              headers: {
+                "content-type": "application/json"
+              },
+              body: JSON.stringify(delobj)
+            })
+            // console.log(delfetch);
+
+            const deldata = await delfetch.json()
+            // console.log(deldata);
+
+            if (delfetch.ok) {
+              alert(`User Data Delete Sucssesfully`)
+              location.reload()
+            }
+
+            else {
+              alert("User Data Can't be Delete")
+            }
+
+
+          })
+        });
+
+
+      }
+      catch (error) {
+        console.error("Eroor In Your Side", error);
+
+      }
+    })
+  </script>
+
+<%- include('Layout-nav/footer'); %>

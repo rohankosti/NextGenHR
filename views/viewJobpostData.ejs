@@ -1,0 +1,213 @@
+<%- include('Layout-nav/header'); %>
+<section>
+        <div class="main-content">
+            <div class="container py-4 flex-grow-1">
+                <div class="topbar rounded-4 mb-4 d-flex justify-content-between align-items-center shadow-sm p-3">
+                    <h5>Job Applications</h5>
+                    <div class="dropdown">
+                        <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                            <i class="bi bi-person-circle"></i> Admin
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="#">Profile</a></li>
+                            <li><a class="dropdown-item" href="#">Settings</a></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li><a class="dropdown-item" href="login.html">Logout</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div>
+                    <table class="table ">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Id</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Position</th>
+                                <th>Resume</th>
+                                <th colspan="2" class="text-center">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="jobpostdata"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+ 
+
+    <div class="modal fade" id="showApplicationModal" tabindex="-1" aria-labelledby="showApplicationModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="showApplicationModalLabel">Edit Application Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="editApplicationForm">
+                    <div class="modal-body">
+                        <input type="hidden" id="editId" name="id">
+                        <div class="mb-3">
+                            <label class="form-label fw-bold" for="editName">Full Name:</label>
+                            <input type="text" class="form-control" id="editName" name="name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-bold" for="editEmail">Email address:</label>
+                            <input type="email" class="form-control" id="editEmail" name="email" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-bold" for="editPosition">Position Applied For:</label>
+                            <input type="text" class="form-control" id="editPosition" name="position" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-bold" for="editResume">Resume:</label>
+                            <textarea class="form-control" id="editResume" name="resume" rows="4" required></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="edit">Close</button>
+                        <button type="submit" class="btn btn-primary">Update</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+
+        addEventListener("DOMContentLoaded", async () => {
+            try {
+                //Fetch Data from jobvecencylist API and show in table
+                let fetch_data = await fetch("http://localhost:3000/jobvecancylist")
+                let response = await fetch_data.json();
+                // console.log(response,"response");
+
+                let tablebody = document.getElementById("jobpostdata");
+
+                response.forEach((e, index) => {
+                    tablebody.innerHTML +=
+                        `<tr> 
+                        <td>${index + 1}</td>
+                        <td>${e.name}</td>
+                        <td>${e.email}</td>
+                        <td>${e.position}</td>
+                        <td>${e.resume}</td>
+                        <td><button class="text-center btn btn-primary btn-sm showApplicationBtn" data-bs-toggle="modal" data-bs-target="#showApplicationModal" id="edit" data-id="${e._id}">Edit</button></td>
+                        <td><button class="text-center btn btn-danger btn-sm delateApplicationBtn" id="delete" data-id="${e._id}">Delete</button></td>
+                    </tr>`
+                });
+
+                // Show Application Details in Modal
+                const modeleditbtn = document.querySelectorAll('.showApplicationBtn'); //return all edit btn then use queryselectorall
+                //  console.log(modeleditbtn);
+
+                modeleditbtn.forEach(btn => {
+                    btn.addEventListener("click", async (e) => {
+                        e.preventDefault();
+                        const btnattribute = btn.getAttribute("data-id");
+                        // console.log(btnattribute);
+                        idobj = { id: btnattribute };
+                        //Fetch Single Data from jobvecancysingledata API
+                        const singlefetch = await fetch("http://localhost:3000/jobvecancysingledata", {
+                            method: "POST",
+                            headers: {
+                                "content-type": "application/json",
+                            },
+                            body: JSON.stringify(idobj)
+                        });
+
+
+                        const singleresponse = await singlefetch.json();
+                        // console.log(singleresponse,"singleresponse");
+
+                        document.getElementById("editId").value = singleresponse._id;
+                        document.getElementById("editName").value = singleresponse.name;
+                        document.getElementById("editEmail").value = singleresponse.email;
+                        document.getElementById("editPosition").value = singleresponse.position;
+                        document.getElementById("editResume").value = singleresponse.resume;
+                    });
+                });
+                // Update Application Details in Modal
+                const updateform = document.getElementById("editApplicationForm")
+                updateform.addEventListener("submit", async (e) => {
+                    e.preventDefault();
+                    const id = document.getElementById("editId").value;
+                    const updateddata = {
+                        name: document.getElementById("editName").value,
+                        email: document.getElementById("editEmail").value,
+                        position: document.getElementById("editPosition").value,
+                        resume: document.getElementById("editResume").value,
+                    }
+                    const update_fetch = await fetch("http://localhost:3000/updatejobapplicationdata",
+                        {
+                            method: "PUT",
+                            headers: {
+                                "content-type": "application/json",
+                            },
+                            body: JSON.stringify({ id, ...updateddata })
+                        }
+                    )
+                    //  console.log(update_fetch);
+
+                    const update_response = await update_fetch.json();
+                    // console.log(update_response);
+
+                    if (update_fetch.ok) {
+                        alert("Application updated successfully!");
+                        location.reload();
+                    }
+                    else {
+                        alert(`failed to update application: ${update_response.message}`);
+                    }
+                })
+
+
+                //Delate Application from viewJobpostData table
+                const deletebtn = document.querySelectorAll('.delateApplicationBtn'); //return all delete btn 
+                // console.log(deletebtn);
+
+                deletebtn.forEach(btn => {
+                    // console.log(btn);
+                    btn.addEventListener("click", async (e) => {
+                        e.preventDefault();
+                        const btnattri = btn.getAttribute("data-id");
+                        console.log(btnattri);
+                        const deleteobj = { id: btnattri };
+
+                        const delate_fetch = await fetch("http://localhost:3000/deletejobapplicationdata", {
+                            method: "DELETE",
+                            headers: {
+                                "content-type": "application/json",
+                            },
+                            body: JSON.stringify(deleteobj)
+                        });
+                        // console.log(delate_fetch,"delate fetch");
+                        const delate_response = await delate_fetch.json();
+                        // console.log(delate_response,"delate response");
+
+                        if (delate_fetch.ok) {
+                            alert(`Application deleted successfully! ${delate_response.message}`);
+                            location.reload();
+
+                        }
+                        else {
+                            alert(`failed to delete application: ${delate_response.message}`);
+                        }
+                    })
+                });
+
+
+            }
+            catch (error) {
+                console.error(error);
+            }
+
+        });
+    </script>
+
+<%- include('Layout-nav/footer'); %>

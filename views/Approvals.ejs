@@ -1,0 +1,68 @@
+<%-include('Layout-nav/header');%>
+  <div class="main-content">
+    <div class="topbar rounded-4 mb-4 d-flex justify-content-between align-items-center shadow-sm px-3">
+      <h5>Approvals</h5>
+      <div class="dropdown">
+        <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <i class="bi bi-person-circle"></i> Admin
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end">
+          <li><a class="dropdown-item" href="#">Profile</a></li>
+          <li><a class="dropdown-item" href="#">Settings</a></li>
+          <li>
+            <hr class="dropdown-divider">
+          </li>
+          <li><a class="dropdown-item" href="login.html">Logout</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="container-fluid mt-4">
+      <div class="card p-4">
+        <h6>Pending Approvals</h6>
+        <table class="table table-approvals mt-3">
+          <thead>
+            <tr>
+              <th>Type</th>
+              <th>Employee</th>
+              <th>Details</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Leave</td>
+              <td>John Doe</td>
+              <td>Annual Leave (5 days)</td>
+              <td><span class="badge bg-warning">Pending</span></td>
+              <td>
+                <button class="btn btn-approve btn-sm">Approve</button>
+                <button class="btn btn-reject btn-sm">Reject</button>
+              </td>
+            </tr>
+            <tr>
+              <td>Payroll</td>
+              <td>Jane Smith</td>
+              <td>Salary Adjustment</td>
+              <td><span class="badge bg-warning">Pending</span></td>
+              <td>
+                <button class="btn btn-approve btn-sm">Approve</button>
+                <button class="btn btn-reject btn-sm">Reject</button>
+              </td>
+            </tr>
+            <tr>
+              <td>Attendance</td>
+              <td>Michael Lee</td>
+              <td>Correction Request</td>
+              <td><span class="badge bg-warning">Pending</span></td>
+              <td>
+                <button class="btn btn-approve btn-sm">Approve</button>
+                <button class="btn btn-reject btn-sm">Reject</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+ <%-include('Layout-nav/footer');%>

@@ -1,89 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NextGen HR - Careers</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://kit.fontawesome.com/4cdd077a78.js" crossorigin="anonymous"></script>
-    <style>
-        .hero {
-            background: linear-gradient(90deg, #007bff 60%, #6c757d 100%);
-            color: #fff;
-            padding: 80px 0 60px 0;
-            text-align: center;
-        }
-
-        .section-title {
-            margin-bottom: 2rem;
-        }
-
-        .footer {
-            background: #343a40;
-            color: #fff;
-            padding: 30px 0 10px 0;
-        }
-
-        .navbar-brand span {
-            color: #007bff;
-        }
-
-        .admin-btn {
-            background-color: #ffc107;
-            /* bright yellow */
-            color: #000;
-            padding: 8px 18px;
-            border-radius: 50px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            z-index: 1000;
-            text-decoration: none;
-        }
-
-        .admin-btn:hover {
-            transition: all 0.5s ease;
-            background-color: #e0a800;
-            color: #fff;
-            transform: scale(1.05);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-        }
-    </style>
-</head>
-
-<body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-lg py-3">
-        <div class="container">
-            <!-- Brand -->
-            <a class="navbar-brand" href="#"><span>NextGen</span> HR</a>
-
-            <!-- Navbar toggler for mobile -->
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
-            <!-- Nav links -->
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto align-items-center">
-                    <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#services">Services</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#blog">Blog</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
-                    <li class="nav-item"><a class="nav-link" href="jobpost.html">Job Post</a></li>
-                    <!-- Admin Button aligned with Job Post -->
-                    <li class="nav-item ms-2 " style="position: relative; left: 50px;">
-                        <a href="login.html" class="rounded-2 nav-link btn admin-btn d-flex align-items-center">
-                            <i class="fa-solid fa-user m-1"></i> Admin
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-
-    <!-- Hero Area -->
+<%- include('Partials/header'); %>
+<!-- Hero Area -->
     <section class="hero" id="hero">
         <div class="container">
             <h1 class="display-4">Join Our Team at NextGen HR</h1>
@@ -221,16 +137,4 @@
             </div>
         </div>
     </section>
-
-    <!-- Footer -->
-    <footer class="footer text-center">
-        <div class="container">
-            <p class="mb-1">&copy; 2025 NextGen HR. All rights reserved.</p>
-            <small>Empowering people, powering business.</small>
-        </div>
-    </footer>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.js"></script>
-</body>
-
-</html>
+<%- include('Partials/footer'); %>

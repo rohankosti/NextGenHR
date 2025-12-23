@@ -1,0 +1,141 @@
+<%- include('Layout-nav/header'); %>
+<style>
+   /* Icon size */
+    .stat-icon i {
+      font-size: 32px;
+      color: #0d6efd;
+      margin-bottom: 10px;
+    }
+
+    .bg-box-1 {
+      background: linear-gradient(135deg, #4facfe, #00f2fe);
+    }
+
+    .bg-box-2 {
+      background: linear-gradient(135deg, #43e97b, #38f9d7);
+    }
+
+    .bg-box-3 {
+      background: linear-gradient(135deg, #fa709a, #fee140);
+    }
+
+    .bg-box-4 {
+      background: linear-gradient(135deg, #7f53ac, #647dee);
+    }
+
+    .stat-card {
+      transition: 0.3s ease;
+      border: none;
+      cursor: pointer;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .stat-icon i {
+      font-size: 32px;
+      margin-bottom: 10px;
+      color: white !important;
+    }
+</style>
+
+  <div class="main-content fade-in">
+    <div class="topbar rounded-4 mb-4 d-flex justify-content-between align-items-center shadow-sm px-3">
+      <h5 id="dash">Dashboard</h5>
+      <div class="dropdown">
+        <button id="admin" class="btn btn-light rounded-3 dropdown-toggle" type="button" data-bs-toggle="dropdown">
+          <i class="bi bi-person-circle"></i> Admin
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end">
+          <li><a class="dropdown-item" href="#">Profile</a></li>
+          <li><a class="dropdown-item" href="#">Settings</a></li>
+          <li>
+            <hr class="dropdown-divider">
+          </li>
+          <li><a class="dropdown-item" href="login.html">Logout</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="container-fluid mt-4">
+      <div class="row g-4">
+
+        <div class="col-md-3">
+          <div class="card stat-card p-3 text-center rounded-4 shadow-sm bg-box-1">
+            <div class="stat-icon"><i class="bi bi-people"></i></div>
+            <h6 class="text-white">Employees</h6>
+            <h3 class="text-white">120</h3>
+          </div>
+        </div>
+
+        <div class="col-md-3">
+          <div class="card stat-card p-3 text-center rounded-4 shadow-sm bg-box-2">
+            <div class="stat-icon"><i class="bi bi-calendar-check"></i></div>
+            <h6 class="text-white">Leave Requests</h6>
+            <h3 class="text-white">8</h3>
+          </div>
+        </div>
+
+        <div class="col-md-3">
+          <div class="card stat-card p-3 text-center rounded-4 shadow-sm bg-box-3">
+            <div class="stat-icon"><i class="bi bi-cash-stack"></i></div>
+            <h6 class="text-white">Payroll</h6>
+            <h3 class="text-white">₹2,50,000</h3>
+          </div>
+        </div>
+
+        <div class="col-md-3">
+          <div class="card stat-card p-3 text-center rounded-4 shadow-sm bg-box-4">
+            <div class="stat-icon"><i class="bi bi-bell"></i></div>
+            <h6 class="text-white">Reminders</h6>
+            <h3 class="text-white">3</h3>
+          </div>
+        </div>
+
+      </div>
+
+
+      <div class="row mt-5 fade-up">
+        <div class="col-lg-8">
+          <div class="card p-4 rounded-4 shadow-sm">
+            <h5>Quick Overview</h5>
+            <p>Welcome to NextGenHR! Here you can manage employees, leave requests, payroll, and more.</p>
+          </div>
+        </div>
+
+        <div class="col-lg-4">
+          <div class="card p-4 rounded-4 shadow-sm">
+            <h6>Reminders</h6>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item">Payroll processing due <span class="badge bg-warning">Today</span></li>
+              <li class="list-group-item">Approve 2 leave requests</li>
+              <li class="list-group-item">Performance review next week</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+
+    const obj = localStorage.getItem("UserObj", "first_name");
+    // console.log(obj);
+    const par = JSON.parse(obj);
+    let fname = par.first_name;
+    // console.log(fname);
+    let lname = par.last_name;
+    const admin = document.getElementById("admin");
+    // console.log(admin);
+    admin.textContent = `${fname} ${lname}`
+    const dash = document.getElementById("dash");
+    dash.innerHTML = `👋Welcome ${fname} ${lname}`
+  </script>
+
+
+<%- include('Layout-nav/footer'); %>

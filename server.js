@@ -12,13 +12,30 @@ import leaverequest from "./router/API/Leave_requset.js";
 import Attendance from "./router/API/Attendance.js";
 import express from "express";
 import dotenv from "dotenv";
+import webRoutes from "./router/Web-Page/index.js"; 
 dotenv.config();
 
+import path, { dirname } from "path";
+import { fileURLToPath } from "url";
+
+const filename = fileURLToPath(import.meta.url);
+// console.log(filename);
+
+const dirna = path.dirname(filename);
+// console.log(dirna);
+
+// const sd = path.join(dirna, 'views')
+// console.log(sd);
+
+
 const app = express();
-app.use(express.static("WEB"));
+// Serve static HTML/CSS/JS from the WEB folder (allow direct .html requests)
+// app.use(express.static(path.join(dirna, 'WEB')));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+app.set('view engine', 'ejs');
+app.set('views', path.join(dirna, 'views'));
 // ================== API Routes ====================
 app.use(jobApplication);
 app.use(registermodal);
@@ -32,11 +49,7 @@ app.use(leaverequest);
 app.use(logindata);
 app.use(Attendance);
 // ==================== WEB Routes ====================
-// app.use(webRoutes);
-
-
-
-
+app.use( webRoutes);
 
 
 
