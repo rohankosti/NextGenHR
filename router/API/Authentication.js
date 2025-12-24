@@ -19,17 +19,17 @@ const dbs = client.db(dbs_name);
 
 router.post("/logindata", async (req, res) => {
   const auth = req.body;
-  console.log(auth);
+  // console.log(auth);
   
-    const logindata = await dbs.collection("Register").findOne({ email: parse.email });
+    const logindata = await dbs.collection("Register").findOne({email: auth.email });
     if (logindata) {
-      if (parse.email === logindata.email) {
+      if (auth.password === logindata.password) {
         res.status(200).json(logindata);
       } else {
-        res.status(401).json({ msg1: "Invalid Password" });
+        res.status(401).json({ msg: "Invalid Password" });
       }
     } else {
-      res.status(404).json({ msg2: "User Not Found" });
+      res.status(404).json({ msg: "User Not Found" });
     }
   });
 

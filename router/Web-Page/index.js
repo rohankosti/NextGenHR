@@ -54,5 +54,36 @@ router.get('/Users', (req, res) => {
 router.get('/viewJobpostData', (req, res) => {
   res.render('viewJobpostData', { pageTitle: 'Job Applications' });
 });
+ //================== Modal Pages =====================
+router.get('/Attendance-form',(req,res)=>{
+  res.render('Modal_Page/Attendance-form',{pageTitle:'Attendance Form'});
+});
 
+router.get('/branch',(req,res)=>{
+  res.render('branch',{pageTitle:'Branch Form'});
+});
+
+router.get('/Comapny',(req,res)=>{
+  res.render('Comapny',{pageTitle:'Company Form'});
+});
+
+router.get('/department',(req,res)=>{
+  res.render('Modal_Page/department',{pageTitle:'Department Form'});
+});
+
+router.get('/designation',(req,res)=>{
+  res.render('designation',{pageTitle:'Designation Form'});
+});
+
+router.get('/leaverequest',(req,res)=>{
+  res.render('Modal_Page/leaverequest',{pageTitle:'Leave Request Form'});
+});
+
+router.get('/reporting_manger',(req,res)=>{
+  res.render('reporting_manger',{pageTitle:'Reporting Manager Form'});
+});
+
+router.get('/role',(req,res)=>{
+  res.render('role',{pageTitle:'Role Form'});
+});
 export default router;

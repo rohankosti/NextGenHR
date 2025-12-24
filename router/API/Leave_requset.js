@@ -40,7 +40,7 @@ router.post("/singleleaverequest", async (req, res) => {
 });
 
 router.put("/updatedleaverequest", async (req, res) => {
-  const body = req.body;
+  // const body = req.body;
   const updated = await dbs.collection("LeaveRequset").updateOne(
     { _id: new ObjectId(body.id) },
     {

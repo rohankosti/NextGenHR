@@ -13,4 +13,4 @@ const branchSchema = new mongoose.Schema({
   logo : {type : String }
 }, { timestamps: true });
 
-module.exports = mongoose.model('Branch', branchSchema);
+module.exports = mongoose.model('Branch', branchSchema);  

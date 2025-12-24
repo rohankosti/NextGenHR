@@ -12,7 +12,7 @@
           <form method="POST" id="employeeData">
 
             <div class="row g-3">
-              <!-- <input type="hidden" name="type" value="employee"> -->
+              <input type="hidden" name="type" value="employee">
 
               <!-- First Name -->
               <div class="col-md-4">
@@ -310,18 +310,19 @@
       const obj = Object.fromEntries(formData.entries());
 
       //API use for Auto Generated register.html Comapny code and save mongodb
-      const lastemploye = async () => {
-        const lastemp = await fetch("http://localhost:3000/lastemployedata");
-        const lastresp = await lastemp.json()
-        // console.log(lastresp, "last");
-        // console.log(lastresp[0].company_id,"company id");
-        // let lastempcode = lastresp[0].emp_code;
-        // console.log(lastempcode);
+      // add a data in mongo after fetch last emp_code and increment by 1
+      // const lastemploye = async () => {
+      //   const lastemp = await fetch("http://localhost:3000/lastemployedata");
+      //   const lastresp = await lastemp.json()
+      //   // console.log(lastresp, "last");
+      //   console.log(lastresp[0].company_id,"company id");
+      //   let lastempcode = lastresp[0].emp_code;
+      //   console.log(lastempcode);
 
-        // let emp_code = "NEXTGEN" + String(parseInt(lastempcode.replace("NEXTGEN", "") + 1).padStart(3, '0'));
-        // let emp_code = "NEXTGEN" + String(parseInt(lastempcode.replace("NEXTGEN", "")) + 1).padStart(3, '0');
-        // return emp_code;
-      };
+      //   // let emp_code = "NEXTGEN" + String(parseInt(lastempcode.replace("NEXTGEN", "") + 1).padStart(3, '0'));
+      //   let emp_code = "NEXTGEN" + String(parseInt(lastempcode.replace("NEXTGEN", "")) + 1).padStart(3, '0');
+      //   return emp_code;
+      // };
       // formData.set('emp_code', await lastemploye());
       // obj.emp_code = await lastemploye();
 
@@ -345,8 +346,8 @@
       }
     });
   </script>
-</body>
+  </body>
 
-</html>
+  </html>
 
-<%- include('Layout-nav/footer'); %>
+  <%- include('Layout-nav/footer'); %>

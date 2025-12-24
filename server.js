@@ -24,12 +24,8 @@ const filename = fileURLToPath(import.meta.url);
 const dirna = path.dirname(filename);
 // console.log(dirna);
 
-// const sd = path.join(dirna, 'views')
-// console.log(sd);
-
 
 const app = express();
-// Serve static HTML/CSS/JS from the WEB folder (allow direct .html requests)
 // app.use(express.static(path.join(dirna, 'WEB')));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -52,13 +48,12 @@ app.use(Attendance);
 app.use( webRoutes);
 
 
-
 // process.on("SIGINT", async () => {
 //   await client.close();
 //   console.log("MongoDB connection closed.");
 //   process.exit(0);
 // });
 
-app.listen(3000, () => {
-  console.log(`server started on 3000 port http://localhost:3000`);
+app.listen(process.env.PORT, () => {
+  console.log(`server started : http://localhost:${process.env.PORT}`);
 });
