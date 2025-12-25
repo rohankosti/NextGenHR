@@ -16,7 +16,7 @@
             </div>
             <div class="mb-3">
               <label for="position" class="form-label">Position Applied For</label>
-              <input type="text" class="form-control" id="position" name="position" required>
+              <input type="text" class="form-control" id="position" name="position">
             </div>
             <div class="mb-3">
               <label for="resume" class="form-label">Resume (Paste text)</label>
@@ -61,15 +61,15 @@
         let json = await data_fetch.json()
 
         if (data_fetch.ok) {
-          // console.log(data_fetch, 'fetch');
-          // console.log(json, 'json');
+          console.log(data_fetch, 'fetch');
+          console.log(json, 'json');
           let responseMsg = document.getElementById('responseMsg');
           responseMsg.innerHTML = `<div class="alert alert-success">${json.message}</div>`;
           form.reset();
         }
 
         else {
-          responseMsg.innerHTML = `<div class="alert alert-danger">Error: ${json.message}</div>`;
+          responseMsg.innerHTML = `<div class="alert alert-danger">Error Data Cant Stored</div>`;
         }
       }
       catch (error) {

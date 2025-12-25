@@ -7,4 +7,4 @@ position: { type: String, required: true, unique: true},
 resume: { type: String, required: true, unique: true},
 }, { timestamps: true });
 
-export default mogoose.model('jobvecancy', jobpost );
+export default mongoose.model('jobvecancy', jobpost, 'jobvecancy');

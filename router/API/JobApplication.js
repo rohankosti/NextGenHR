@@ -1,12 +1,11 @@
-import Router from "express";
-import { ObjectId, MongoClient } from "mongodb";
+import {storejobvecancy,jobvecancylist,jobvecancysingledata,updatejobapplicationdata,deletejobapplicationdata} from '../../controller/JobApplication.js';
 import express from 'express';
-import jobApplication from '../../controller/JobApplication';
-import dotenv from "dotenv";
-dotenv.config();
-const router = Router();
-
-router.post('/storejobvecancy',);
+const router =express.Router();
+// import Router from "express";
+// import { ObjectId, MongoClient } from "mongodb";
+// import dotenv from "dotenv";
+// dotenv.config();
+//======================================MongoClinet=======================================
 // const client = new MongoClient(process.env.MONGO_URL);
 // const dbs_name = process.env.MONGO_DB;
 // client
@@ -17,9 +16,7 @@ router.post('/storejobvecancy',);
 //   .catch((err) => {
 //     console.log("MongoDb Server Not Connected ! Error", err);
 //   });
-
 // const dbs = client.db(dbs_name);
-
 // router.post("/storeJobVacancy", async (req, res) => {
 //   const fromdata = req.body;
 //   const collection = await dbs.collection("jobvecancy").insertOne(fromdata);
@@ -64,7 +61,6 @@ router.post('/storejobvecancy',);
 //   const delatecollection = await dbs
 //     .collection("jobvecancy")
 //     .deleteOne({ _id: new ObjectId(delateparse.id) });
-
 //   if (delatecollection.deletedCount === 1) {
 //     res.status(200).send({ message: "Job Vacancy Deleted Successfully!" });
 //   } else {
@@ -72,4 +68,10 @@ router.post('/storejobvecancy',);
 //   }
 // });
 
-// export default router;
+router.post('/storeJobVacancy',storejobvecancy);
+router.get('/jobvecancylist',jobvecancylist);
+router.post('/jobvecancysingledata',jobvecancysingledata);
+router.put('/updatejobapplicationdata/:id',updatejobapplicationdata);
+router.delete('/deletejobapplicationdata/:id',deletejobapplicationdata);
+
+export default router;

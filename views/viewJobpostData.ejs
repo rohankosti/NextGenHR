@@ -122,7 +122,7 @@
 
 
                         const singleresponse = await singlefetch.json();
-                        // console.log(singleresponse,"singleresponse");
+                        console.log(singleresponse,"singleresponse");
 
                         document.getElementById("editId").value = singleresponse._id;
                         document.getElementById("editName").value = singleresponse.name;
@@ -142,7 +142,7 @@
                         position: document.getElementById("editPosition").value,
                         resume: document.getElementById("editResume").value,
                     }
-                    const update_fetch = await fetch("http://localhost:3000/updatejobapplicationdata",
+                    const update_fetch = await fetch(`http://localhost:3000/updatejobapplicationdata/${id}`,
                         {
                             method: "PUT",
                             headers: {
@@ -178,7 +178,7 @@
                         console.log(btnattri);
                         const deleteobj = { id: btnattri };
 
-                        const delate_fetch = await fetch("http://localhost:3000/deletejobapplicationdata", {
+                        const delate_fetch = await fetch(`http://localhost:3000/deletejobapplicationdata/${deleteobj.id}`, {
                             method: "DELETE",
                             headers: {
                                 "content-type": "application/json",

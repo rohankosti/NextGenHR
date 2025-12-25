@@ -10,6 +10,7 @@ import logindata from "./router/API/Authentication.js";
 import leaverequest from "./router/API/Leave_requset.js";
 import Attendance from "./router/API/Attendance.js";
 import express from "express";
+import connectDB from './mongo.js'
 import webRoutes from "./router/Web-Page/index.js"; 
 import dotenv from "dotenv";
 dotenv.config();
@@ -30,8 +31,9 @@ app.use(express.urlencoded({ extended: true }));
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(dirna, 'views'));
+connectDB()
 // ================== API Routes ====================
-app.use(jobApplication);
+app.use('',jobApplication);
 app.use(registermodal);
 app.use(branchmodal);
 app.use(comapnymodal);
@@ -46,11 +48,12 @@ app.use(Attendance);
 app.use( webRoutes);
 
 
-// process.on("SIGINT", async () => {
-//   await client.close();
-//   console.log("MongoDB connection closed.");
-//   process.exit(0);
-// });
+process.on("SIGINT", async () => {
+  console.log("\nShutting down server...");
+  await mongoose.connection.close();
+  console.log("MongoDB disconnected");
+  process.exit(0);
+});
 
 app.listen(process.env.PORT, () => {
   console.log(`server started : http://localhost:${process.env.PORT}`);
