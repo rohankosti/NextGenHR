@@ -1,4 +1,3 @@
-// import mongodb, { Collection, MongoClient, ObjectId } from "mongodb";
 import jobApplication from "./router/API/JobApplication.js";
 import registermodal from "./router/API/Register.js";
 import comapnymodal from "./router/API/Companymodal.js";
@@ -11,10 +10,9 @@ import logindata from "./router/API/Authentication.js";
 import leaverequest from "./router/API/Leave_requset.js";
 import Attendance from "./router/API/Attendance.js";
 import express from "express";
-import dotenv from "dotenv";
 import webRoutes from "./router/Web-Page/index.js"; 
+import dotenv from "dotenv";
 dotenv.config();
-
 import path, { dirname } from "path";
 import { fileURLToPath } from "url";
 

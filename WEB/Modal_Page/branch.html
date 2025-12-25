@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>NextGenHR - Branch </title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+</head>
+
+<body class="bg-primary bg-gradient d-flex align-items-center min-vh-100">
+  <div class="container py-5">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <div class="card shadow-sm rounded-4"> <!-- Rounded corners -->
+          <div class="card-body">
+            <h3 class="card-title text-center text-primary fw-bold mb-3 rounded-3 p-1">
+              Add New Branch</h3>
+
+            <form id="branchForm" enctype="multipart/form-data" novalidate>
+              <div class="row g-3 p-1">
+
+                <div class="col-md-6">
+                  <label for="company_id" class="form-label">Select Company *</label>
+                  <!-- <select id="company_id" name="company_id" class="form-select" required>
+                   
+                  </select> -->
+                  <input type="text" class="form-control" id="company_id" name="company_id" required>
+                  <div class="invalid-feedback">Please select a company.</div>
+                </div>
+
+                <div class="col-md-6">
+                  <label for="name" class="form-label">Branch Name *</label>
+                  <input type="text" class="form-control" id="name" name="name" required>
+                  <div class="invalid-feedback">Please enter branch name.</div>
+                </div>
+
+                <div class="col-md-6">
+                  <label for="email" class="form-label">Email *</label>
+                  <input type="email" class="form-control" id="email" name="email" required>
+                  <div class="invalid-feedback">Please enter valid email.</div>
+                </div>
+
+                <div class="col-md-6">
+                  <label for="contact_number" class="form-label">Contact Number</label>
+                  <input type="tel" class="form-control" id="contact_number" name="contact_number" required>
+                </div>
+
+                <!-- <div class="col-12">
+                  <label for="address1" class="form-label">Address Line 1</label>
+                  <input type="text" class="form-control" id="address1" name="address1" required>
+                </div> -->
+
+                <div class="col-12">
+                  <label for="address2" class="form-label">Address</label>
+                  <input type="text" class="form-control" id="address1" name="address2" required>
+                </div>
+
+                <div class="col-md-4">
+                  <label for="city" class="form-label">City</label>
+                  <input type="text" class="form-control" id="city" name="city" required>
+                </div>
+
+                <div class="col-md-4">
+                  <label for="state" class="form-label">State</label>
+                  <input type="text" class="form-control" id="state" name="state" required>
+                </div>
+
+                <div class="col-md-4">
+                  <label for="pincode" class="form-label">Pincode</label>
+                  <input type="text" class="form-control" id="pincode" name="pincode" required>
+                </div>
+
+                <div class="col-md-12">
+                  <label for="logo" class="form-label">Branch Logo</label>
+                  <input type="file" class="form-control" id="logo" name="logo" accept="image/*" required>
+                </div>
+
+                <div class="col-12 mt-3 d-flex justify-content-end">
+                  <button type="reset" class="btn btn-outline-secondary me-2">Reset</button>
+                  <button type="submit" class="btn btn-primary">Save Branch</button>
+                </div>
+              </div>
+            </form>
+
+            <div id="alertBox" class="mt-3"></div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+
+    
+
+    const branchForm = document.getElementById("branchForm")
+
+    branchForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const branchobj = {
+        comany:document.getElementById("company_id").value,
+        name: document.getElementById("name").value,
+        email: document.getElementById("email").value,
+        number: document.getElementById("contact_number").value,
+        // addresh1: document.getElementById("address1").value,
+        aaddresh: document.getElementById("address1").value,
+        state: document.getElementById("state").value,
+        city: document.getElementById("city").value,
+        pincode: document.getElementById("pincode").value,
+        logo: document.getElementById("logo").value,
+      }
+
+      const branch_fetch = await fetch("http://localhost:3000/branchdata", {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify(branchobj),
+      });
+      console.log(branch_fetch);
+
+      const branch_response = await branch_fetch.json()
+      console.log(branch_response);
+
+      const eroor = document.getElementById("alertBox");
+      if (branch_fetch.ok) {
+        eroor.innerHTML = `<div class="alert alert-success">${branch_response.msg}</div>`;
+        branchForm.reset();
+        setTimeout(() => {
+          eroor.innerHTML = "";
+        }, 1000);
+      }
+      else {
+        eroor.innerHTML = `<div class="alert alert-success">Data Can't Stored</div>`
+      }
+    })
+  </script>
+</body>
+
+</html>

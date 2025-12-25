@@ -1,6 +1,4 @@
-import http, { get } from "http";
-import mongodb, { Collection, MongoClient, ObjectId } from "mongodb";
-import { json } from "stream/consumers";
+import Attendance from '../Model/Attandance.js';
 
 const Attendancepost = (req, res, dbs) => {
   let body = "";

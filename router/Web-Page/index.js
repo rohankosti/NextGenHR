@@ -56,7 +56,7 @@ router.get('/viewJobpostData', (req, res) => {
 });
  //================== Modal Pages =====================
 router.get('/Attendance-form',(req,res)=>{
-  res.render('Modal_Page/Attendance-form',{pageTitle:'Attendance Form'});
+  res.render('Attendance-form',{pageTitle:'Attendance Form'});
 });
 
 router.get('/branch',(req,res)=>{
@@ -68,7 +68,7 @@ router.get('/Comapny',(req,res)=>{
 });
 
 router.get('/department',(req,res)=>{
-  res.render('Modal_Page/department',{pageTitle:'Department Form'});
+  res.render('department',{pageTitle:'Department Form'});
 });
 
 router.get('/designation',(req,res)=>{
@@ -76,7 +76,7 @@ router.get('/designation',(req,res)=>{
 });
 
 router.get('/leaverequest',(req,res)=>{
-  res.render('Modal_Page/leaverequest',{pageTitle:'Leave Request Form'});
+  res.render('leaverequest',{pageTitle:'Leave Request Form'});
 });
 
 router.get('/reporting_manger',(req,res)=>{
