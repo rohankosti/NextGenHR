@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 
 const attendanceSchema = new mongoose.Schema({
-    employee_id: {type: mongoose.Schema.Types.ObjectId, ref:'Employee'},
+    employee_id: {type: mongoose.Schema.Types.ObjectId, ref:'Register'},
     date:{type:Date , require:true},
     check_in:{type:String},
     check_out:{type:String},
@@ -11,6 +11,6 @@ const attendanceSchema = new mongoose.Schema({
     remarks:{String},
 },  {timestamps: true});
 
-export default mongoose.model('Attendance', attendanceSchema);
+export default mongoose.model('Attendance', attendanceSchema,'Attendance');
 
 

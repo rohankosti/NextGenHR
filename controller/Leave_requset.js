@@ -1,114 +1,53 @@
-import { ObjectId } from "mongodb";
-import fs from "fs/promises";
-import path from "path";
-import { fileURLToPath } from "url";
+import LeaveRequest from "../Model/LeaveRequest.js";
 
-const leavereq = (req, res, dbs) => {
-  let body = "";
-  req.on("data", (chunk) => {
-    body += chunk.toString();
-    // console.log(body);
-  });
-
-  req.on("end", async () => {
-    let leaveparse = JSON.parse(body);
-    let depart_collection = await dbs
-      .collection("LeaveRequset")
-      .insertOne(leaveparse);
-    res.writeHead(200, { "content-type": "application/json" });
-    res.end(JSON.stringify({ msg: "Data Saved Sucssesfully" }));
-  });
+const createLeaveRequest = async (req, res) => {
+  try {
+    const body = req.body;
+    const created = await LeaveRequest.create(body);
+    return res.status(200).json({ message: "Leave request created", data: created });
+  } catch (err) {
+    return res.status(500).json({ message: err.message });
+  }
 };
 
-const getleavereq = async (req, res, dbs) => {
-  const data = await dbs.collection("LeaveRequset").find({}).toArray();
-  res.writeHead(200, { "content-type": "application/json" });
-  res.end(JSON.stringify(data));
+const getLeaveRequests = async (req, res) => {
+  try {
+    const data = await LeaveRequest.find();
+    return res.status(200).json(data);
+  } catch (err) {
+    return res.status(500).json({ message: err.message });
+  }
 };
 
-const singleleaverequest = (req, res, dbs) => {
-  let body = "";
-  req.on("data", (chunk) => {
-    body += chunk.toString();
-    // console.log(body);
-  });
-
-  req.on("end", async () => {
-    let leaveparse = JSON.parse(body);
-    // console.log(leaveparse);
-    let depart_collection = await dbs
-      .collection("LeaveRequset")
-      .findOne({ _id: new ObjectId(leaveparse.id) });
-    // console.log(depart_collection);
-    res.writeHead(200, { "content-type": "application/json" });
-    res.end(JSON.stringify(depart_collection));
-  });
+const getLeaveRequestById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const data = await LeaveRequest.findById(id);
+    return res.status(200).json(data);
+  } catch (err) {
+    return res.status(500).json({ message: err.message });
+  }
 };
 
-const updatedleave = (req, res, dbs) => {
-  let body = "";
-  req.on("data", (chunk) => {
-    body += chunk.toString();
-  });
-  req.on("end", async () => {
-    // console.log(body);
-    const parse = JSON.parse(body);
-    const updated = await dbs.collection("LeaveRequset").updateOne(
-      { _id: new ObjectId(parse.id) },
-      {
-        $set: {
-          status: parse.status,
-        },
-      }
-    );
-    if (updated.modifiedCount === 1) {
-      res.writeHead(200, { "content-type": "application/json" });
-      res.end(JSON.stringify({ msg: "Leave Request Updated Sucssesfully" }));
-    } else {
-      res.writeHead(200, { "content-type": "application/json" });
-      res.end(
-        JSON.stringify({
-          msg1: "Leave Request Can't be updated ",
-          msg: "Leave Request Updated Sucssesfully",
-        })
-      );
-    }
-  });
+const updateLeaveRequest = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const payload = req.body;
+    await LeaveRequest.findByIdAndUpdate(id, payload);
+    return res.status(200).json({ message: "Leave request updated" });
+  } catch (err) {
+    return res.status(500).json({ message: err.message });
+  }
 };
 
-const delateleaverequest = (req, res, dbs) => {
-  let body = "";
-  req.on("data", (chunk) => {
-    body += chunk.toString();
-  });
-
-  req.on("end", async () => {
-    // console.log(body);
-    const rejparse = JSON.parse(body);
-    // console.log(rejparse);
-    const rejcollection = await dbs
-      .collection("LeaveRequset")
-      .deleteOne({ _id: new ObjectId(rejparse.id) });
-    if (rejcollection.deletedCount === 1) {
-      res.writeHead(200, { "content-type": "application/json" });
-      res.end(JSON.stringify({ msg: "Leave Request Reject Succsesfully" }));
-    } else {
-      res.writeHead(200, { "content-type": "application/json" });
-      res.end(
-        JSON.stringify({
-          msg1: "Leave Request Can't be Rejected ",
-        })
-      );
-    }
-  });
+const deleteLeaveRequest = async (req, res) => {
+  try {
+    const { id } = req.params;
+    await LeaveRequest.findByIdAndDelete(id);
+    return res.status(200).json({ message: "Leave request deleted" });
+  } catch (err) {
+    return res.status(500).json({ message: err.message });
+  }
 };
 
-const leaverequest = {
-  leavereq,
-  getleavereq,
-  singleleaverequest,
-  updatedleave,
-  delateleaverequest,
-};
-
-export default leaverequest;
+export { createLeaveRequest, getLeaveRequests, getLeaveRequestById, updateLeaveRequest, deleteLeaveRequest };

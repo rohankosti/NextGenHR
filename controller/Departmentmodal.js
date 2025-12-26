@@ -1,103 +1,55 @@
-import http, { get } from "http";
-import mongodb, { Collection, MongoClient, ObjectId } from "mongodb";
-import { json } from "stream/consumers";
+import Department from "../Model/Department.js";
+import mongoose from "mongoose";
 
-//3. Department Modal API
-const departmentModalAPI = (req, res, dbs) => {
-  let body = "";
-  req.on("data", (chunk) => {
-    body += chunk.toString();
-    // console.log(body);
-  });
-
-  req.on("end", async () => {
-    let departmentparse = JSON.parse(body);
-    let depart_collection = await dbs
-      .collection("Department")
-      .insertOne(departmentparse);
-    res.writeHead(200, { "content-type": "application/json" });
-    res.end(JSON.stringify({ msg: "Data Saved Sucssesfully" }));
-  });
-};
-//3.3: GET Department Data Modal API
-const getDepartmentDataAPI = async (req, res, dbs) => {
-  const departmentData = await dbs.collection("Department").find({}).toArray();
-  res.writeHead(200, { "content-type": "application/json" });
-  res.end(JSON.stringify(departmentData));
+const createDepartment = async (req, res) => {
+  try {
+    const body = req.body;
+    const created = await Department.create(body);
+    return res.status(200).json({ message: "Department created", data: created });
+  } catch (err) {
+    return res.status(500).json({ message: err.message });
+  }
 };
 
-const singledata = (req, res, dbs) => {
-  let body = "";
-  req.on("data", (chunk) => {
-    body += chunk.toString();
-  });
-  req.on("end", async () => {
-    const sinparse = JSON.parse(body);
-    // console.log(sinparse);
-    const sincollection = await dbs
-      .collection("Department")
-      .findOne({ _id: new ObjectId(sinparse.id) });
-    res.writeHead(200, { "content-type": "application/json" });
-    res.end(JSON.stringify(sincollection));
-  });
+const getDepartments = async (req, res) => {
+  try {
+    const departments = await Department.find();
+    return res.status(200).json(departments);
+  } catch (err) {
+    return res.status(500).json({ message: err.message });
+  }
 };
 
-const Updateddata = (req, res, dbs) => {
-  let body = "";
-  req.on("data", (chunk) => {
-    body += chunk.toString();
-  });
-  req.on("end", async () => {
-    const upparse = JSON.parse(body);
-    // console.log(upparse);
-    const upcollection = await dbs.collection("Department").updateOne(
-      { _id: new ObjectId(upparse.id) },
-      {
-        $set: {
-          dept_name: upparse.dep,
-          company_id: upparse.com,
-          branch_id: upparse.bra,
-          manager_id: upparse.man,
-        },
-      }
-    );
-    if (upcollection.modifiedCount === 1) {
-      res.writeHead(200, { "content-type": "application/json" });
-      res.end(JSON.stringify({ msg: "Data Succsesfully Updated" }));
-    } else {
-      res.writeHead(200, { "content-type": "application/json" });
-      res.end(JSON.stringify({ msg: "Data Can't Be Updated" }));
-    }
-  });
-};
-const Deletedata = (req, res, dbs) => {
-  let body = "";
-  req.on("data", (chunk) => {
-    body += chunk.toString();
-  });
-  req.on("end", async () => {
-    const delparse = JSON.parse(body);
-    console.log(delparse);
-    const delcollection = await dbs
-      .collection("Department")
-      .deleteOne({ _id: new ObjectId(delparse.id) });
-
-    if (delcollection.deletedCount === 1) {
-      res.writeHead(200, { "content-type": "application/json" });
-      res.end(JSON.stringify({ msg: "Data Sucsessfully Delete" }));
-    } else {
-      res.writeHead(200, { "content-type": "application/json" });
-      res.end(JSON.stringify({ msg: "Data Can't Be Deleted" }));
-    }
-  });
+const getDepartmentById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    if (!mongoose.Types.ObjectId.isValid(id)) return res.status(400).json({ message: "Invalid id" });
+    const dept = await Department.findById(id);
+    return res.status(200).json(dept);
+  } catch (err) {
+    return res.status(500).json({ message: err.message });
+  }
 };
 
-const departmentModal = {
-  departmentModalAPI,
-  getDepartmentDataAPI,
-  singledata,
-  Updateddata,
-  Deletedata,
+const updateDepartment = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const payload = req.body;
+    await Department.findByIdAndUpdate(id, payload);
+    return res.status(200).json({ message: "Department updated" });
+  } catch (err) {
+    return res.status(500).json({ message: err.message });
+  }
 };
 
-export default departmentModal;
+const deleteDepartment = async (req, res) => {
+  try {
+    const { id } = req.params;
+    await Department.findByIdAndDelete(id);
+    return res.status(200).json({ message: "Department deleted" });
+  } catch (err) {
+    return res.status(500).json({ message: err.message });
+  }
+};
+
+export { createDepartment, getDepartments, getDepartmentById, updateDepartment, deleteDepartment };

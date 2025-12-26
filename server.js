@@ -33,7 +33,7 @@ app.set('view engine', 'ejs');
 app.set('views', path.join(dirna, 'views'));
 connectDB()
 // ================== API Routes ====================
-app.use('',jobApplication);
+app.use(jobApplication);
 app.use(registermodal);
 app.use(branchmodal);
 app.use(comapnymodal);

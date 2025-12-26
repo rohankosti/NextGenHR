@@ -1,35 +1,22 @@
-import http, { get } from "http";
-import mongodb, { Collection, MongoClient, ObjectId } from "mongodb";
+import Designation from "../Model/Designation.js";
 
-//4. Designation Modal API
-const designationModalAPI = (req, res, dbs) => {
-  let body = "";
-  req.on("data", (chunk) => {
-    body += chunk.toString();
-    console.log(body);
-  });
-  req.on("end", async () => {
-    let designationparse = JSON.parse(body);
-    let designation_collection = await dbs
-      .collection("Designation")
-      .insertOne(designationparse);
-    res.writeHead(200, { "content-type": "application/json" });
-    res.end(JSON.stringify({ msg: "Data Saved Sucssesfully" }));
-  });
-};
-//4.4: GET Designation Data Modal API
-const getDesignationDataAPI = async (req, res, dbs) => {
-  const designationData = await dbs
-    .collection("Designation")
-    .find({})
-    .toArray();
-  res.writeHead(200, { "content-type": "application/json" });
-  res.end(JSON.stringify(designationData));
+const createDesignation = async (req, res) => {
+  try {
+    const body = req.body;
+    const created = await Designation.create(body);
+    return res.status(200).json({ message: "Designation created", data: created });
+  } catch (err) {
+    return res.status(500).json({ message: err.message });
+  }
 };
 
-const designationmodal={
-  designationModalAPI,
-  getDesignationDataAPI,
-}
+const getDesignations = async (req, res) => {
+  try {
+    const data = await Designation.find();
+    return res.status(200).json(data);
+  } catch (err) {
+    return res.status(500).json({ message: err.message });
+  }
+};
 
-export default designationmodal;
+export { createDesignation, getDesignations };

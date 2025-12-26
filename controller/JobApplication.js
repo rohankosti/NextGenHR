@@ -4,11 +4,11 @@ const storejobvecancy = async (req, res) => {
   try {
     let body = req.body;
     const jobcollection = await jobpost.create(body);
-    res.status(200).json({ message: "Job Post Data Saved Sucsessfully" });
+    res.status(200).json({ message: "Job Post Data Saved Sucsessfully" , success: true });
   } catch (error) {
     res
       .status(500)
-      .json({ message: "Storejob Post Data eroor", success: "true" });
+      .json({ message: "Storejob Post Data eroor", success: "false" });
   }
 };
 
@@ -17,10 +17,8 @@ const jobvecancylist = async (req, res) => {
     const allcollection = await jobpost.find();
     res.status(200).json(allcollection);
   } catch (err) {
-    console.error("jobvecancylist error:", err);
-    res
-      .status(500)
-      .json({ message: "Failed to fetch job vacancies", success: false });
+    // console.error("jobvecancylist error:", err);
+    res.status(500).json({ message: "Failed to fetch job vacancies", success: false });
   }
 };
 

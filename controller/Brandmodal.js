@@ -1,52 +1,33 @@
-import http, { get } from "http";
-import mongodb, { Collection, MongoClient, ObjectId } from "mongodb";
-import url from "url";
+import Branch from "../Model/Branch.js";
 
-//2. Branch Modal API
-const branchModalAPI = (req, res, dbs) => {
-  let body = "";
-  req.on("data", (chunk) => {
-    body += chunk.toString();
-    console.log(body);
-  });
-
-  req.on("end", async () => {
-    let branchyparse = JSON.parse(body);
-    const branch_collection = await dbs
-      .collection("Branch")
-      .insertOne(branchyparse);
-    res.writeHead(200, { "content-type": "application/json" });
-    res.end(JSON.stringify({ msg: "Data Saved Sucssesfully" }));
-  });
+const createBranch = async (req, res) => {
+  try {
+    const body = req.body;
+    const created = await Branch.create(body);
+    return res.status(200).json({ message: "Branch created", data: created });
+  } catch (err) {
+    return res.status(500).json({ message: err.message });
+  }
 };
 
-//2.2: GET Branch Data Modal API
-const getBranchDataAPI = async (req, res, dbs) => {
-  const branchData = await dbs.collection("Branch").find({}).toArray();
-  res.writeHead(200, { "content-type": "application/json" });
-  res.end(JSON.stringify(branchData));
+const getBranches = async (req, res) => {
+  try {
+    const branches = await Branch.find();
+    return res.status(200).json(branches);
+  } catch (err) {
+    return res.status(500).json({ message: err.message });
+  }
 };
 
-//3 API use for find branch collection and company and change branch name
-const comanywisebranch = async (req, res, dbs) => {
-//new URL: URL ko parse karta hai(object)
-//   new URL(
-//   req.url,                     "/getbranch?companyName=NextGen"
-//   `http://${req.headers.host}` "http://localhost:3000"
-// );
-  const urlObj = new URL(req.url, `http://${req.headers.host}`);
-  // console.log(urlObj);
-  const companyName = urlObj.searchParams.get("companyName");
-  // console.log("Backend received:", companyName);
-  const branches=await dbs.collection("Branch").find({ comany: companyName }).toArray()
-      res.writeHead(200, { "Content-Type": "application/json" });
-      res.end(JSON.stringify(branches));
+const branchesByCompany = async (req, res) => {
+  try {
+    const companyName = req.query.companyName;
+    if (!companyName) return res.status(400).json({ message: "companyName query required" });
+    const branches = await Branch.find({ comany: companyName });
+    return res.status(200).json(branches);
+  } catch (err) {
+    return res.status(500).json({ message: err.message });
+  }
 };
 
-const branchmodal = {
-  branchModalAPI,
-  getBranchDataAPI,
-  comanywisebranch,
-};
-
-export default branchmodal;
+export { createBranch, getBranches, branchesByCompany };

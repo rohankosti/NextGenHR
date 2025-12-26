@@ -1,34 +1,22 @@
-import http, { get } from "http";
-import mongodb, { Collection, MongoClient, ObjectId } from "mongodb";
+import Company from "../Model/Company.js";
 
-//1. Company Modal API
-const comapnyModalAPI = (req, res, dbs) => {
-  let body = "";
-  req.on("data", (chunk) => {
-    body += chunk.toString();
-    console.log(body);
-  });
-
-  req.on("end", async () => {
-    let comapanyparse = JSON.parse(body);
-    const comapany_collection = await dbs
-      .collection("comapny")
-      .insertOne(comapanyparse);
-    res.writeHead(200, { "content-type": "application/json" });
-    res.end(JSON.stringify({ msg: "Data Saved Sucssesfully" }));
-  });
+const createCompany = async (req, res) => {
+  try {
+    const body = req.body;
+    const created = await Company.create(body);
+    return res.status(200).json({ message: "Company created", data: created });
+  } catch (err) {
+    return res.status(500).json({ message: err.message });
+  }
 };
 
-//1.1: GET Company Data Modal API
-const getComapnyDataAPI = async (req, res, dbs) => {
-  const companyData = await dbs.collection("comapny").find({}).toArray();
-  res.writeHead(200, { "content-type": "application/json" });
-  res.end(JSON.stringify(companyData));
+const getCompanies = async (req, res) => {
+  try {
+    const companies = await Company.find();
+    return res.status(200).json(companies);
+  } catch (err) {
+    return res.status(500).json({ message: err.message });
+  }
 };
 
-const comapnymodal = {
-   comapnyModalAPI,
-   getComapnyDataAPI,
-}
-
-export default comapnymodal;
+export { createCompany, getCompanies };

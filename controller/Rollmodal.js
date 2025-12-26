@@ -1,31 +1,22 @@
-import http, { get } from "http";
-import mongodb, { Collection, MongoClient, ObjectId } from "mongodb";
+import Role from "../Model/Role.js";
 
-//6. Role Modal API
-const rolemodalAPI = (req, res, dbs) => {
-  let body = "";
-  req.on("data", (chunk) => {
-    body += chunk.toString();
-    console.log(body);
-  });
-  req.on("end", async () => {
-    let roleparse = JSON.parse(body);
-    let role_collection = await dbs.collection("Role").insertOne(roleparse);
-    res.writeHead(200, { "content-type": "application/json" });
-    res.end(JSON.stringify({ msg: "Data Saved Sucssesfully" }));
-  });
+const createRole = async (req, res) => {
+  try {
+    const body = req.body;
+    const created = await Role.create(body);
+    return res.status(200).json({ message: "Role created", data: created });
+  } catch (err) {
+    return res.status(500).json({ message: err.message });
+  }
 };
 
-const getroledata =async (req,res,dbs)=>{
-  const getroll = await dbs.collection("Role").find({}).toArray();
-  res.writeHead(200,{"content-type":"application/json"})
-  res.end(JSON.stringify(getroll));
-}
+const getRoles = async (req, res) => {
+  try {
+    const data = await Role.find();
+    return res.status(200).json(data);
+  } catch (err) {
+    return res.status(500).json({ message: err.message });
+  }
+};
 
-
-const rolemodal ={
-  rolemodalAPI,
-  getroledata
-}
-
-export default rolemodal;
+export { createRole, getRoles };

@@ -1,115 +1,62 @@
-import http, { get } from "http";
-import mongodb, { Collection, MongoClient, ObjectId } from "mongodb";
-import { json } from "stream/consumers";
+import Register from "../Model/Register.js";
 
-//1:API to fetch Register.html form data and save in Mongodb database
-const registerdata = (req, res, dbs) => {
-  let body = "";
-  req.on("data", (chunk) => {
-    body += chunk.toString();
-  });
-
-  req.on("end", async () => {
-    const regData = JSON.parse(body);
-    const ragisterCollection = dbs.collection("Register").insertOne(regData);
-    res.writeHead(200, { "Content-Type": "application/json" });
-    res.end(JSON.stringify({ message: "Employee Data Stored Successfully" }));
-  });
+const createEmployee = async (req, res) => {
+  try {
+    const body = req.body;
+    const created = await Register.create(body);
+    return res.status(200).json({ message: "Employee Data Stored Successfully", data: created });
+  } catch (err) {
+    return res.status(500).json({ message: err.message });
+  }
 };
 
-//API use for Auto Generated register.html Comapny code and save mongodb
-
-const lastemploye = async (req, res, dbs) => {
-  const lastemp = await dbs
-    .collection("Register")
-    .find({})
-    .sort({ _id: -1 })
-    .limit(1)
-    .toArray();
-  res.writeHead(200, { "content-type": "application/json" });
-  res.end(JSON.stringify(lastemp));
+const getLastEmployee = async (req, res) => {
+  try {
+    const last = await Register.find().sort({ _id: -1 }).limit(1);
+    return res.status(200).json(last);
+  } catch (err) {
+    return res.status(500).json({ message: err.message });
+  }
 };
 
-const getregiterdata = async (req, res, dbs) => {
-  const register = await dbs.collection("Register").find({}).toArray();
-  res.writeHead(200, { "content-type": "application/json" });
-  res.end(JSON.stringify(register));
+const getEmployees = async (req, res) => {
+  try {
+    const employees = await Register.find();
+    return res.status(200).json(employees);
+  } catch (err) {
+    return res.status(500).json({ message: err.message });
+  }
 };
 
-const singleuserdashboard = (req, res, dbs) => {
-  let body = "";
-  req.on("data", (chunk) => {
-    body += chunk.toString();
-  });
-  req.on("end", async (e) => {
-    const parse = JSON.parse(body);
-    const single = await dbs
-      .collection("Register")
-      .findOne({ _id: new ObjectId(parse.id) });
-    res.writeHead(200, { "content-type": "application/json" });
-    res.end(JSON.stringify(single));
-  });
+const getEmployeeById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const emp = await Register.findById(id);
+    return res.status(200).json(emp);
+  } catch (err) {
+    return res.status(500).json({ message: err.message });
+  }
 };
 
-const updateduserdashboard = (req, res, dbs) => {
-  let body = "";
-  req.on("data", (chunk) => {
-    body += chunk.toString();
-  });
-  req.on("end", async () => {
-    const upparse = JSON.parse(body);
-    console.log(upparse);
-
-    const upcollection = await dbs.collection("Register").updateOne(
-      { _id: new ObjectId(upparse.id) },
-      {
-        $set: {
-          name: upparse.name,
-          email: upparse.email,
-          role: upparse.role,
-          status: upparse.status,
-        },
-      }
-    );
-
-    if (upcollection.modifiedCount === 1) {
-      res.writeHead(200, { "content-type": "application/json" });
-      res.end(JSON.stringify({ msg: "User Data Update Sucssesfuuly" }));
-    } else {
-      res.writeHead(200, { "content-type": "application/json" });
-      res.end(JSON.stringify({ msg: "Data Can't be Updated" }));
-    }
-  });
+const updateEmployee = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const payload = req.body;
+    await Register.findByIdAndUpdate(id, payload);
+    return res.status(200).json({ message: "User Data Updated Successfully" });
+  } catch (err) {
+    return res.status(500).json({ message: err.message });
+  }
 };
 
-const deleteuserdashboard = (req, res, dbs) => {
-  let body = "";
-  req.on("data", (chunk) => {
-    body += chunk.toString();
-  });
-  req.on("end", async () => {
-    const delparse = JSON.parse(body);
-    // console.log(delparse);
-    const delcollection = await dbs
-      .collection("Register")
-      .deleteOne({ _id: new ObjectId(delparse.id) });
-    if (delcollection.deletedCount === 1) {
-      res.writeHead(200, { "content-type": "application/json" });
-      res.end(JSON.stringify({ msg: "User Data Delete Sucssesfuuly" }));
-    } else {
-      res.writeHead(200, { "content-type": "application/json" });
-      res.end(JSON.stringify({ msg: "User Data Can't be Delete" }));
-    }
-  });
+const deleteEmployee = async (req, res) => {
+  try {
+    const { id } = req.params;
+    await Register.findByIdAndDelete(id);
+    return res.status(200).json({ message: "User Data Deleted Successfully" });
+  } catch (err) {
+    return res.status(500).json({ message: err.message });
+  }
 };
 
-const registermodal = {
-  registerdata,
-  lastemploye,
-  getregiterdata,
-  singleuserdashboard,
-  updateduserdashboard,
-  deleteuserdashboard,
-};
-
-export default registermodal;
+export { createEmployee, getLastEmployee, getEmployees, getEmployeeById, updateEmployee, deleteEmployee };
