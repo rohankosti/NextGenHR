@@ -10,4 +10,4 @@ const payrollSchema = new mongoose.Schema({
   processed_by: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
 }, { timestamps: true });
 
-module.exports = mongoose.model('Payroll', payrollSchema);
+module.exports = mongoose.model('Payroll', payrollSchema,'Payroll');

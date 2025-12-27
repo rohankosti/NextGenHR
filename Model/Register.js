@@ -77,8 +77,8 @@ const employeeSchema = new mongoose.Schema({
     },
 
     role_id: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Role"
+        type: String,
+        required: true
     },
 
     status: {
@@ -89,4 +89,4 @@ const employeeSchema = new mongoose.Schema({
 
 }, { timestamps: true });
 
-export default mongoose.model("Register", employeeSchema);
+export default mongoose.model("Register", employeeSchema,'Register');

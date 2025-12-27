@@ -118,10 +118,10 @@
           departmentbody.innerHTML +=
             `<tr>
                 <td>${index + 1}</td>
-                <td>${e.dept_name}</td>
+                <td>${e.name}</td>
                 <td>${e.company_id}</td>
                 <td>${e.branch_id}</td>
-                <td>${e.manager_id}</td>
+                <td>${e.manager}</td>
                 <td>
                   <button class="text-center btn btn-primary btn-sm showApplicationBtn" data-bs-toggle="modal" data-bs-target="#updateAttendanceModal" id="edit" data-id="${e._id}"><i class="bi bi-pencil"></i></button>
                   <button class="text-center btn btn-danger btn-sm deltaeApplicationBtn" id="delete" data-id="${e._id}"><i class="bi bi-trash"></i></button>
@@ -168,7 +168,7 @@
           }
           // console.log(upobj,"upobj");
           
-          const upres = await fetch("http://localhost:3000/Updateddata",{
+          const upres = await fetch(`http://localhost:3000/Updateddata/${id}`,{
             method:"PUT",
             headers:{
               "content-type":"application/json"
@@ -197,7 +197,7 @@
             // console.log(delbtn);
             const delobj = {id:delbtn}
             // console.log(delobj);
-            const delres = await fetch("http://localhost:3000/Deletedata",{
+            const delres = await fetch(`http://localhost:3000/Deletedata/${delbtn}`,{
               method:"DELETE",
               headers:{
                 "content-type":"application/json"

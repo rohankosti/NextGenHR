@@ -94,10 +94,10 @@
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
       const departmentobj = {
-        dept_name: document.getElementById('dept_name').value,
+        name: document.getElementById('dept_name').value,
         company_id: document.getElementById('company_id').value,
         branch_id: document.getElementById('branch_id').value,
-        manager_id: document.getElementById('manager_id').value,
+        manager: document.getElementById('manager_id').value,
         description: document.getElementById('description').value
       };
 
@@ -113,14 +113,14 @@
       // console.log(response);
       if (data.ok) {
         let mdg = document.getElementById("mdg");
-        mdg.innerHTML = `<div class="alert alert-success">${response.msg}</div>`
+        mdg.innerHTML = `<div class="alert alert-success">Data Sucsesfully Stored</div>`
         form.reset();
         setInterval(() => {
           mdg.innerHTML = "";
         }, 2000);
       }
       else {
-        mdg.innerHTML = `<div class="alert alert-success">Data Can't Stored</div>`;
+        mdg.innerHTML = `<div class="alert alert-danger">Data Can't Stored</div>`;
       }
     });
   </script>

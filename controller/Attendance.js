@@ -3,6 +3,8 @@ import Attendance from "../Model/Attandance.js";
 const Attendancepost = async (req, res) => {
   try {
     const body = req.body;
+    console.log(body);
+    
     const attandancecollection = await Attendance.create(body);
     res.status(200).json({ msg: "Data Stored Sucsesfully" });
   } catch (error) {

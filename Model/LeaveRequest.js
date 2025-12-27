@@ -11,4 +11,4 @@ const leaveRequestSchema = new mongoose.Schema({
   approved_by: { type: String }
 }, { timestamps: true });
 
-export default mongoose.model('LeaveRequset', leaveRequestSchema);
+export default mongoose.model('LeaveRequset', leaveRequestSchema,'LeaveRequset');

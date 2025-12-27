@@ -67,7 +67,7 @@
                     <!-- Leave Type -->
                     <div class="mb-3">
                         <label class="form-label">Leave Type</label>
-                        <select class="form-select" id="leave_type_id" name="leave_type_id">
+                        <select class="form-select" id="leave_type" name="leave_type">
                             <option value="">Select Leave Type</option>
                             <option value="Sick Leave">Sick Leave</option>
                             <option value="Casual Leave">Casual Leave</option>
@@ -119,8 +119,8 @@
                     <div class="col-12 mt-3 d-flex justify-content-center gap-3">
 
                         <!-- SAVE -->
-                        <button type="reset" class="btn btn-custom px-4">
-                            Reset
+                        <button type="submit" class="btn btn-custom px-4">
+                            Submit
                         </button>
 
                         <!-- CLOSE -->
@@ -154,9 +154,8 @@
             const select = document.getElementById("employee_id");
             dat.forEach(e => {
                 const option = document.createElement("option");
-                // option.value=e._id;
-                // option.value = e.first_name + " " + e.last_name;
-                option.textContent = e.first_name + e.last_name;
+                option.value = e._id;
+                option.textContent = e.first_name + " " + e.last_name;
                 select.appendChild(option);
             });
 
@@ -187,7 +186,7 @@
 
                 if (response.ok) {
                     // alert("Data Saved Succsesfully")
-                    eroor.innerHTML = `<div class="alert alert-success">${data.msg}</div>`;
+                    eroor.innerHTML = `<div class="alert alert-success">${data.message}</div>`;
                     leaveForm.reset();
                     // window.location.href = "/WEB/leave_request.html";
 

@@ -144,21 +144,43 @@
         // console.log(res);
         const data = await res.json()
         console.log("attendance data:", data);
+        // // helper: format date as DD-MM-YYYY
+        const formatDate = (d) => {
+          const dt = new Date(d);
+          if (isNaN(dt)) return '';
+          return `${dt.getDate().toString().padStart(2, '0')}-${(dt.getMonth() + 1).toString().padStart(2, '0')}-${dt.getFullYear()}`;
+        };
+
         data.forEach((e, index) => {
           console.log("current record:", e);
-          const displayDate = e.date ? new Date(e.date).toLocaleDateString() : '';
-          // Try to find employee ID - might be emp_id or employee_id
-          const empId = e.employee_id || e.emp_id;
-          const empName = empMap[empId] || 'Unknown';
-          console.log("Looking up empId:", empId, "Found name:", empName);
+          const displayDate = e.date ? formatDate(e.date) : '';
+          // Resolve employee name robustly: support populated object, string id, or alternate fields
+          let empName = 'Unknown Employee';
+          const rawEmp = e.employee_id || e.emp_id || e.empId || e.emp || e.register_id;
+          if (rawEmp) {
+            if (typeof rawEmp === 'object') {
+              if (rawEmp.first_name || rawEmp.last_name) {
+                empName = (rawEmp.first_name || '') + ' ' + (rawEmp.last_name || '');
+              } else if (rawEmp.name) {
+                empName = rawEmp.name;
+              } else if (rawEmp._id) {
+                empName = empMap[rawEmp._id] || String(rawEmp._id);
+              } else {
+                empName = String(rawEmp);
+              }
+            } else {
+              empName = empMap[rawEmp] || rawEmp || 'Unknown Employee';
+            }
+          }
+
           attendanceTable.innerHTML += `
            <tr>
               <td>${index + 1}</td>
               <td>${empName}</td>
               <td>${displayDate}</td>
-              <td>${e.check_in || ''}</td>
-              <td>${e.check_out || ''}</td>
-              <td>${e.status || ''}</td>
+              <td>${e.check_in }</td>
+              <td>${e.check_out }</td>
+              <td>${e.status }</td>
               <td>                                                                                                                                      
                 <button class="text-center btn btn-primary btn-sm showApplicationBtn" data-bs-toggle="modal" data-bs-target="#updateAttendanceModal" id="edit" data-id="${e._id}"><i class="bi bi-pencil"></i></button>
                 <button class="text-center btn btn-danger btn-sm deltaeApplicationBtn" id="delete" data-id="${e._id}"><i class="bi bi-trash"></i></button>
@@ -190,14 +212,30 @@
               body: JSON.stringify(obj)
             })
             const sindata = await sinfetch.json()
-            console.log(sindata);
+            // console.log(sindata);
 
             currentRecord = sindata
             // console.log(sindata,"sindata");
             document.getElementById("editId").value = sindata._id
-            // Get employee name from empMap - empMap is keyed by _id from Register
-            const empName = empMap[sindata.employee_id] || 'Unknown Employee';
-            document.getElementById("editName").value = empName;
+            // Get employee name from empMap or from populated object
+            let modalEmpName = 'Unknown Employee';
+            const rawEmpSingle = sindata.employee_id || sindata.emp_id || sindata.emp || sindata.register_id;
+            if (rawEmpSingle) {
+              if (typeof rawEmpSingle === 'object') {
+                if (rawEmpSingle.first_name || rawEmpSingle.last_name) {
+                  modalEmpName = (rawEmpSingle.first_name || '') + ' ' + (rawEmpSingle.last_name || '');
+                } else if (rawEmpSingle.name) {
+                  modalEmpName = rawEmpSingle.name;
+                } else if (rawEmpSingle._id) {
+                  modalEmpName = empMap[rawEmpSingle._id] || String(rawEmpSingle._id);
+                } else {
+                  modalEmpName = String(rawEmpSingle);
+                }
+              } else {
+                modalEmpName = empMap[rawEmpSingle] || rawEmpSingle || 'Unknown Employee';
+              }
+            }
+            document.getElementById("editName").value = modalEmpName;
             // set date input value in YYYY-MM-DD format for <input type="date">
             document.getElementById("edit_date").value = sindata.date ? new Date(sindata.date).toISOString().split('T')[0] : '';
             document.getElementById("edit_check_in").value = sindata.check_in || ''
@@ -218,7 +256,7 @@
             check_out: document.getElementById("edit_check_out").value,
             status: document.getElementById("edit_status").value
           };
-          console.log(upobj, "up");
+          // console.log(upobj, "up");
 
           const upfetch = await fetch(`http://localhost:3000/updatedattandancedata/${id}`, {
             method: "PUT",
@@ -235,7 +273,7 @@
 
           if (upfetch.ok) {
             alert(`${updata.msg}`)
-            // location.reload()
+            location.reload()
           }
           else {
             alert("Data Can't Be Updated")

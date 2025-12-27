@@ -12,4 +12,6 @@ const companySchema = new mongoose.Schema({
   gst_number : {type : String },
 }, { timestamps: true });
 
-export default mongoose.model('comapny', companySchema);
+// Model name set to 'Company' to match refs used across the app.
+// Keep existing collection name 'comapny' to avoid migrating existing data.
+export default mongoose.model('Company', companySchema, 'comapny');

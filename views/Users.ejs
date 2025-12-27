@@ -89,7 +89,7 @@
       try {
         const res = await fetch('http://localhost:3000/getregisterdata');
         const usersd = await res.json();
-        // console.log(usersd);
+        console.log(usersd);
 
         const tbody = document.getElementById('rolldata');
         usersd.forEach((user, index) => {
@@ -133,7 +133,7 @@
             document.getElementById("editId").value = data._id;
             document.getElementById("editName").value = data.first_name;
             document.getElementById("editEmail").value = data.email;
-            document.getElementById("editPosition").value = data.role_id;
+            document.getElementById("editPosition" ).value = data.role_id;
             document.getElementById("status").value = data.status;
 
           })
@@ -150,7 +150,7 @@
             role_id: document.getElementById("editPosition").value,
             status: document.getElementById("status").value
           };
-          const upfetch = await fetch("http://localhost:3000/updateduserdashboard", {
+          const upfetch = await fetch(`http://localhost:3000/updateduserdashboard/${id}`, {
             method: "PUT",
             headers: {
               "content-type": "application/json"
@@ -183,7 +183,7 @@
             }
             //  console.log(delobj);
 
-            const delfetch = await fetch("http://localhost:3000/deleteuserdashboard", {
+            const delfetch = await fetch(`http://localhost:3000/deleteuserdashboard/${delbtn}`, {
               method: "DELETE",
               headers: {
                 "content-type": "application/json"

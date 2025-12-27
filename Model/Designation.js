@@ -8,4 +8,4 @@ const designationSchema = new mongoose.Schema({
   description: String
 }, { timestamps: true });
 
-export default mongoose.model('Designation', designationSchema);
+export default mongoose.model('Designation', designationSchema,'Designation');

@@ -57,7 +57,7 @@
                         <!-- Employee -->
                         <div class="col-12">
                             <label class="form-label">Employee</label>
-                            <select class="form-select " name="emp_id">
+                            <select class="form-select " name="employee_id">
                                 <option value="none" selected disabled>Select Employee</option>
                             </select>
                         </div>
@@ -135,7 +135,7 @@
             const res = await fetch("http://localhost:3000/getregisterdata")
             const data = await res.json()
             console.log(data);
-            const select = document.querySelector('select[name="emp_id"]');
+            const select = document.querySelector('select[name="employee_id"]');
             data.forEach(e => {
                 const option = document.createElement('option');
                 option.value = e._id;

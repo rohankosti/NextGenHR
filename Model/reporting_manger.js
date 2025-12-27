@@ -7,4 +7,4 @@ const userSchema = new mongoose.Schema({
     created_at: {type: Date,default: Date.now},
 });
 
-export default mongoose.model('Reporting_Manager', userSchema);
+export default mongoose.model('Reporting_Manager', userSchema ,'Reporting_Manager');

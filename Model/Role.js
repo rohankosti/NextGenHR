@@ -5,4 +5,4 @@ const roleSchema = new mongoose.Schema({
   description: String
 }, { timestamps: true });
 
-export default mongoose.model('Role', roleSchema);
+export default mongoose.model('Role', roleSchema,'Role');
