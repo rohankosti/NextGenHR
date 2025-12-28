@@ -1,6 +1,6 @@
 <%- include('Layout/header'); %>
 
-<!-- Main Content -->
+  <!-- Main Content -->
   <div class="main-content">
 
     <!-- Topbar -->
@@ -140,148 +140,108 @@
         });
         console.log("empMap", empMap);
         const attendanceTable = document.getElementById("attendanceTable");
-        const res = await fetch("http://localhost:3000/getattendancedata")
-        // console.log(res);
-        const data = await res.json()
-        console.log("attendance data:", data);
-        // // helper: format date as DD-MM-YYYY
+
+        // Simple date format (DD-MM-YYYY)
         const formatDate = (d) => {
+          if (!d) return "";
           const dt = new Date(d);
-          if (isNaN(dt)) return '';
-          return `${dt.getDate().toString().padStart(2, '0')}-${(dt.getMonth() + 1).toString().padStart(2, '0')}-${dt.getFullYear()}`;
+          return dt.toLocaleDateString("en-GB");
         };
 
-        data.forEach((e, index) => {
-          console.log("current record:", e);
-          const displayDate = e.date ? formatDate(e.date) : '';
-          // Resolve employee name robustly: support populated object, string id, or alternate fields
-          let empName = 'Unknown Employee';
-          const rawEmp = e.employee_id || e.emp_id || e.empId || e.emp || e.register_id;
-          if (rawEmp) {
-            if (typeof rawEmp === 'object') {
-              if (rawEmp.first_name || rawEmp.last_name) {
-                empName = (rawEmp.first_name || '') + ' ' + (rawEmp.last_name || '');
-              } else if (rawEmp.name) {
-                empName = rawEmp.name;
-              } else if (rawEmp._id) {
-                empName = empMap[rawEmp._id] || String(rawEmp._id);
-              } else {
-                empName = String(rawEmp);
-              }
-            } else {
-              empName = empMap[rawEmp] || rawEmp || 'Unknown Employee';
-            }
-          }
+        // Fetch attendance data
+        const res = await fetch("http://localhost:3000/getattendancedata");
+        const data = await res.json();
+        console.log("attendance data:", data);
 
+        // Render table
+        data.forEach((e, index) => {
           attendanceTable.innerHTML += `
-           <tr>
-              <td>${index + 1}</td>
-              <td>${empName}</td>
-              <td>${displayDate}</td>
-              <td>${e.check_in }</td>
-              <td>${e.check_out }</td>
-              <td>${e.status }</td>
-              <td>                                                                                                                                      
-                <button class="text-center btn btn-primary btn-sm showApplicationBtn" data-bs-toggle="modal" data-bs-target="#updateAttendanceModal" id="edit" data-id="${e._id}"><i class="bi bi-pencil"></i></button>
-                <button class="text-center btn btn-danger btn-sm deltaeApplicationBtn" id="delete" data-id="${e._id}"><i class="bi bi-trash"></i></button>
-              </td>
-            </tr>
-           `
+    <tr>
+      <td>${index + 1}</td>
+         <td>${empMap[e.employee_id] || "Unknown"}</td>
+      <td>${formatDate(e.date)}</td>
+      <td>${e.check_in}</td>
+      <td>${e.check_out}</td>
+      <td>${e.status}</td>
+      <td>
+        <button class="btn btn-primary btn-sm showApplicationBtn" 
+                data-bs-toggle="modal" 
+                data-bs-target="#updateAttendanceModal"
+                data-id="${e._id}">
+          <i class="bi bi-pencil"></i>
+        </button>
+
+        <button class="btn btn-danger btn-sm deleteApplicationBtn" 
+                data-id="${e._id}">
+          <i class="bi bi-trash"></i>
+        </button>
+      </td>
+    </tr>
+  `;
         });
 
+        // Show modal with single attendance data
         const showApplicationBtn = document.querySelectorAll(".showApplicationBtn");
-        // console.log(showApplicationBtn,"sd");
-        let currentRecord = null;  // GLOBAL
+        let currentRecord = null;
 
         showApplicationBtn.forEach(btn => {
-          // console.log(btn);
-          btn.addEventListener("click", async (e) => {
-            // e.preventDefault()
-            const btnattr = btn.getAttribute("data-id")
-            // console.log(btnattr);
-            const obj = {
-              id: btnattr
-            }
-            // console.log(obj);
-            //single updated api
+          btn.addEventListener("click", async () => {
+            const id = btn.getAttribute("data-id");
+
             const sinfetch = await fetch("http://localhost:3000/getsingalattendancedata", {
               method: "POST",
-              headers: {
-                "content-type": "application/json"
-              },
-              body: JSON.stringify(obj)
-            })
-            const sindata = await sinfetch.json()
-            // console.log(sindata);
+              headers: { "content-type": "application/json" },
+              body: JSON.stringify({ id })
+            });
 
-            currentRecord = sindata
-            // console.log(sindata,"sindata");
-            document.getElementById("editId").value = sindata._id
-            // Get employee name from empMap or from populated object
-            let modalEmpName = 'Unknown Employee';
-            const rawEmpSingle = sindata.employee_id || sindata.emp_id || sindata.emp || sindata.register_id;
-            if (rawEmpSingle) {
-              if (typeof rawEmpSingle === 'object') {
-                if (rawEmpSingle.first_name || rawEmpSingle.last_name) {
-                  modalEmpName = (rawEmpSingle.first_name || '') + ' ' + (rawEmpSingle.last_name || '');
-                } else if (rawEmpSingle.name) {
-                  modalEmpName = rawEmpSingle.name;
-                } else if (rawEmpSingle._id) {
-                  modalEmpName = empMap[rawEmpSingle._id] || String(rawEmpSingle._id);
-                } else {
-                  modalEmpName = String(rawEmpSingle);
-                }
-              } else {
-                modalEmpName = empMap[rawEmpSingle] || rawEmpSingle || 'Unknown Employee';
-              }
-            }
-            document.getElementById("editName").value = modalEmpName;
-            // set date input value in YYYY-MM-DD format for <input type="date">
-            document.getElementById("edit_date").value = sindata.date ? new Date(sindata.date).toISOString().split('T')[0] : '';
-            document.getElementById("edit_check_in").value = sindata.check_in || ''
-            document.getElementById("edit_check_out").value = sindata.check_out || ''
-            document.getElementById("edit_status").value = sindata.status || ''
-          })
+            const sindata = await sinfetch.json();
+            currentRecord = sindata;
+
+            // Fill modal
+            document.getElementById("editId").value = sindata._id;
+            document.getElementById("editName").value = empMap[sindata.employee_id] || "Unknown";
+            document.getElementById("edit_date").value = sindata.date?.split("T")[0] || "";
+            document.getElementById("edit_check_in").value = sindata.check_in || "";
+            document.getElementById("edit_check_out").value = sindata.check_out || "";
+            document.getElementById("edit_status").value = sindata.status || "";
+          });
         });
-        // updated api 
+
+        // UPDATE Attendance
         const updateAttendanceForm = document.getElementById("updateAttendanceForm");
-        // console.log(updateAttendanceForm);
+
         updateAttendanceForm.addEventListener("submit", async (e) => {
-          e.preventDefault()
-          const id = document.getElementById("editId").value
+          e.preventDefault();
+
+          const id = document.getElementById("editId").value;
+
           const upobj = {
-            employee_id: currentRecord.employee_id,
+            // employee_id: currentRecord.employee_id,
             date: document.getElementById("edit_date").value,
             check_in: document.getElementById("edit_check_in").value,
             check_out: document.getElementById("edit_check_out").value,
             status: document.getElementById("edit_status").value
           };
-          // console.log(upobj, "up");
 
           const upfetch = await fetch(`http://localhost:3000/updatedattandancedata/${id}`, {
             method: "PUT",
-            headers: {
-              "content-type": "application/json"
-            },
-            body: JSON.stringify({ id, ...upobj })
+            headers: { "content-type": "application/json" },
+            body: JSON.stringify(upobj)
           });
 
-
-          console.log(upfetch, "up");
-          const updata = await upfetch.json()
-          // console.log(updata, "up");
+          const updata = await upfetch.json();
 
           if (upfetch.ok) {
-            alert(`${updata.msg}`)
-            location.reload()
+            alert(updata.msg);
+            location.reload();
+          } else {
+            alert("Data Can't Be Updated");
           }
-          else {
-            alert("Data Can't Be Updated")
-          }
-        })
+        });
+
 
         //  delete api 
-        const deltaeApplicationBtn = document.querySelectorAll(".deltaeApplicationBtn");
+        const deltaeApplicationBtn = document.querySelectorAll(".deleteApplicationBtn");
         deltaeApplicationBtn.forEach(btn => {
           btn.addEventListener("click", async (e) => {
             e.preventDefault()
@@ -326,4 +286,4 @@
     })
   </script>
 
-<%- include('Layout/footer'); %>
+  <%- include('Layout/footer'); %>
