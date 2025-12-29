@@ -1,6 +1,6 @@
 import {
   Attendancepost,
-  GetAttandance,
+  GetAttendance,
   singledata,
   updateddata,
   delateddata,
@@ -9,7 +9,7 @@ import express from 'express';
 const router =express.Router();
 
 router.post('/Attendancedata',Attendancepost);
-router.get('/getattendancedata',GetAttandance);
+router.get('/getattendancedata',GetAttendance);
 router.post('/getsingalattendancedata',singledata);
 router.put('/updatedattandancedata/:id',updateddata);
 router.delete('/deletedataattandance/:id',delateddata);

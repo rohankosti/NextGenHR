@@ -1,5 +1,5 @@
 import jobApplication from "./router/API/JobApplication.js";
-import registermodal from "./router/API/Register.js";
+import registermodal from "./router/API/User.js";
 import comapnymodal from "./router/API/Companymodal.js";
 import branchmodal from "./router/API/Brandmodal.js";
 import departmentModal from "./router/API/Departmentmodal.js";

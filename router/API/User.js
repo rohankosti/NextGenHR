@@ -1,4 +1,4 @@
-import { createEmployee,  getEmployees, singleEmploye, updateEmployee, deleteEmployee } from "../../controller/Register.js";
+import { createEmployee,  getEmployees, singleEmploye, updateEmployee, deleteEmployee } from "../../controller/User.js";
 import express from "express";
 
 const router = express.Router();

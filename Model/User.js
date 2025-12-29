@@ -1,43 +1,93 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema(
   {
-    emp_code: { type: String, required: true, unique: true },
-    first_name: String,
-    last_name: String,
-    gender: String,
-    dob: Date,
-    contact_number: String,
-    email: { type: String, required: true, unique: true },
-    department_id: { type: mongoose.Schema.Types.ObjectId, ref: "Department" },
+    // emp_code: {
+    //     type: String,
+    //     required: true,
+    //     unique: true
+    // },
+
+    first_name: { type: String },
+    last_name: { type: String },
+
+    gender: {
+      type: String,
+      enum: ["Male", "Female", "Other"],
+    },
+
+    dob: { type: Date },
+
+    contact_number: { type: String },
+
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+
+    department_id: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Department",
+    },
+
     designation_id: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Designation",
     },
-    company_id: { type: mongoose.Schema.Types.ObjectId, ref: "Company" },
-    branch_id: { type: mongoose.Schema.Types.ObjectId, ref: "Branch" },
-    join_date: Date,
-    employment_type: { type: String },
-    reporting_manager: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
-    address: {
-      line1: String,
-      city: String,
-      state: String,
-      pincode: String,
+
+    company_id: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Company",
     },
-    photo_url: String,
-    username: { type: String, required: true, unique: true },
-    password: { type: String, required: true },
-    role_id: { type: mongoose.Schema.Types.ObjectId, ref: "Role" },
-    last_login: Date,
+
+    branch_id: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Branch",
+    },
+
+    join_date: { type: Date },
+
+    employment_type: {
+      type: String,
+      enum: ["Full Time", "Part Time", "Intern"],
+    },
+
+    reporting_manager: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Reporting_Manager", // employee reporting to another employee
+    },
+
+    address_line1: { type: String },
+    city: { type: String },
+    state: { type: String },
+    pincode: { type: String },
+
+    photo_url: { type: String },
+
+    username: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+
+    password: {
+      type: String,
+      required: true,
+    },
+
+    role_id: {
+      type: String,
+      required: true,
+    },
+
     status: {
       type: String,
-      enum: ["probation", "resigned", "terminated", "confirmed"],
+      enum: ["probation", "confirmed", "resigned", "terminated"],
       default: "probation",
     },
-    type: { type: String, enum: ["admin", "employee"], default: "employee" },
   },
   { timestamps: true }
 );
 
-module.exports = mongoose.model("User", userSchema);
+export default mongoose.model("User", userSchema, "User");

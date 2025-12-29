@@ -1,4 +1,4 @@
-import Attendance from "../Model/Attandance.js";
+import Attendance from "../Model/Attendance.js";
 
 const Attendancepost = async (req, res) => {
   try {
@@ -11,12 +11,14 @@ const Attendancepost = async (req, res) => {
     res.status(500).json({ msg: "Data Can't be Stored", error });
   }
 };
-const GetAttandance = async (req, res) => {
+const GetAttendance = async (req, res) => {
   try {
     const getdata = await Attendance.find();
+    console.log(getdata);
     res.status(200).json(getdata);
   } catch (error) {
-    res.status(500).json({ msg: "Data not find" });
+    console.error(error);
+    res.status(500).json({ msg: "Data not found", error: error.message });
   }
 };
 
@@ -56,7 +58,7 @@ const delateddata =async (req, res) => {
 };
 export  {
   Attendancepost,
-  GetAttandance,
+  GetAttendance,
   singledata,
   updateddata,
   delateddata,
