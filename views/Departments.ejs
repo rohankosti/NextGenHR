@@ -1,6 +1,33 @@
 <%- include('Layout/header'); %>
+  <style>
+       
 
-<div class="main-content">
+        table tbody tr {
+            transition: transform 0.2s ease;
+            border-radius: 100px !important;
+        }
+
+        table tbody tr:hover {
+            transform: translateX(6px);
+            cursor: pointer;
+        }
+    .action-btn {
+      padding: 6px 9px !important;
+      /* both equal */
+      /* display: flex; */
+      align-items: center;
+      justify-content: center;
+      width: 35px;
+      /* same fixed size */
+      height: 35px;
+    }
+
+    .action-btn i {
+      font-size: 14px;
+      line-height: 0;
+    }
+    </style>
+  <div class="main-content">
     <div class="topbar rounded-4 mb-4 shadow-sm px-3">
       <h5>Department List</h5>
       <div class="dropdown d-flex align-items-center gap-2">
@@ -123,8 +150,8 @@
                 <td>${e.branch_id}</td>
                 <td>${e.manager}</td>
                 <td>
-                  <button class="text-center btn btn-primary btn-sm showApplicationBtn" data-bs-toggle="modal" data-bs-target="#updateAttendanceModal" id="edit" data-id="${e._id}"><i class="bi bi-pencil"></i></button>
-                  <button class="text-center btn btn-danger btn-sm deltaeApplicationBtn" id="delete" data-id="${e._id}"><i class="bi bi-trash"></i></button>
+                  <button class="btn btn-primary btn-sm action-btn showApplicationBtn" data-bs-toggle="modal" data-bs-target="#updateAttendanceModal" id="edit" data-id="${e._id}"><i class="bi bi-pencil"></i></button>
+                  <button class="btn btn-danger btn-sm action-btn deltaeApplicationBtn" id="delete" data-id="${e._id}"><i class="bi bi-trash"></i></button>
                 </td>
               </tr>
            `
@@ -144,36 +171,36 @@
               },
               body: JSON.stringify(btnobj)
             })
-        
+
             const data = await sinres.json()
-            console.log(data,"sin");
-            
-            document.getElementById("editId").value= data._id;
-            document.getElementById("editName").value= data.dept_name;
-            document.getElementById("editcomapny").value= data.company_id;
-            document.getElementById("editbranch").value= data.branch_id;
-            document.getElementById("editmanager").value= data.manager_id;
+            console.log(data, "sin");
+
+            document.getElementById("editId").value = data._id;
+            document.getElementById("editName").value = data.name;
+            document.getElementById("editcomapny").value = data.company_id;
+            document.getElementById("editbranch").value = data.branch_id;
+            document.getElementById("editmanager").value = data.manager;
           })
         });
         //Updated API
         const updateDepartmentForm = document.getElementById("updateDepartmentForm");
-        updateDepartmentForm.addEventListener("submit",async(e)=>{
+        updateDepartmentForm.addEventListener("submit", async (e) => {
           e.preventDefault();
-          const id =document.getElementById("editId").value;
+          const id = document.getElementById("editId").value;
           const upobj = {
-            dep:document.getElementById("editName").value,
-            com:document.getElementById("editcomapny").value,
-            bra:document.getElementById("editbranch").value,
-            man:document.getElementById("editmanager").value
+            dep: document.getElementById("editName").value,
+            com: document.getElementById("editcomapny").value,
+            bra: document.getElementById("editbranch").value,
+            man: document.getElementById("editmanager").value
           }
           // console.log(upobj,"upobj");
-          
-          const upres = await fetch(`http://localhost:3000/Updateddata/${id}`,{
-            method:"PUT",
-            headers:{
-              "content-type":"application/json"
+
+          const upres = await fetch(`http://localhost:3000/Updateddata/${id}`, {
+            method: "PUT",
+            headers: {
+              "content-type": "application/json"
             },
-            body:JSON.stringify({id,...upobj})
+            body: JSON.stringify({ id, ...upobj })
           })
 
           const updata = await upres.json()
@@ -183,56 +210,40 @@
             alert(`${updata.message}`)
             location.reload()
           }
-          else{
+          else {
             alert("Department Data Can't Be Updated");
           }
-          
+
         })
-       
+
         const deltaeApplicationBtn = document.querySelectorAll(".deltaeApplicationBtn");
         deltaeApplicationBtn.forEach(btn => {
-           btn.addEventListener("click",async(e)=>{
+          btn.addEventListener("click", async (e) => {
             // console.log(e);
             const delbtn = btn.getAttribute('data-id');
             // console.log(delbtn);
-            const delobj = {id:delbtn}
+            const delobj = { id: delbtn }
             // console.log(delobj);
-            const delres = await fetch(`http://localhost:3000/Deletedata/${delbtn}`,{
-              method:"DELETE",
-              headers:{
-                "content-type":"application/json"
+            const delres = await fetch(`http://localhost:3000/Deletedata/${delbtn}`, {
+              method: "DELETE",
+              headers: {
+                "content-type": "application/json"
               },
-              body:JSON.stringify(delobj)
+              body: JSON.stringify(delobj)
             })
 
             const deldata = await delres.json()
             console.log(deldata);
 
             if (delres.ok) {
-               alert(`${deldata.message}`)
-               location.reload()
+              alert(`${deldata.message}`)
+              location.reload()
             }
-            else{
+            else {
               alert("Data Can't Be Deleted")
             }
-            
-            
-            
-           })
+          })
         });
-
-
-
-
-
-
-
-
-
-
-
-
-
       }
       catch (error) {
         console.error("Eroor In Your Side", error);
@@ -240,4 +251,4 @@
       }
     })
   </script>
-<%- include('Layout/footer'); %>
+  <%- include('Layout/footer'); %>

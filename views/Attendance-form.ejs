@@ -10,126 +10,193 @@
 
     <style>
         body {
-            background: #f0f2f5;
+            background: #f0f4f8;
         }
 
-        .card {
+        /* ===== CARD ===== */
+        .attendance-card {
+            max-width: 650px;
+            margin: auto;
             border-radius: 18px;
-            box-shadow: 0 8px 22px rgba(0, 0, 0, 0.10);
+            background: #ffffff;
+            box-shadow: 0 8px 22px rgba(0, 0, 0, 0.12);
+            overflow: hidden;
+            animation: fadeIn 0.4s ease;
         }
 
-        .header {
-            background: linear-gradient(135deg, #3b82f6, #06b6d4);
-            border-radius: 18px 18px 0 0;
-            color: #fff;
-            padding: 25px;
+        /* ===== HEADER ===== */
+        .attendance-header {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            padding: 28px;
             text-align: center;
+            color: #fff;
         }
 
-        .btn-custom {
-            background: #3b82f6;
-            color: white;
+        .attendance-header h3 {
+            margin: 0;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        .attendance-header small {
+            opacity: 0.9;
+            font-size: 13px;
+        }
+
+        /* ===== LABEL ===== */
+        .form-label {
+            font-weight: 600;
+            color: #34495e;
+            margin-bottom: 4px;
+        }
+
+        /* ===== INPUTS ===== */
+        .form-control,
+        .form-select,
+        textarea {
             border-radius: 10px;
+            border: 1px solid #d0d7de;
+            transition: all 0.25s ease;
         }
 
-        .btn-custom:hover {
-            background: #2563eb;
+        .form-control:focus,
+        .form-select:focus,
+        textarea:focus {
+            border-color: #4facfe;
+            box-shadow: 0 0 8px rgba(79, 172, 254, 0.4);
+        }
+
+        /* ===== BUTTON PRIMARY ===== */
+        .btn-gradient {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            border: none;
+            color: white;
+            border-radius: 12px;
+            padding: 10px 28px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-gradient:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(79, 172, 254, 0.4);
+            color: #fff;
+        }
+
+        /* ===== CLOSE BUTTON ===== */
+        .btn-close-custom {
+            border-radius: 12px;
+            padding: 10px 28px;
+            font-weight: 600;
+            border: 2px solid #4facfe;
+            color: #4facfe;
+            background: white;
+            transition: 0.3s ease;
+        }
+
+        .btn-close-custom:hover {
+            background: #edfaff;
+            color: #009bd6;
+            border-color: #00f2fe;
+        }
+
+        /* Fade animation */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
     </style>
 </head>
 
 <body>
 
-    <div class="container mt-4">
+    <div class="attendance-card mt-4">
 
-        <div class="card mx-auto" style="max-width: 650px;"> <!-- Wider Form -->
-            <div class="header">
-                <h3 class="m-0">Attendance</h3>
-                <small>Mark today's attendance</small>
-            </div>
-
-            <div class="card-body">
-
-                <form id="attendanceForm">
-
-                    <div class="row g-3">
-
-                        <!-- Employee -->
-                        <div class="col-12">
-                            <label class="form-label">Employee</label>
-                            <select class="form-select " name="employee_id">
-                                <option value="none" selected disabled>Select Employee</option>
-                            </select>
-                        </div>
-
-                        <!-- Date -->
-                        <div class="col-md-6">
-                            <label class="form-label">Date</label>
-                            <input type="date" class="form-control" name="date">
-                        </div>
-
-                        <!-- Status -->
-                        <div class="col-md-6">
-                            <label class="form-label">Status</label>
-                            <select class="form-select" name="status">
-                                <option value="Present">Present</option>
-                                <option value="Absent">Absent</option>
-                                <option value="Leave">Leave</option>
-                            </select>
-                        </div>
-
-                        <!-- Check In -->
-                        <div class="col-md-6">
-                            <label class="form-label">Check In</label>
-                            <input type="time" class="form-control" name="check_in">
-                        </div>
-
-                        <!-- Check Out -->
-                        <div class="col-md-6">
-                            <label class="form-label">Check Out</label>
-                            <input type="time" class="form-control" name="check_out">
-                        </div>
-
-                        <!-- Worked Hours -->
-                        <div class="col-md-6">
-                            <label class="form-label">Hours</label>
-                            <input type="number" class="form-control" name="worked_hour" placeholder="e.g. 8">
-                        </div>
-
-                        <!-- Remarks -->
-                        <div class="col-12">
-                            <label class="form-label">Remarks</label>
-                            <textarea class="form-control" name="remarks" rows="2"></textarea>
-                        </div>
-
-                        <!-- BUTTONS ROW (Save + Close together) -->
-                        <div class="col-12 mt-3 d-flex justify-content-center gap-3">
-
-                            <!-- SAVE -->
-                            <button type="submit" class="btn btn-custom px-4">
-                                Submit
-                            </button>
-
-                            <!-- CLOSE -->
-                            <button type="button" class="btn btn-outline-secondary px-4"
-                                onclick="window.history.back()">
-                                Close
-                            </button>
-
-                        </div>
-
-
-                    </div>
-
-                    <div id="eroor"></div>
-                </form>
-
-            </div>
+        <!-- HEADER -->
+        <div class="attendance-header">
+            <h3>Attendance</h3>
+            <small>Mark today's attendance</small>
         </div>
 
+        <div class="card-body p-4">
+
+            <form id="attendanceForm">
+                <div class="row g-3">
+
+                    <!-- Employee -->
+                    <div class="col-12">
+                        <label class="form-label">Employee</label>
+                        <select class="form-select" name="employee_id">
+                            <option value="none" selected disabled>Select Employee</option>
+                        </select>
+                    </div>
+
+                    <!-- Date -->
+                    <div class="col-md-6">
+                        <label class="form-label">Date</label>
+                        <input type="date" class="form-control" name="date">
+                    </div>
+
+                    <!-- Status -->
+                    <div class="col-md-6">
+                        <label class="form-label">Status</label>
+                        <select class="form-select" name="status">
+                            <option value="Present">Present</option>
+                            <option value="Absent">Absent</option>
+                            <option value="Leave">Leave</option>
+                        </select>
+                    </div>
+
+                    <!-- Check In -->
+                    <div class="col-md-6">
+                        <label class="form-label">Check In</label>
+                        <input type="time" class="form-control" name="check_in">
+                    </div>
+
+                    <!-- Check Out -->
+                    <div class="col-md-6">
+                        <label class="form-label">Check Out</label>
+                        <input type="time" class="form-control" name="check_out">
+                    </div>
+
+                    <!-- Hours -->
+                    <div class="col-md-6">
+                        <label class="form-label">Hours</label>
+                        <input type="number" class="form-control" name="worked_hour" placeholder="e.g. 8">
+                    </div>
+
+                    <!-- Remarks -->
+                    <div class="col-12">
+                        <label class="form-label">Remarks</label>
+                        <textarea class="form-control" name="remarks" rows="2"></textarea>
+                    </div>
+
+                    <!-- Buttons -->
+                    <div class="col-12 mt-3 d-flex justify-content-center gap-3">
+
+                        <button type="submit" class="btn-gradient">
+                            Submit
+                        </button>
+
+                        <button type="button" class="btn-close-custom" onclick="window.history.back()">
+                            Close
+                        </button>
+
+                    </div>
+                </div>
+
+                <div id="eroor"></div>
+            </form>
+
+        </div>
     </div>
-
-
     <script>
         addEventListener("DOMContentLoaded", async (e) => {
             const res = await fetch("http://localhost:3000/getregisterdata")

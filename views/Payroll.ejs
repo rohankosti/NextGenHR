@@ -1,5 +1,17 @@
 <%- include('Layout/header'); %>
+  <style>
+       
 
+        table tbody tr {
+            transition: transform 0.2s ease;
+            border-radius: 100px !important;
+        }
+
+        table tbody tr:hover {
+            transform: translateX(6px);
+            cursor: pointer;
+        }
+    </style>
 <div class="main-content">
     <div class="topbar rounded-4 mb-4 d-flex justify-content-between align-items-center shadow-sm px-3">
       <h5>Payroll</h5>

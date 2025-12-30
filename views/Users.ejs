@@ -1,14 +1,40 @@
 <%- include('Layout/header'); %>
+  <style>
+    table tbody tr {
+      transition: transform 0.2s ease;
+      border-radius: 100px !important;
+    }
 
+    table tbody tr:hover {
+      transform: translateX(6px);
+      cursor: pointer;
+    }
+
+    .action-btn {
+      padding: 6px 9px !important;
+      /* both equal */
+      /* display: flex; */
+      align-items: center;
+      justify-content: center;
+      width: 35px;
+      /* same fixed size */
+      height: 35px;
+    }
+
+    .action-btn i {
+      font-size: 14px;
+      line-height: 0;
+    }
+  </style>
   <div class="main-content">
     <div class="topbar rounded-4 mb-4 d-flex justify-content-between align-items-center shadow-sm px-3">
       <h5>Users</h5>
 
+      <!-- Leave Form Button -->
+      <a href="/Register" class="btn btn-primary">
+        Add User
+      </a>
       <div class="dropdown">
-        <!-- Leave Form Button -->
-        <a href="/Register" class="btn btn-primary">
-          Add User
-        </a>
         <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
           <i class="bi bi-person-circle"></i> Admin
         </button>
@@ -99,8 +125,8 @@
               <td>${user.role_id}</td>
               <td><span class="badge bg-warning">${user.status}</span></td>
               <td>
-                <button class="text-center btn btn-primary btn-sm showApplicationBtn" data-bs-toggle="modal" data-bs-target="#showApplicationModal" id="edit" data-id="${user._id}"><i class="bi bi-pencil"></i></button>
-                <button class="text-center btn btn-danger btn-sm deltaeApplicationBtn" id="delete" data-id="${user._id}"><i class="bi bi-trash"></i></button>
+              <button class="btn btn-primary btn-sm action-btn showApplicationBtn" data-bs-toggle="modal" data-bs-target="#showApplicationModal" id="edit" data-id="${user._id}"><i class="bi bi-pencil"></i></button>
+              <button class="btn btn-danger btn-sm action-btn  deltaeApplicationBtn" id="delete" data-id="${user._id}"><i class="bi bi-trash"></i></button>
               </td>
             </tr>`;
         });

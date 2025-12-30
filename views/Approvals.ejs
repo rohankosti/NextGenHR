@@ -1,4 +1,16 @@
-<%-include('Layout/header');%>
+<%-include('Layout/header');%>  <style>
+       
+
+        table tbody tr {
+            transition: transform 0.2s ease;
+            border-radius: 100px !important;
+        }
+
+        table tbody tr:hover {
+            transform: translateX(6px);
+            cursor: pointer;
+        }
+    </style>
   <div class="main-content">
     <div class="topbar rounded-4 mb-4 d-flex justify-content-between align-items-center shadow-sm px-3">
       <h5>Approvals</h5>
@@ -36,8 +48,8 @@
               <td>Annual Leave (5 days)</td>
               <td><span class="badge bg-warning">Pending</span></td>
               <td>
-                <button class="btn btn-approve btn-sm">Approve</button>
-                <button class="btn btn-reject btn-sm">Reject</button>
+                <button class="btn bg-primary btn-approve btn-sm">Approve</button>
+                <button class="btn bg-danger btn-reject btn-sm">Reject</button>
               </td>
             </tr>
             <tr>
@@ -46,8 +58,8 @@
               <td>Salary Adjustment</td>
               <td><span class="badge bg-warning">Pending</span></td>
               <td>
-                <button class="btn btn-approve btn-sm">Approve</button>
-                <button class="btn btn-reject btn-sm">Reject</button>
+                <button class="btn bg-primary btn-approve btn-sm">Approve</button>
+                <button class="btn bg-danger btn-reject btn-sm">Reject</button>
               </td>
             </tr>
             <tr>
@@ -56,8 +68,8 @@
               <td>Correction Request</td>
               <td><span class="badge bg-warning">Pending</span></td>
               <td>
-                <button class="btn btn-approve btn-sm">Approve</button>
-                <button class="btn btn-reject btn-sm">Reject</button>
+                <button class="btn bg-primary  btn-approve btn-sm">Approve</button>
+                <button class="btn bg-danger  btn-reject btn-sm">Reject</button>
               </td>
             </tr>
           </tbody>

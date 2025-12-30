@@ -242,13 +242,15 @@
       //3:API use for department id or name for dynamic in register.html
       const department = await fetch('http://localhost:3000/getdepartmentdata');
       const department_Data = await department.json();
-      // console.log("depart", department_Data);
+      console.log("depart", department_Data);
 
       const department_select = document.querySelector('select[name="department_id"]');
       department_Data.forEach(company => {
+        console.log(company,"coma");
+        
         const department_option = document.createElement('option');
         department_option.value = company._id;
-        department_option.textContent = company.dept_name;
+        department_option.textContent = company.name;
         department_select.appendChild(department_option);
       });
 
