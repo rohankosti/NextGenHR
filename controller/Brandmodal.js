@@ -4,29 +4,29 @@ const createBranch = async (req, res) => {
   try {
     const body = req.body;
     const created = await Branch.create(body);
-    return res.status(200).json({ message: "Branch created", data: created });
+    res.status(200).json({ message: "Branch created", data: created });
   } catch (err) {
-    return res.status(500).json({ message: err.message });
+    res.status(500).json({ message: err.message });
   }
 };
 
 const getBranches = async (req, res) => {
   try {
     const branches = await Branch.find();
-    return res.status(200).json(branches);
+    res.status(200).json(branches);
   } catch (err) {
-    return res.status(500).json({ message: err.message });
+    res.status(500).json({ message: err.message });
   }
 };
 
 const branchesByCompany = async (req, res) => {
   try {
     const companyName = req.query.companyName;
-    if (!companyName) return res.status(400).json({ message: "companyName query required" });
+    // if (!companyName) return res.status(400).json({ message: "companyName query required" });
     const branches = await Branch.find({ comany: companyName });
-    return res.status(200).json(branches);
+    res.status(200).json(branches);
   } catch (err) {
-    return res.status(500).json({ message: err.message });
+    res.status(500).json({ message: err.message });
   }
 };
 

@@ -107,12 +107,13 @@
           let email = document.getElementById("email");
           let password = document.getElementById("password");
 
-          if (email.value === data.email && password.value === data.password) {
+          if (email.value === data.user.email && password.value === data.user.password) {
 
             localStorage.setItem("UserObj", JSON.stringify(data));
 
             setTimeout(() => {
-              form.reset(); window.location.href = "/Dashboard"
+              form.reset(); 
+              window.location.href = "/Dashboard"
             }, 2000);
 
             eroor.innerHTML = `<div class="alert alert-success">Login Successful</div>`;

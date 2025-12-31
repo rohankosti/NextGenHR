@@ -307,16 +307,18 @@
 
   <script>
 
-    const obj = localStorage.getItem("UserObj", "first_name");
+    const obj = localStorage.getItem("UserObj");
     // console.log(obj);
+
     const par = JSON.parse(obj);
-    let fname = par.first_name;
-    // console.log(fname);
-    let lname = par.last_name;
+    console.log(par);
+  
+    let fname = par.user.first_name;
+    let lname = par.user.last_name;
     const admin = document.getElementById("admin");
+    const dash = document.getElementById("dash");
     // console.log(admin);
     admin.textContent = `${fname} ${lname}`
-    const dash = document.getElementById("dash");
     dash.innerHTML = `👋 Welcome ${fname} ${lname}`
   </script>
 
