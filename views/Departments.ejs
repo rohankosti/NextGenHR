@@ -120,7 +120,7 @@
                 Close
               </button>
               <button type="submit" class="btn btn-primary" id="saveAttendanceBtn">
-                Save Changes
+                Submit
               </button>
             </div>
           </form>
@@ -186,14 +186,12 @@
         const updateDepartmentForm = document.getElementById("updateDepartmentForm");
         updateDepartmentForm.addEventListener("submit", async (e) => {
           e.preventDefault();
-          const id = document.getElementById("editId").value;
-          const upobj = {
-            dep: document.getElementById("editName").value,
-            com: document.getElementById("editcomapny").value,
-            bra: document.getElementById("editbranch").value,
-            man: document.getElementById("editmanager").value
-          }
-          // console.log(upobj,"upobj");
+          // const updateDepartmentForm = getElementById("updateDepartmentForm");
+          const form = new  FormData(updateDepartmentForm);
+          const upobj= Object.fromEntries(form.entries());
+          console.log(upobj);
+          
+          const id=   document.getElementById("editId").value
 
           const upres = await fetch(`http://localhost:3000/Updateddata/${id}`, {
             method: "PUT",
@@ -208,7 +206,7 @@
 
           if (upres.ok) {
             alert(`${updata.message}`)
-            location.reload()
+            // location.reload()
           }
           else {
             alert("Department Data Can't Be Updated");
