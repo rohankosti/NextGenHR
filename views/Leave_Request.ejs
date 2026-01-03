@@ -74,7 +74,7 @@
         const leavereauest = document.getElementById("leavereauest")
         const response = await fetch("http://localhost:3000/getleaverequest");
         const data = await response.json();
-        console.log(data);
+        console.log(data,"sd");
 
         data.forEach((e, index) => {
           console.log(e, "lo");
@@ -150,7 +150,8 @@
             }
           });
         });
-
+        
+       
 
         //delate API 
         const rejectApplicationBtn = document.querySelectorAll(".rejectApplicationBtn");
