@@ -56,11 +56,14 @@ const delateddata =async (req, res) => {
     res.status(500).json({msg:'Data Cant Be Stored'})
   }
 };
+
+
 export  {
   Attendancepost,
   GetAttendance,
   singledata,
   updateddata,
   delateddata,
+ 
 };
 

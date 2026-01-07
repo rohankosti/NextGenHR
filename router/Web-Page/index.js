@@ -87,4 +87,5 @@ router.get('/reporting_manger',authoraization,(req,res)=>{
 router.get('/role',authoraization,(req,res)=>{
   res.render('role',{pageTitle:'Role Form'});
 });
+
 export default router;

@@ -1,16 +1,15 @@
 <%- include('Layout/header'); %>
-   <style>
-       
+  <style>
+    table tbody tr {
+      transition: transform 0.2s ease;
+      border-radius: 100px !important;
+    }
 
-        table tbody tr {
-            transition: transform 0.2s ease;
-            border-radius: 100px !important;
-        }
+    table tbody tr:hover {
+      transform: translateX(6px);
+      cursor: pointer;
+    }
 
-        table tbody tr:hover {
-            transform: translateX(6px);
-            cursor: pointer;
-        }
     .action-btn {
       padding: 6px 9px !important;
       /* both equal */
@@ -26,7 +25,7 @@
       font-size: 14px;
       line-height: 0;
     }
-    </style>
+  </style>
   <!-- Main Content -->
   <div class="main-content">
 
@@ -310,6 +309,8 @@
         console.error("Eroor In Your Side", error);
 
       }
+
+
     })
   </script>
 
