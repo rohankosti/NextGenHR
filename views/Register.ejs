@@ -310,25 +310,7 @@
       e.preventDefault();
       const formData = new FormData(employeeData);
       const obj = Object.fromEntries(formData.entries());
-
-      //API use for Auto Generated register.html Comapny code and save mongodb
-      // add a data in mongo after fetch last emp_code and increment by 1
-      // const lastemploye = async () => {
-      //   const lastemp = await fetch("http://localhost:3000/lastemployedata");
-      //   const lastresp = await lastemp.json()
-      //   // console.log(lastresp, "last");
-      //   console.log(lastresp[0].company_id,"company id");
-      //   let lastempcode = lastresp[0].emp_code;
-      //   console.log(lastempcode);
-
-      //   // let emp_code = "NEXTGEN" + String(parseInt(lastempcode.replace("NEXTGEN", "") + 1).padStart(3, '0'));
-      //   let emp_code = "NEXTGEN" + String(parseInt(lastempcode.replace("NEXTGEN", "")) + 1).padStart(3, '0');
-      //   return emp_code;
-      // };
-      // formData.set('emp_code', await lastemploye());
-      // obj.emp_code = await lastemploye();
-
-
+      
       const response = await fetch('http://localhost:3000/storeEmployee', {
         method: 'POST',
         // headers: {
