@@ -7,6 +7,8 @@ const autoraization = (req,res,next)=>{
   }
 }
 
+export default autoraization;
+
 // export default  autoraization ;
 //  const token = req.cookies.token;
 //   if (!token) {

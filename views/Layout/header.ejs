@@ -382,6 +382,7 @@
         opacity: 0;
         transform: translateY(10px);
       }
+
       to {
         opacity: 1;
         transform: translateY(0);
@@ -490,6 +491,7 @@
         opacity: 0;
         transform: translateX(-20px);
       }
+
       to {
         opacity: 1;
         transform: translateX(0);
@@ -520,6 +522,7 @@
         opacity: 0;
         transform: scale(0.9);
       }
+
       to {
         opacity: 1;
         transform: scale(1);
@@ -592,12 +595,25 @@
     .pagination .page-item.active .page-link {
       background: linear-gradient(135deg, #0d6efd 0%, #0b5ed7 100%);
       border-color: #0d6efd;
-    }.sidebar {
-  height: 100vh; 
-  overflow-y: auto;
-  padding-bottom: 20px;
-}
+    }
 
+    .sidebar {
+      height: 100vh;
+      overflow-y: auto;
+      padding-bottom: 20px;
+    }
+
+    #logo {
+      transition: all 0.7s ease;
+      padding: 3px;
+      cursor: pointer;
+    }
+
+
+    #logo:hover {
+      transform: scale3d(1.1, 1.1, 1);
+      box-shadow: 0 4px 12px black;
+    }
 
     /* ===== UTILITY CLASSES ===== */
     .text-primary-gradient {
@@ -647,6 +663,7 @@
 
     /* ===== PRINT STYLES ===== */
     @media print {
+
       .sidebar,
       .topbar,
       .btn,
@@ -662,25 +679,21 @@
   <!-- Sidebar -->
   <div class="sidebar d-none d-md-block">
     <div class="sidebar-brand">
-      <h4><i class="bi bi-briefcase-fill"></i><span>NextGenHR</span></h4>
+      <h4 id="logo"><i class="bi bi-briefcase-fill"></i><span>NextGenHR</span></h4>
     </div>
-    <nav class="nav flex-column ps-2 pe-2"> 
+    <nav class="nav flex-column ps-2 pe-2">
       <li class="nav-item">
-        <a class="nav-link d-flex align-items-center justify-content-between" 
-           data-bs-toggle="collapse" 
-           href="#hrMenu" 
-           role="button"
-           aria-expanded="false" 
-           aria-controls="hrMenu">
-           
+        <a class="nav-link d-flex align-items-center justify-content-between" data-bs-toggle="collapse" href="#hrMenu"
+          role="button" aria-expanded="false" aria-controls="hrMenu">
+
           <div class="d-flex align-items-center">
             <i class="bi bi-people-fill me-2"></i>
             <span>HR Management</span>
           </div>
-      
+
           <i class="bi bi-chevron-down small"></i>
         </a>
-      
+
         <div class="collapse" id="hrMenu">
           <ul class="nav flex-column ms-4 mt-1">
             <li class="nav-item">
@@ -688,13 +701,13 @@
                 <i class="bi bi-person-plus me-2"></i> Comapny
               </a>
             </li>
-      
+
             <li class="nav-item">
               <a class="nav-link" href="/branch">
                 <i class="bi bi-calendar2-check me-2"></i> Branch
               </a>
             </li>
-      
+
             <li class="nav-item">
               <a class="nav-link" href="/department">
                 <i class="bi bi-fingerprint me-2"></i> Department
@@ -704,19 +717,20 @@
               <a class="nav-link" href="/designation">
                 <i class="bi bi-diagram-3 me-2"></i> Designation
               </a>
-            </li>      
+            </li>
           </ul>
         </div>
 
-        
+
       </li>
 
-      
+
       <a class="nav-link" href="/Dashboard"><i class="bi bi-speedometer2"></i> <span>Dashboard</span></a>
       <a class="nav-link" href="/Register"><i class="bi bi-person-plus-fill"></i> <span>Register</span></a>
       <a class="nav-link" href="/Users"><i class="bi bi-people-fill"></i> <span>Users</span></a>
       <a class="nav-link" href="/Departments"><i class="bi bi-diagram-3-fill"></i> <span>Departments</span></a>
-      <a class="nav-link" href="/Leave_Request"><i class="bi bi-calendar-check-fill"></i> <span>Leave Requests</span></a>
+      <a class="nav-link" href="/Leave_Request"><i class="bi bi-calendar-check-fill"></i> <span>Leave
+          Requests</span></a>
       <a class="nav-link" href="/Attendance"><i class="bi bi-person-check-fill"></i> <span>Attendance</span></a>
       <a class="nav-link" href="/viewJobpostData"><i class="bi bi-briefcase-fill"></i> <span>Job Posts</span></a>
       <a class="nav-link" href="/Payroll"><i class="bi bi-cash-stack"></i> <span>Payroll</span></a>

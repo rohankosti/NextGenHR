@@ -3,8 +3,13 @@ import User from "../Model/User.js";
 const createEmployee = async (req, res) => {
   try {
     const body = req.body;
-    console.log(body);
-    
+    console.log(body);   
+    console.log('Uploaded File:', req.file);
+
+       // Add the uploaded file path to the job vacancy data
+        if (req.file) {
+            body.resume = req.file.path;
+        }
     const created = await User.create(body);
      res.status(200).json({ message: "Employee Data Stored Successfully", data: created });
   } catch (err) {

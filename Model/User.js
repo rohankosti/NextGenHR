@@ -63,7 +63,7 @@ const userSchema = new mongoose.Schema(
     state: { type: String },
     pincode: { type: String },
 
-    photo_url: { type: String },
+    resume: { type: String },
 
     username: {
       type: String,

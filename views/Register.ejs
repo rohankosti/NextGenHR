@@ -9,7 +9,7 @@
         </div>
         <div class="card-body">
 
-          <form method="POST" id="employeeData">
+          <form method="POST" id="employeeData" enctype="multipart/form-data">
 
             <div class="row g-3">
               <input type="hidden" name="type" value="employee">
@@ -46,13 +46,13 @@
               <!-- Contact Number -->
               <div class="col-md-4">
                 <label class="form-label">Contact Number</label>
-                <input type="text" class="form-control" name="contact_number">
+                <input type="text" class="form-control" name="contact_number" placeholder="+919662310340">
               </div>
 
               <!-- Email -->
               <div class="col-md-4">
                 <label class="form-label">Email</label>
-                <input type="email" class="form-control" name="email" required>
+                <input type="email" class="form-control" name="email" placeholder="example@gmail.com" required>
               </div>
 
               <!-- Company -->
@@ -140,10 +140,10 @@
                 <input type="text" class="form-control" name="pincode">
               </div>
 
-              <!-- Photo URL -->
+              <!-- Resume -->
               <div class="col-md-4">
-                <label class="form-label">Photo URL</label>
-                <input type="text" class="form-control" name="photo_url">
+                <label class="form-label" for="resume">Upload Resume</label>
+                <input type="file" class="form-control" name="resume" id="resume">
               </div>
 
               <!-- Username -->
@@ -331,10 +331,10 @@
 
       const response = await fetch('http://localhost:3000/storeEmployee', {
         method: 'POST',
-        headers: {
-          'content-type': 'application/json',
-        },
-        body: JSON.stringify(obj),
+        // headers: {
+        //   'content-type': 'application/json',
+        // },
+        body: formData,
       });
       const result = await response.json();
       console.log("res", result);

@@ -8,6 +8,7 @@ import dotenv from "dotenv";
 dotenv.config();
 import path, { dirname } from "path";
 import { fileURLToPath } from "url";
+import multer from "multer";
 const filename = fileURLToPath(import.meta.url);
 // console.log(filename);
 const dirna = path.dirname(filename);
