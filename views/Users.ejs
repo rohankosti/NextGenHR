@@ -25,6 +25,26 @@
       font-size: 14px;
       line-height: 0;
     }
+
+    .search-box {
+      position: relative;
+      width: 280px;
+    }
+
+    .search-box input {
+      padding-left: 36px;
+      border-radius: 8px;
+      font-size: 14px;
+    }
+
+    .search-box i {
+      position: absolute;
+      top: 50%;
+      left: 12px;
+      transform: translateY(-50%);
+      color: #6c757d;
+      font-size: 14px;
+    }
   </style>
   <div class="main-content">
     <div class="topbar rounded-4 mb-4 d-flex justify-content-between align-items-center shadow-sm px-3">
@@ -50,10 +70,19 @@
     </div>
     <div class="container-fluid mt-4">
       <div class="card p-4">
-        <div class="d-flex justify-content-between align-items-center mb-3">
-          <h6>User List</h6>
-          <!-- <a href="/Register"><button class="btn btn-add btn-sm "><i class="bi bi-plus"></i> Add User</button></a> -->
+
+        <!-- Header + Search -->
+        <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+          <h6 class="mb-0">User List</h6>
+
+          <!-- Search Box -->
+          <div class="search-box">
+            <i class="bi bi-search"></i>
+            <input type="text" id="userSearch" class="form-control" placeholder="Search by name, email, role..." />
+          </div>
         </div>
+
+        <!-- Table -->
         <table class="table table-users mt-3">
           <thead>
             <tr>
@@ -67,8 +96,10 @@
           </thead>
           <tbody id="rolldata"></tbody>
         </table>
+
       </div>
     </div>
+
   </div>
   <!-- modal-body -->
   <div class="modal fade" id="showApplicationModal" tabindex="-1" aria-labelledby="showApplicationModalLabel"
@@ -116,6 +147,7 @@
         const res = await fetch('http://localhost:3000/getregisterdata');
         const usersd = await res.json();
         const tbody = document.getElementById('rolldata');
+        tbody.innerHTML = "";
         usersd.forEach((user, index) => {
           tbody.innerHTML +=
             `<tr>
@@ -231,7 +263,30 @@
 
           })
         });
+        const userSearch = document.getElementById("userSearch");
+        userSearch.addEventListener("input", async (e) => {
+          const value = userSearch.value
+          console.log(value);
 
+          const serchfetch = await fetch(`http://localhost:3000/serchapi?serch=${encodeURIComponent(value)}`)
+          console.log(serchfetch);
+          const serchres = await serchfetch.json()
+          console.log(serchres);
+          tbody.innerHTML = ""
+          serchres.forEach((user, index) => {
+            tbody.innerHTML += `<tr>
+              <td>${index + 1}</td>
+              <td>${user.first_name + " " + user.last_name}</td>
+              <td>${user.email}</td>
+              <td>${user.role_id}</td>
+              <td><span class="badge bg-warning">${user.status}</span></td>
+              <td>
+              <button class="btn btn-primary btn-sm action-btn showApplicationBtn" data-bs-toggle="modal" data-bs-target="#showApplicationModal" id="edit" data-id="${user._id}"><i class="bi bi-pencil"></i></button>
+              <button class="btn btn-danger btn-sm action-btn  deltaeApplicationBtn" id="delete" data-id="${user._id}"><i class="bi bi-trash"></i></button>
+              </td>
+            </tr>`;
+          });
+        })
       }
       catch (err) {
         console.error('Eroor In Your Side', err);
