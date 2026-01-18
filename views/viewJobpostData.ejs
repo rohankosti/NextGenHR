@@ -1,7 +1,5 @@
 <%- include('Layout/header'); %>
     <style>
-       
-
         table tbody tr {
             transition: transform 0.2s ease;
             border-radius: 100px !important;
@@ -11,22 +9,22 @@
             transform: translateX(6px);
             cursor: pointer;
         }
-        
-    .action-btn {
-      padding: 6px 9px !important;
-      /* both equal */
-      /* display: flex; */
-      align-items: center;
-      justify-content: center;
-      width: 55px;
-      /* same fixed size */
-      height: 35px;
-    }
 
-    .action-btn i {
-      font-size: 14px;
-      line-height: 0;
-    }
+        .action-btn {
+            padding: 6px 9px !important;
+            /* both equal */
+            /* display: flex; */
+            align-items: center;
+            justify-content: center;
+            width: 55px;
+            /* same fixed size */
+            height: 35px;
+        }
+
+        .action-btn i {
+            font-size: 14px;
+            line-height: 0;
+        }
     </style>
     <section>
         <div class="main-content">
@@ -48,19 +46,19 @@
                     </div>
                 </div>
                 <div>
-                    <table class="table ">
+                    <table id="jobTable" class="table  table-striped">
                         <thead class="table-dark">
                             <tr>
-                                <th>Id</th>
+                                <th>#</th>
                                 <th>Name</th>
                                 <th>Email</th>
                                 <th>Position</th>
                                 <th>Resume</th>
-                                <th colspan="2" class="text-center">Actions</th>
+                                <th>Actions</th>
                             </tr>
                         </thead>
-                        <tbody id="jobpostdata"></tbody>
                     </table>
+
                 </div>
             </div>
         </div>
@@ -110,25 +108,43 @@
 
         addEventListener("DOMContentLoaded", async () => {
             try {
-                //Fetch Data from jobvecencylist API and show in table
-                let fetch_data = await fetch("http://localhost:3000/jobvecancylist")
-                let response = await fetch_data.json();
-                // console.log(response,"response");
-
-                let tablebody = document.getElementById("jobpostdata");
-
-                response.forEach((e, index) => {
-                    tablebody.innerHTML +=
-                        `<tr> 
-                        <td>${index + 1}</td>
-                        <td>${e.name}</td>
-                        <td>${e.email}</td>
-                        <td>${e.position}</td>
-                        <td>${e.resume}</td>
-                        <td><button class="btn btn-primary btn-sm action-btn showApplicationBtn" data-bs-toggle="modal" data-bs-target="#showApplicationModal" id="edit" data-id="${e._id}">Edit</button></td>
-                        <td><button class="btn btn-danger btn-sm action-btn delateApplicationBtn rounded-2" id="delete" data-id="${e._id}">Delete</button></td>
-                    </tr>`
+                $(document).ready(function () {
+                    $('#jobTable').DataTable({
+                        processing: true,
+                        serverSide: true,
+                        ajax: {
+                            url: '/jobvecancylist',
+                            type: 'POST'
+                        },
+                        columns: [
+                            {
+                                data: null,
+                                render: function (data, type, row, meta) {
+                                    return meta.row + meta.settings._iDisplayStart + 1; // serial number
+                                }
+                            },
+                            { data: 'name' },
+                            { data: 'email' },
+                            { data: 'position' },
+                            {
+                                data: 'resume',
+                                render: function (file) {
+                                    return `<a href="/uploads/${file}" target="_blank">View</a>`;
+                                }
+                            },
+                            {
+                                data: '_id',
+                                render: function (id) {
+                                    return `
+            <button class="btn btn-primary btn-sm showApplicationBtn" data-id="${id}">Edit</button>
+            <button class="btn btn-danger btn-sm delateApplicationBtn" data-id="${id}">Delete</button>
+          `;
+                                }
+                            }
+                        ]
+                    });
                 });
+
 
                 // Show Application Details in Modal
                 const modeleditbtn = document.querySelectorAll('.showApplicationBtn'); //return all edit btn then use queryselectorall

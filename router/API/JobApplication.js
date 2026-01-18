@@ -69,7 +69,7 @@ const router =express.Router();
 // });
 
 router.post('/storeJobVacancy',storejobvecancy);
-router.get('/jobvecancylist',jobvecancylist);
+router.post('/jobvecancylist', jobvecancylist);
 router.post('/jobvecancysingledata',jobvecancysingledata);
 router.put('/updatejobapplicationdata/:id',updatejobapplicationdata);
 router.delete('/deletejobapplicationdata/:id',deletejobapplicationdata);
