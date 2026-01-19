@@ -246,8 +246,8 @@
 
       const department_select = document.querySelector('select[name="department_id"]');
       department_Data.forEach(company => {
-        console.log(company,"coma");
-        
+        console.log(company, "coma");
+
         const department_option = document.createElement('option');
         department_option.value = company._id;
         department_option.textContent = company.name;
@@ -310,7 +310,7 @@
       e.preventDefault();
       const formData = new FormData(employeeData);
       const obj = Object.fromEntries(formData.entries());
-      
+
       const response = await fetch('http://localhost:3000/storeEmployee', {
         method: 'POST',
         // headers: {

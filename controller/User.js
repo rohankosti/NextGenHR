@@ -8,7 +8,8 @@ const createEmployee = async (req, res) => {
 
     // Add the uploaded file path to the job vacancy data
     if (req.file) {
-      body.resume = req.file.path;
+      // body.resume = req.file.path;
+      body.resume = req.file.filename; // Store only the filename
     }
     const created = await User.create(body);
     res
@@ -30,7 +31,10 @@ const createEmployee = async (req, res) => {
 
 const getEmployees = async (req, res) => {
   try {
-    const employees = await User.find();
+    // const  register= req.body
+    // console.log(register,"reges");
+
+    const employees = await User.find().populate("company_id", "name");
     res.status(200).json(employees);
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -42,7 +46,7 @@ const singleEmploye = async (req, res) => {
     const id = req.body;
     // console.log("ID:", id);
 
-    const emp = await User.findById(id.id);
+    const emp = await User.findById(id.id).populate("company_id", "name");
 
     res.status(200).json(emp);
   } catch (err) {
@@ -71,21 +75,19 @@ const deleteEmployee = async (req, res) => {
   }
 };
 
-const serchapi = async (req,res) => {
+const serchapi = async (req, res) => {
   try {
     const quer = req.query.serch;
-    console.log(quer,"param");
+    // console.log(quer,"param");
 
     const serchdata = await User.find({
-      $or:[
-
-         {first_name : {$regex: quer, $options: "i"}}, 
-         {email : {$regex: quer, $options: "i"}}, 
-         {role_id : {$regex: quer, $options: "i"}}, 
-         {status : {$regex: quer, $options: "i"}}, 
-       
-      ]
-      });
+      $or: [
+        { first_name: { $regex: quer, $options: "i" } },
+        { email: { $regex: quer, $options: "i" } },
+        { role_id: { $regex: quer, $options: "i" } },
+        { status: { $regex: quer, $options: "i" } },
+      ],
+    });
     res.status(200).json(serchdata);
   } catch (error) {
     res.status(500).json({ msg: "Data Can't Be Found" });

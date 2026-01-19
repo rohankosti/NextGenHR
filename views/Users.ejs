@@ -83,12 +83,14 @@
         </div>
 
         <!-- Table -->
-        <table class="table table-users mt-3">
+        <table class="table table-users mt-3 ">
           <thead>
             <tr>
               <th>ID</th>
               <th>Name</th>
               <th>Email</th>
+              <th>Comapny</th>
+              <th>Resume</th>
               <th>Role</th>
               <th>Status</th>
               <th colspan="2">Action</th>
@@ -122,6 +124,11 @@
               <input type="email" class="form-control" id="editEmail" name="email" required>
             </div>
             <div class="mb-3">
+              <label class="form-label fw-bold" for="Comapny">Comapny:</label>
+              <input type="text" class="form-control" id="Comapny" name="Comapny" required>
+            </div>
+
+            <div class="mb-3">
               <label class="form-label fw-bold" for="editPosition">Role:</label>
               <input type="text" class="form-control" id="editPosition" name="position" required>
             </div>
@@ -146,14 +153,23 @@
       try {
         const res = await fetch('http://localhost:3000/getregisterdata');
         const usersd = await res.json();
+        console.log(usersd, "llll");
+
         const tbody = document.getElementById('rolldata');
         tbody.innerHTML = "";
+        
         usersd.forEach((user, index) => {
           tbody.innerHTML +=
             `<tr>
               <td>${index + 1}</td>
               <td>${user.first_name + " " + user.last_name}</td>
               <td>${user.email}</td>
+              <td>${user.company_id.name}</td>
+               <td> 
+        <a href="/uploads/${user.resume}" target="_blank" class="btn btn-sm btn-danger">
+          View Resume
+        </a>
+      </td>
               <td>${user.role_id}</td>
               <td><span class="badge bg-warning">${user.status}</span></td>
               <td>
@@ -187,8 +203,9 @@
             const data = await res.json();
             console.log(data, "single data");
             document.getElementById("editId").value = data._id;
-            document.getElementById("editName").value = data.first_name;
+            document.getElementById("editName").value = data.first_name + " " + data.last_name;
             document.getElementById("editEmail").value = data.email;
+            document.getElementById("Comapny").value = data.company_id.name;
             document.getElementById("editPosition").value = data.role_id;
             document.getElementById("status").value = data.status;
 

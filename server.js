@@ -16,7 +16,8 @@ const dirna = path.dirname(filename);
 
 
 const app = express();
-// app.use(express.static(path.join(dirna, 'WEB')));
+app.use(express.static(path.join(dirna, 'public')));
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 

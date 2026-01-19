@@ -146,103 +146,85 @@
                 });
 
 
-                // Show Application Details in Modal
-                const modeleditbtn = document.querySelectorAll('.showApplicationBtn'); //return all edit btn then use queryselectorall
-                //  console.log(modeleditbtn);
-
-                modeleditbtn.forEach(btn => {
-                    btn.addEventListener("click", async (e) => {
-                        e.preventDefault();
-                        const btnattribute = btn.getAttribute("data-id");
-                        // console.log(btnattribute);
-                        idobj = { id: btnattribute };
-                        //Fetch Single Data from jobvecancysingledata API
-                        const singlefetch = await fetch("http://localhost:3000/jobvecancysingledata", {
-                            method: "POST",
-                            headers: {
-                                "content-type": "application/json",
-                            },
-                            body: JSON.stringify(idobj)
-                        });
-
-
-                        const singleresponse = await singlefetch.json();
-                        console.log(singleresponse, "singleresponse");
-
-                        document.getElementById("editId").value = singleresponse._id;
-                        document.getElementById("editName").value = singleresponse.name;
-                        document.getElementById("editEmail").value = singleresponse.email;
-                        document.getElementById("editPosition").value = singleresponse.position;
-                        document.getElementById("editResume").value = singleresponse.resume;
-                    });
-                });
-                // Update Application Details in Modal
-                const updateform = document.getElementById("editApplicationForm")
-                updateform.addEventListener("submit", async (e) => {
+                // Use delegated handlers so buttons added by DataTables receive events
+                $('#jobTable').on('click', '.showApplicationBtn', async function (e) {
                     e.preventDefault();
-                    const id = document.getElementById("editId").value;
-                    const updateddata = {
-                        name: document.getElementById("editName").value,
-                        email: document.getElementById("editEmail").value,
-                        position: document.getElementById("editPosition").value,
-                        resume: document.getElementById("editResume").value,
-                    }
-                    const update_fetch = await fetch(`http://localhost:3000/updatejobapplicationdata/${id}`,
-                        {
-                            method: "PUT",
-                            headers: {
-                                "content-type": "application/json",
-                            },
-                            body: JSON.stringify({ id, ...updateddata })
-                        }
-                    )
-                    //  console.log(update_fetch);
-
-                    const update_response = await update_fetch.json();
-                    // console.log(update_response);
-
-                    if (update_fetch.ok) {
-                        alert("Application updated successfully!");
-                        location.reload();
-                    }
-                    else {
-                        alert(`failed to update application: ${update_response.message}`);
-                    }
-                })
-
-
-                //Delate Application from viewJobpostData table
-                const deletebtn = document.querySelectorAll('.delateApplicationBtn'); //return all delete btn 
-                // console.log(deletebtn);
-
-                deletebtn.forEach(btn => {
-                    // console.log(btn);
-                    btn.addEventListener("click", async (e) => {
-                        e.preventDefault();
-                        const btnattri = btn.getAttribute("data-id");
-                        console.log(btnattri);
-                        const deleteobj = { id: btnattri };
-
-                        const delate_fetch = await fetch(`http://localhost:3000/deletejobapplicationdata/${deleteobj.id}`, {
-                            method: "DELETE",
-                            headers: {
-                                "content-type": "application/json",
-                            },
-                            body: JSON.stringify(deleteobj)
+                    const id = $(this).data('id');
+                    try {
+                        const singlefetch = await fetch('/jobvecancysingledata', {
+                            method: 'POST',
+                            headers: { 'content-type': 'application/json' },
+                            body: JSON.stringify({ id })
                         });
-                        // console.log(delate_fetch,"delate fetch");
-                        const delate_response = await delate_fetch.json();
-                        // console.log(delate_response,"delate response");
+                        const singleresponse = await singlefetch.json();
 
+                        document.getElementById('editId').value = singleresponse._id || '';
+                        document.getElementById('editName').value = singleresponse.name || '';
+                        document.getElementById('editEmail').value = singleresponse.email || '';
+                        document.getElementById('editPosition').value = singleresponse.position || '';
+                        document.getElementById('editResume').value = singleresponse.resume || '';
+
+                        const modalEl = document.getElementById('showApplicationModal');
+                        const modal = new bootstrap.Modal(modalEl);
+                        modal.show();
+                    } catch (err) {
+                        console.error(err);
+                        alert('Failed to load application details');
+                    }
+                });
+
+                // Update Application Details in Modal
+                const updateform = document.getElementById('editApplicationForm');
+                updateform.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    const id = document.getElementById('editId').value;
+                    const updateddata = {
+                        name: document.getElementById('editName').value,
+                        email: document.getElementById('editEmail').value,
+                        position: document.getElementById('editPosition').value,
+                        resume: document.getElementById('editResume').value,
+                    };
+                    try {
+                        const update_fetch = await fetch(`/updatejobapplicationdata/${id}`, {
+                            method: 'PUT',
+                            headers: { 'content-type': 'application/json' },
+                            body: JSON.stringify({ id, ...updateddata })
+                        });
+                        const update_response = await update_fetch.json();
+                        if (update_fetch.ok) {
+                            alert('Application updated successfully!');
+                            location.reload();
+                        } else {
+                            alert(`failed to update application: ${update_response.message}`);
+                        }
+                    } catch (err) {
+                        console.error(err);
+                        alert('Update failed');
+                    }
+                });
+
+                // Delete Application (delegated)
+                $('#jobTable').on('click', '.delateApplicationBtn', async function (e) {
+                    e.preventDefault();
+                    const id = $(this).data('id');
+                    if (!confirm('Are you sure you want to delete this application?')) return;
+                    try {
+                        const delate_fetch = await fetch(`/deletejobapplicationdata/${id}`, {
+                            method: 'DELETE',
+                            headers: { 'content-type': 'application/json' },
+                            body: JSON.stringify({ id })
+                        });
+                        const delate_response = await delate_fetch.json();
                         if (delate_fetch.ok) {
                             alert(`Application deleted successfully! ${delate_response.message}`);
                             location.reload();
-
-                        }
-                        else {
+                        } else {
                             alert(`failed to delete application: ${delate_response.message}`);
                         }
-                    })
+                    } catch (err) {
+                        console.error(err);
+                        alert('Delete failed');
+                    }
                 });
 
 
