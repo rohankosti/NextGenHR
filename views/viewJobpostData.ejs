@@ -136,111 +136,122 @@
                                     data: '_id',
                                     render: function (id) {
                                         return `
-            <button class="btn btn-primary btn-sm showApplicationBtn" data-id="${id}">Edit</button>
+            <button class="btn btn-primary btn-sm showApplicationBtn" data-id="${id}" data-bs-toggle="modal" data-bs-target="#showApplicationModal" >Edit</button>
             <button class="btn btn-danger btn-sm delateApplicationBtn" data-id="${id}">Delete</button>
           `;
                                     }
                                 }
                             ]
                         });
-                        // });
+                    });
 
-                        $(document).on('click', '.showApplicationBtn', async function (e) {
-                            e.preventDefault();
-                            // Show Application Details in Modal
-                            const editid = $(this).data('id'); 
-                            console.log(editid);
+                    $(document).on('click', '.showApplicationBtn', async (e) => {
+                        e.preventDefault();
+                        // Show Application Details in Modal
+                        const editid = $(this).data('id');
+                        console.log(editid);
 
-                            idobj = { id: editid };
-                            //Fetch Single Data from jobvecancysingledata API
-                            const singlefetch = await fetch("http://localhost:3000/jobvecancysingledata", {
-                                method: "POST",
+                        idobj = { id: editid };
+                        //Fetch Single Data from jobvecancysingledata API
+                        const singlefetch = await fetch("http://localhost:3000/jobvecancysingledata", {
+                            method: "POST",
+                            headers: {
+                                "content-type": "application/json",
+                            },
+                            body: JSON.stringify(idobj)
+                        });
+
+
+                        const singleresponse = await singlefetch.json();
+                        console.log(singleresponse, "singleresponse");
+
+                        document.getElementById("editId").value = singleresponse._id;
+                        document.getElementById("editName").value = singleresponse.name;
+                        document.getElementById("editEmail").value = singleresponse.email;
+                        document.getElementById("editPosition").value = singleresponse.position;
+                        document.getElementById("editResume").value = singleresponse.resume;
+                    });
+                    // Update Application Details in Modal
+                    const updateform = document.getElementById("editApplicationForm")
+                    updateform.addEventListener("submit", async (e) => {
+                        e.preventDefault();
+                        const id = document.getElementById("editId").value;
+                        const updateddata = {
+                            name: document.getElementById("editName").value,
+                            email: document.getElementById("editEmail").value,
+                            position: document.getElementById("editPosition").value,
+                            resume: document.getElementById("editResume").value,
+                        }
+                        const update_fetch = await fetch(`http://localhost:3000/updatejobapplicationdata/${id}`,
+                            {
+                                method: "PUT",
                                 headers: {
                                     "content-type": "application/json",
                                 },
-                                body: JSON.stringify(idobj)
+                                body: JSON.stringify({ id, ...updateddata })
+                            }
+                        )
+                        //  console.log(update_fetch);
+
+                        const update_response = await update_fetch.json();
+                        // console.log(update_response);
+
+                        if (update_fetch.ok) {
+                            alert("Application updated successfully!");
+                            location.reload();
+                        }
+                        else {
+                            alert(`failed to update application: ${update_response.message}`);
+                        }
+                    })
+
+
+                    //Delate Application from viewJobpostData table
+                    //Befor Ajax Using Data Table
+                    // const deletebtn = document.querySelectorAll('.delateApplicationBtn'); //return all delete btn 
+                    //  console.log(deletebtn);
+                    // deletebtn.forEach(btn => {
+                    //     // console.log(btn);
+                    //     btn.addEventListener("click", async (e) => {
+                    //         e.preventDefault();
+                    //         const btnattri = btn.getAttribute("data-id");
+                    //         console.log(btnattri);
+                    //         const deleteobj = { id: btnattri };
+                    //         const delate_fetch = await fetch(`http://localhost:3000/deletejobapplicationdata/${deleteobj.id}`, {
+                    //             method: "DELETE",
+                    //             headers: {
+                    //                 "content-type": "application/json",
+                    //             },
+                    //             body: JSON.stringify(deleteobj)
+                    //         });
+                    //         // console.log(delate_fetch,"delate fetch");
+                    //         const delate_response = await delate_fetch.json();
+                    //         // console.log(delate_response,"delate response");
+                    //         if (delate_fetch.ok) {
+                    //             alert(`Application deleted successfully! ${delate_response.message}`);
+                    //             location.reload();
+                    //         }
+                    //         else {
+                    //             alert(`failed to delete application: ${delate_response.message}`);
+                    //         }
+                    //     })
+                    // });
+
+                    //Delate Application from viewJobpostData table
+                    $(document).on("click", ".delateApplicationBtn", async () => {
+                        const id = $(this).data("id");
+                        console.log("Delete ID:", id);
+
+                        if (confirm("Are you sure?")) {
+                            $.ajax({
+                                url: `/deletejobapplicationdata/${id}`,
+                                type: "DELETE",
+                                success: function (res) {
+                                    $('#jobTable').DataTable().ajax.reload(null, false);
+                                }
                             });
-
-
-                            const singleresponse = await singlefetch.json();
-                            console.log(singleresponse, "singleresponse");
-
-                            document.getElementById("editId").value = singleresponse._id;
-                            document.getElementById("editName").value = singleresponse.name;
-                            document.getElementById("editEmail").value = singleresponse.email;
-                            document.getElementById("editPosition").value = singleresponse.position;
-                            document.getElementById("editResume").value = singleresponse.resume;
-                        });
-                        // Update Application Details in Modal
-                        const updateform = document.getElementById("editApplicationForm")
-                        updateform.addEventListener("submit", async (e) => {
-                            e.preventDefault();
-                            const id = document.getElementById("editId").value;
-                            const updateddata = {
-                                name: document.getElementById("editName").value,
-                                email: document.getElementById("editEmail").value,
-                                position: document.getElementById("editPosition").value,
-                                resume: document.getElementById("editResume").value,
-                            }
-                            const update_fetch = await fetch(`http://localhost:3000/updatejobapplicationdata/${id}`,
-                                {
-                                    method: "PUT",
-                                    headers: {
-                                        "content-type": "application/json",
-                                    },
-                                    body: JSON.stringify({ id, ...updateddata })
-                                }
-                            )
-                            //  console.log(update_fetch);
-
-                            const update_response = await update_fetch.json();
-                            // console.log(update_response);
-
-                            if (update_fetch.ok) {
-                                alert("Application updated successfully!");
-                                location.reload();
-                            }
-                            else {
-                                alert(`failed to update application: ${update_response.message}`);
-                            }
-                        })
-
-
-                        //Delate Application from viewJobpostData table
-                        const deletebtn = document.querySelectorAll('.delateApplicationBtn'); //return all delete btn 
-                        // console.log(deletebtn);
-
-                        deletebtn.forEach(btn => {
-                            // console.log(btn);
-                            btn.addEventListener("click", async (e) => {
-                                e.preventDefault();
-                                const btnattri = btn.getAttribute("data-id");
-                                console.log(btnattri);
-                                const deleteobj = { id: btnattri };
-
-                                const delate_fetch = await fetch(`http://localhost:3000/deletejobapplicationdata/${deleteobj.id}`, {
-                                    method: "DELETE",
-                                    headers: {
-                                        "content-type": "application/json",
-                                    },
-                                    body: JSON.stringify(deleteobj)
-                                });
-                                // console.log(delate_fetch,"delate fetch");
-                                const delate_response = await delate_fetch.json();
-                                // console.log(delate_response,"delate response");
-
-                                if (delate_fetch.ok) {
-                                    alert(`Application deleted successfully! ${delate_response.message}`);
-                                    location.reload();
-
-                                }
-                                else {
-                                    alert(`failed to delete application: ${delate_response.message}`);
-                                }
-                            })
-                        });
+                        }
                     });
-
                 }
                 catch (error) {
                     console.error(error);
