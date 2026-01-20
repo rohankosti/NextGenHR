@@ -284,7 +284,6 @@
         userSearch.addEventListener("input", async (e) => {
           const value = userSearch.value
           console.log(value);
-
           const serchfetch = await fetch(`http://localhost:3000/serchapi?serch=${encodeURIComponent(value)}`)
           console.log(serchfetch);
           const serchres = await serchfetch.json()
