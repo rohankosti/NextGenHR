@@ -10,10 +10,7 @@ import path, { dirname } from "path";
 import { fileURLToPath } from "url";
 import multer from "multer";
 const filename = fileURLToPath(import.meta.url);
-// console.log(filename);
 const dirna = path.dirname(filename);
-// console.log(dirna);
-
 
 const app = express();
 app.use(express.static(path.join(dirna, 'public')));
