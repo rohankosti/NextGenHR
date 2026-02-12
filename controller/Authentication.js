@@ -14,10 +14,10 @@ const login = async (req, res) => {
       res.status(401).json({ msg: "Invalid Password" });
     }
 
-    req.session.user = {
+    req.session.user = {  //or ye user sirfh ek key hai kuch bhi ho skti hai userdata etcc..
       userdata:user
     };
-    res.status(200).json({ message: "Login Sucsesfull", user });
+    res.status(200).json({ message: "Login Sucsesfull", user }); //ue user uper wala hi user hai 
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
