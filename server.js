@@ -36,11 +36,11 @@ app.use(
     }),
   })
 );
-connectDB()
 // ================== API Routes ====================
 app.use(index);
 // ==================== WEB Routes ====================
 app.use( webRoutes);
+connectDB()
 
 
 process.on("SIGINT", async () => {
