@@ -87,7 +87,7 @@ const serchapi = async (req, res) => {
         { role_id: { $regex: quer, $options: "i" } },
         { status: { $regex: quer, $options: "i" } },
       ],
-    });       
+    });
     res.status(200).json(serchdata);
   } catch (error) {
     res.status(500).json({ msg: "Data Can't Be Found" });
