@@ -1,9 +1,9 @@
-import index from './router/API/index.js'
-import webRoutes from "./router/Web-Page/index.js"; 
+import index from "./router/API/index.js";
+import webRoutes from "./router/Web-Page/index.js";
 import express from "express";
-import connectDB from './mongo.js'
-import session, { Cookie, Store }  from "express-session";
-import MongoStore  from "connect-mongo";
+import connectDB from "./mongo.js";
+import session, { Cookie, Store } from "express-session";
+import MongoStore from "connect-mongo";
 import dotenv from "dotenv";
 dotenv.config();
 import path, { dirname } from "path";
@@ -13,35 +13,34 @@ const filename = fileURLToPath(import.meta.url);
 const dirna = path.dirname(filename);
 
 const app = express();
-app.use(express.static(path.join(dirna, 'public')));
+app.use(express.static(path.join(dirna, "public")));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.set('view engine', 'ejs');
-app.set('views', path.join(dirna, 'views'));
+app.set("view engine", "ejs");
+app.set("views", path.join(dirna, "views"));
 // ==================== SESSION CREATE ====================
 app.use(
   session({
-    secret:"mysecratekey",
-    resave:false,
-    saveUninitialized:false,
-    cookie:{
-      httpOnly:true,
-      maxAge:1000*60*60*24,
+    secret: "mysecratekey",
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      httpOnly: true,
+      maxAge: 1000 * 60 * 60 * 24,
     },
-    store:MongoStore.create({
-      mongoUrl:process.env.MONGO_URL,
-      collectionName:'sessions',
+    store: MongoStore.create({
+      mongoUrl: process.env.MONGO_URL,
+      collectionName: "sessions",
     }),
-  })
+  }),
 );
 // ================== API Routes ====================
 app.use(index);
 // ==================== WEB Routes ====================
-app.use( webRoutes);
-connectDB()
-
+app.use(webRoutes);
+connectDB();
 
 process.on("SIGINT", async () => {
   console.log("\nShutting down server...");
