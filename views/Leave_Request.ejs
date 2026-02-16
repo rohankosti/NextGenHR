@@ -76,26 +76,30 @@
         const data = await response.json();
         console.log(data,"sd");
 
+        const formatDate = (dateString) => {
+          if (!dateString) return '';
+          const date = new Date(dateString);
+          if (isNaN(date)) return '';
+          return date.toLocaleDateString('en-IN', { year: 'numeric', month: '2-digit', day: '2-digit' }).split('/').reverse().join('-');
+        };
+
         data.forEach((e, index) => {
-          console.log(e, "lo");
-          const formatDate = (dateString) => {
-            const date = new Date(dateString);
-            return date.toLocaleDateString('en-IN', { year: 'numeric', month: '2-digit', day: '2-digit' }).split('/').reverse().join('-');
-          };
+        //   console.log(e, "lo");
+        //   const empName = e.employee_id ? ((e.employee_id.first_name || '') + ' ' + (e.employee_id.last_name || '')).trim() : 'Unknown';
 
           leavereauest.innerHTML += `
-              <tr>
-                <td>${index + 1}</td>
-                <td>${e.employee_id.first_name +" "+ e.employee_id.last_name}</td>
-                <td>${e.leave_type}</td>
-                <td>${formatDate(e.from_date)}</td>
-                <td>${formatDate(e.to_date)}</td>
-                <td>${e.reason}</td>
-                <td>${e.approved_by}</td>
-                <td id="statu">${e.status}</td>
+            <tr>
+              <td>${index + 1}</td>
+              <td>${e.employee_id.first_name+ ' ' +e.employee_id.last_name}</td>
+              <td>${e.leave_type || ''}</td>
+              <td>${formatDate(e.from_date)}</td>
+              <td>${formatDate(e.to_date)}</td>
+              <td>${e.reason || ''}</td>
+              <td>${e.approved_by || ''}</td>
+              <td class="statu">${e.status || ''}</td>
               <td><button class="btn btn-approve btn-sm bg-primary aproveApplicationBtn" data-id="${e._id}">Approve</button></td>
-                <td><button class="btn btn-reject btn-sm bg-danger rejectApplicationBtn" data-id="${e._id}">Reject</button></td>
-           </tr>`
+              <td><button class="btn btn-reject btn-sm bg-danger rejectApplicationBtn" data-id="${e._id}">Reject</button></td>
+            </tr>`;
         });
         const aproveApplicationBtn = document.querySelectorAll(".aproveApplicationBtn");
         // console.log(aproveApplicationBtn);
@@ -120,7 +124,7 @@
             // console.log(data);
             const row = btn.closest('tr');
             // console.log(row);
-            const statu = row.querySelector("#statu");
+            const statu = row.querySelector(".statu");
             // console.log(statu);
             statu.textContent = "Approve";
 

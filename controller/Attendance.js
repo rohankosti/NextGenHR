@@ -13,7 +13,7 @@ const Attendancepost = async (req, res) => {
 };
 const GetAttendance = async (req, res) => {
   try {
-    const getdata = await Attendance.find();
+    const getdata = await Attendance.find().populate('employee_id', 'first_name last_name');;
     console.log(getdata);
     res.status(200).json(getdata);
   } catch (error) {

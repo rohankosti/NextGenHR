@@ -156,15 +156,7 @@
   <script>
     addEventListener("DOMContentLoaded", async (e) => {
       try {
-        //Maping id = name for crud 
-        const empRes = await fetch("http://localhost:3000/getregisterdata");
-        const employees = await empRes.json();
-        // console.log(employees,"emp");
-        const empMap = {};
-        employees.forEach(emp => {
-          empMap[emp._id] = emp.first_name + " " + emp.last_name;
-        });
-        console.log("empMap", empMap);
+        
         const attendanceTable = document.getElementById("attendanceTable");
 
         // Simple date format (DD-MM-YYYY)
@@ -181,10 +173,12 @@
 
         // Render table
         data.forEach((e, index) => {
+          console.log(e);
+
           attendanceTable.innerHTML += `
     <tr>
       <td>${index + 1}</td>
-         <td>${empMap[e.employee_id] || "Unknown"}</td>
+       <td>${e.employee_id.first_name + ' ' + e.employee_id.last_name}</td>
       <td>${formatDate(e.date)}</td>
       <td>${e.check_in}</td>
       <td>${e.check_out}</td>
