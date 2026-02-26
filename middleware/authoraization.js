@@ -1,3 +1,5 @@
+
+
 const autoraization = (req,res,next)=>{
   if(req.session.user){
     return next();
@@ -9,7 +11,7 @@ const autoraization = (req,res,next)=>{
 
 export default autoraization;
 
-// export default  autoraization ;
+
 //  const token = req.cookies.token;
 //   if (!token) {
 //     return res.redirect("/login");
