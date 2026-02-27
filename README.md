@@ -1,5 +1,11 @@
-🏢 NextGenHR – HR Management System
 
+# 🏢 NextGenHR – HR Management System
+
+![NextGenHR](https://img.shields.io/badge/Status-Active-green)
+![Node.js](https://img.shields.io/badge/Node.js-v18%2B-green)
+![Express](https://img.shields.io/badge/Express.js-4.x-blue)
+![MongoDB](https://img.shields.io/badge/MongoDB-NoSQL-green)
+![License](https://img.shields.io/badge/License-MIT-blue)
 NextGenHR is a full-stack HR Management System built using Node.js, Express.js, and MongoDB.
 It allows administrators to manage employee records securely with authentication and structured backend architecture.
 
