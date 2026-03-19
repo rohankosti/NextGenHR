@@ -3,6 +3,8 @@ import Company from "../Model/Company.js";
 const createCompany = async (req, res) => {
   try {
     const body = req.body;
+    console.log(body);
+    
     const created = await Company.create(body);
      res.status(200).json({ message: "Company created", data: created });
   } catch (err) {

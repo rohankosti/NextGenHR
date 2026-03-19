@@ -104,7 +104,7 @@
         pincode: document.getElementById("pincode").value,
       }
 
-      const company_fetch = await fetch("http://localhost:3000/companydata", {
+      const company_fetch = await fetch("http://localhost:3000/getcomapnydata", {
         method: "POST",
         headers: {
           "content-type": "application/json",
